@@ -13,8 +13,7 @@ import { RouterProvider } from 'react-router-dom';
 
 import router from "./routes";
 
-import ThemeCustomization from '@components/mantis/themes';
-import ScrollTop from '@components/mantis/ScrollTop';
+import ThemeCustomization from '@components/mantis/theme';
 
 function Index() {
     return (
