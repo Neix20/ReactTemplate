@@ -7,7 +7,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Chip from '@mui/material/Chip';
-import Grid22 from '@mui/material/Grid22';
+import Grid2 from '@mui/material/Grid2';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
@@ -283,8 +283,8 @@ export default function MainContent() {
           </IconButton>
         </Box>
       </Box>
-      <Grid22 container spacing={2} columns={12}>
-        <Grid22 size={{ xs: 12, md: 6 }}>
+      <Grid2 container spacing={2} columns={12}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <SyledCard
             variant="outlined"
             onFocus={() => handleFocus(0)}
@@ -315,8 +315,8 @@ export default function MainContent() {
             </SyledCardContent>
             <Author authors={cardData[0].authors} />
           </SyledCard>
-        </Grid22>
-        <Grid22 size={{ xs: 12, md: 6 }}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <SyledCard
             variant="outlined"
             onFocus={() => handleFocus(1)}
@@ -347,8 +347,8 @@ export default function MainContent() {
             </SyledCardContent>
             <Author authors={cardData[1].authors} />
           </SyledCard>
-        </Grid22>
-        <Grid22 size={{ xs: 12, md: 4 }}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 4 }}>
           <SyledCard
             variant="outlined"
             onFocus={() => handleFocus(2)}
@@ -379,8 +379,8 @@ export default function MainContent() {
             </SyledCardContent>
             <Author authors={cardData[2].authors} />
           </SyledCard>
-        </Grid22>
-        <Grid22 size={{ xs: 12, md: 4 }}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 4 }}>
           <Box
             sx={{ display: 'flex', flexDirection: 'column', gap: 2, height: '100%' }}
           >
@@ -453,8 +453,8 @@ export default function MainContent() {
               <Author authors={cardData[4].authors} />
             </SyledCard>
           </Box>
-        </Grid22>
-        <Grid22 size={{ xs: 12, md: 4 }}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 4 }}>
           <SyledCard
             variant="outlined"
             onFocus={() => handleFocus(5)}
@@ -485,8 +485,8 @@ export default function MainContent() {
             </SyledCardContent>
             <Author authors={cardData[5].authors} />
           </SyledCard>
-        </Grid22>
-      </Grid22>
+        </Grid2>
+      </Grid2>
     </Box>
   );
 }

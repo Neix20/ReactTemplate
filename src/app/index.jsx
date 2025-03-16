@@ -1,10 +1,26 @@
 import * as React from 'react';
 
-import Blog from "./blog/Blog";
+// Provider
+// PersistGate
+// ThemeProvider
+
+// Change the 2 Below to Using Router Provider
+
+// BrowserRoute
+// Router
+
+import { RouterProvider } from 'react-router-dom';
+
+import router from "./routes";
+
+import ThemeCustomization from '@components/mantis/themes';
+import ScrollTop from '@components/mantis/ScrollTop';
 
 function Index() {
     return (
-        <Blog />
+        <ThemeCustomization>
+            <RouterProvider router={router} />
+        </ThemeCustomization>
     );
 }
 

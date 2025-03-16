@@ -11,7 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
+import ColorModeIconDropdown from '@components/material/theme/ColorModeIconDropdown';
 import Sitemark from './SitemarkIcon';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -19,13 +19,9 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   flexShrink: 0,
-  // borderRadius: `calc(${theme.shape.borderRadius}px + 8px)`,
-  // backdropFilter: 'blur(24px)',
   border: '1px solid',
   borderColor: (theme.vars || theme).palette.divider,
-  backgroundColor: theme.vars
-    ? `rgba(${theme.vars.palette.background.defaultChannel} / 0.4)`
-    : alpha(theme.palette.background.default, 0.4),
+  backgroundColor: `rgba(${theme.vars.palette.background.defaultChannel})`,
   padding: "12px 8px"
 }));
 
@@ -37,11 +33,7 @@ export default function AppAppBar() {
   };
 
   return (
-    <AppBar position="sticky" enableColorOnDark sx={{
-      boxShadow: 0,
-      bgcolor: 'transparent' 
-    }} >
-
+    <AppBar position="sticky" enableColorOnDark sx={{ boxShadow: 0 }} >
       <StyledToolbar variant="dense" disableGutters>
         <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
           {/* <Sitemark /> */}
