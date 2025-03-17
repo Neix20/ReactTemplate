@@ -1,38 +1,44 @@
-// project imports
-import getColors from '@utility/getColors';
-import getShadow from '@utility/getShadow';
-
-// ==============================|| OVERRIDES - INPUT BORDER & SHADOWS ||============================== //
-
-function getColor({ variant, theme }) {
-  const colors = getColors(theme, variant);
-  const { light } = colors;
-
-  const shadows = getShadow(theme, `${variant}`);
-
-  return {
-    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: light },
-    '&.Mui-focused': { boxShadow: shadows, '& .MuiOutlinedInput-notchedOutline': { border: '1px solid', borderColor: light } }
-  };
-}
-
-// ==============================|| OVERRIDES - OUTLINED INPUT ||============================== //
+import { alpha } from "@mui/system/colorManipulator";
 
 export default function OutlinedInput(theme) {
   return {
     MuiOutlinedInput: {
       styleOverrides: {
-        input: { padding: '10.5px 14px 10.5px 12px' },
-        notchedOutline: { borderColor: theme.palette.grey[300] },
-        root: { ...getColor({ variant: 'primary', theme }), '&.Mui-error': { ...getColor({ variant: 'error', theme }) } },
-        inputSizeSmall: { padding: '7.5px 8px 7.5px 12px' },
-        inputMultiline: { padding: 0 },
-        colorSecondary: getColor({ variant: 'secondary', theme }),
-        colorError: getColor({ variant: 'error', theme }),
-        colorWarning: getColor({ variant: 'warning', theme }),
-        colorInfo: getColor({ variant: 'info', theme }),
-        colorSuccess: getColor({ variant: 'success', theme })
-      }
-    }
+        input: {
+          padding: "10.5px 14px 10.5px 12px",
+        },
+        notchedOutline: {
+          borderColor: theme.palette.grey[300],
+        },
+        root: {
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: theme.palette.primary.light,
+          },
+          "&.Mui-focused": {
+            boxShadow: `0 0 0 2px ${alpha(theme.palette.primary.main, 0.2)}`,
+            "& .MuiOutlinedInput-notchedOutline": {
+              border: `1px solid ${theme.palette.primary.light}`,
+            },
+          },
+          "&.Mui-error": {
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.error.light,
+            },
+            "&.Mui-focused": {
+              boxShadow: `0 0 0 2px ${alpha(theme.palette.error.main, 0.2)}`,
+              "& .MuiOutlinedInput-notchedOutline": {
+                border: `1px solid ${theme.palette.error.light}`,
+              },
+            },
+          },
+        },
+        inputSizeSmall: {
+          padding: "7.5px 8px 7.5px 12px",
+        },
+        inputMultiline: {
+          padding: 0,
+        },
+      },
+    },
   };
 }

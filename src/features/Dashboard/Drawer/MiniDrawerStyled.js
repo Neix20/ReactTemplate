@@ -17,7 +17,7 @@ const openedMixin = (theme) => ({
 
   overflowX: 'hidden',
   boxShadow: 'none',
-  ...theme.applyStyles('dark', { boxShadow: theme.customShadows.z1 })
+  ...theme.applyStyles('dark', { boxShadow: theme.shadows.at(-1).z1 })
 });
 
 const closedMixin = (theme) => ({
@@ -29,7 +29,7 @@ const closedMixin = (theme) => ({
   overflowX: 'hidden',
   width: theme.spacing(7.5),
   borderRight: 'none',
-  boxShadow: theme.customShadows.z1
+  boxShadow: theme.shadows.at(-1).z1
 });
 
 // ==============================|| DRAWER - MINI STYLED ||============================== //

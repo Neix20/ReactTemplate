@@ -1,3 +1,6 @@
+
+// Mantis
+
 // ==============================|| CUSTOM FUNCTION - COLORS ||============================== //
 
 export default function getColors(theme, color) {

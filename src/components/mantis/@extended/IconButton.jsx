@@ -10,6 +10,7 @@ import getColors from '@utility/getColors';
 import getShadow from '@utility/getShadow';
 
 function getColorStyle({ variant, theme, color }) {
+  
   const colors = getColors(theme, color);
   const { lighter, light, dark, main, contrastText } = colors;
 

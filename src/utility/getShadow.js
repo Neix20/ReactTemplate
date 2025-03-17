@@ -1,30 +1,33 @@
+
+// Mantis
+
 // ==============================|| CUSTOM FUNCTION - COLOR SHADOWS ||============================== //
 
 export default function getShadow(theme, shadow) {
   switch (shadow) {
     case 'secondary':
-      return theme.customShadows.secondary;
+      return theme.shadows.secondary;
     case 'error':
-      return theme.customShadows.error;
+      return theme.shadows.error;
     case 'warning':
-      return theme.customShadows.warning;
+      return theme.shadows.warning;
     case 'info':
-      return theme.customShadows.info;
+      return theme.shadows.info;
     case 'success':
-      return theme.customShadows.success;
+      return theme.shadows.success;
     case 'primaryButton':
-      return theme.customShadows.primaryButton;
+      return theme.shadows.primaryButton;
     case 'secondaryButton':
-      return theme.customShadows.secondaryButton;
+      return theme.shadows.secondaryButton;
     case 'errorButton':
-      return theme.customShadows.errorButton;
+      return theme.shadows.errorButton;
     case 'warningButton':
-      return theme.customShadows.warningButton;
+      return theme.shadows.warningButton;
     case 'infoButton':
-      return theme.customShadows.infoButton;
+      return theme.shadows.infoButton;
     case 'successButton':
-      return theme.customShadows.successButton;
+      return theme.shadows.successButton;
     default:
-      return theme.customShadows.primary;
+      return theme.shadows.primary;
   }
 }

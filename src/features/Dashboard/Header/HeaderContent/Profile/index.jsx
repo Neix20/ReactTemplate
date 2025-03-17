@@ -19,7 +19,7 @@ import Box from '@mui/material/Box';
 // project imports
 import ProfileTab from './ProfileTab';
 import SettingTab from './SettingTab';
-import Avatar from '@components/mantis/@extended/Avatar';
+import Avatar from '@mui/material/Avatar';
 import MainCard from '@components/mantis/MainCard';
 import Transitions from '@components/mantis/@extended/Transitions';
 import IconButton from '@components/mantis/@extended/IconButton';
@@ -114,7 +114,7 @@ export default function Profile() {
       >
         {({ TransitionProps }) => (
           <Transitions type="grow" position="top-right" in={open} {...TransitionProps}>
-            <Paper sx={(theme) => ({ boxShadow: theme.customShadows.z1, width: 290, minWidth: 240, maxWidth: { xs: 250, md: 290 } })}>
+            <Paper sx={(theme) => ({ boxShadow: theme.shadows.at(-1).z1, width: 290, minWidth: 240, maxWidth: { xs: 250, md: 290 } })}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MainCard elevation={0} border={false} content={false}>
                   <CardContent sx={{ px: 2.5, pt: 3 }}>

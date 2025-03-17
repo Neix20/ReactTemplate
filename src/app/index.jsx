@@ -15,6 +15,8 @@ import router from "./routes";
 
 import ThemeCustomization from '@components/mantis/theme';
 
+import AppTheme from '@components/material/theme/AppTheme';
+
 function Index() {
     return (
         <ThemeCustomization>

@@ -95,7 +95,7 @@ export default function Notification() {
       >
         {({ TransitionProps }) => (
           <Transitions type="grow" position={downMD ? 'top' : 'top-right'} in={open} {...TransitionProps}>
-            <Paper sx={(theme) => ({ boxShadow: theme.customShadows.z1, width: '100%', minWidth: 285, maxWidth: { xs: 285, md: 420 } })}>
+            <Paper sx={(theme) => ({ boxShadow: theme.shadows.at(-1).z1, width: '100%', minWidth: 285, maxWidth: { xs: 285, md: 420 } })}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MainCard
                   title="Notification"
@@ -130,7 +130,7 @@ export default function Notification() {
                     <ListItem
                       component={ListItemButton}
                       divider
-                      selected={read > 0}
+                      // selected={read > 0}
                       secondaryAction={
                         <Typography variant="caption" noWrap>
                           3:00 AM
@@ -184,7 +184,7 @@ export default function Notification() {
                     <ListItem
                       component={ListItemButton}
                       divider
-                      selected={read > 0}
+                      // selected={read > 0}
                       secondaryAction={
                         <Typography variant="caption" noWrap>
                           2:45 PM

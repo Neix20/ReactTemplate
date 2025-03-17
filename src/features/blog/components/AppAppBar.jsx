@@ -11,8 +11,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import ColorModeIconDropdown from '@components/material/theme/ColorModeIconDropdown';
+
 import Sitemark from './SitemarkIcon';
+
+import ColorModeIconDropdown from '@components/material/theme/ColorModeIconDropdown';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',

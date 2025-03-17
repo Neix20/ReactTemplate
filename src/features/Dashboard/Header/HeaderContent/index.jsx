@@ -8,6 +8,8 @@ import Profile from './Profile';
 import Notification from './Notification';
 import MobileSection from './MobileSection';
 
+import ColorModeIconDropdown from '@components/material/theme/ColorModeIconDropdown';
+
 // ==============================|| HEADER - CONTENT ||============================== //
 
 export default function HeaderContent() {
@@ -17,6 +19,7 @@ export default function HeaderContent() {
     <>
       {!downLG && <Search />}
       {downLG && <Box sx={{ width: '100%', ml: 1 }} />}
+      <ColorModeIconDropdown />
       <Notification />
       {!downLG && <Profile />}
       {downLG && <MobileSection />}

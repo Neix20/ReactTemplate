@@ -1,24 +1,23 @@
-import PropTypes from 'prop-types';
-import { useMemo } from 'react';
+import PropTypes from "prop-types";
+import { useMemo } from "react";
+import CssBaseline from "@mui/material/CssBaseline";
+import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 
-// material-ui
-import StyledEngineProvider from '@mui/material/StyledEngineProvider';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-// project imports
-import Palette from './palette';
-import Typography from './typography';
-import CustomShadows from './shadows';
-import componentsOverride from './overrides';
+import { Typography } from "./typography";
+import componentsOverride from "./overrides";
 
-// ==============================|| DEFAULT THEME - MAIN ||============================== //
+import { inputsCustomizations } from '@components/material/theme/customizations/inputs';
+import { dataDisplayCustomizations } from '@components/material/theme/customizations/dataDisplay';
+import { feedbackCustomizations } from '@components/material/theme/customizations/feedback';
+import { navigationCustomizations } from '@components/material/theme/customizations/navigation';
+import { surfacesCustomizations } from '@components/material/theme/customizations/surfaces';
+import { colorSchemes, typography, shadows, shape } from '@components/material/theme/themePrimitives';
 
-export default function ThemeCustomization({ children }) {
-  const theme = Palette('light', 'default');
-
+function ThemeCustomization({ children }) {
+  const theme = createTheme({});
   const themeTypography = Typography(`'Public Sans', sans-serif`);
-  const themeCustomShadows = useMemo(() => CustomShadows(theme), [theme]);
 
   const themeOptions = useMemo(
     () => ({
@@ -28,35 +27,46 @@ export default function ThemeCustomization({ children }) {
           sm: 768,
           md: 1024,
           lg: 1266,
-          xl: 1440
-        }
+          xl: 1536,
+        },
       },
-      direction: 'ltr',
+      direction: "ltr",
       mixins: {
         toolbar: {
           minHeight: 60,
           paddingTop: 8,
-          paddingBottom: 8
-        }
+          paddingBottom: 8,
+        },
       },
-      palette: theme.palette,
-      customShadows: themeCustomShadows,
-      typography: themeTypography
+      cssVariables: {
+        colorSchemeSelector: 'data-mui-color-scheme',
+        cssVarPrefix: 'template',
+      },
+      colorSchemes,
+      shape,
+      shadows,
+      typography: themeTypography,
     }),
-    [theme, themeTypography, themeCustomShadows]
+    [theme, themeTypography]
   );
 
   const themes = createTheme(themeOptions);
   themes.components = componentsOverride(themes);
 
+  console.log(themes);
+
   return (
     <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={themes}>
-        <CssBaseline enableColorScheme />
+      <ThemeProvider theme={themes} disableTransitionOnChange>
+        <CssBaseline />
         {children}
       </ThemeProvider>
     </StyledEngineProvider>
   );
 }
 
-ThemeCustomization.propTypes = { children: PropTypes.node };
+export default ThemeCustomization;
+
+ThemeCustomization.propTypes = {
+  children: PropTypes.node,
+};

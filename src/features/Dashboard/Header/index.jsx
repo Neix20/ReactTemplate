@@ -66,16 +66,4 @@ export default function Header() {
   return (
     <AppBar {...appBar}>{mainHeader}</AppBar>
   )
-
-  return (
-    <>
-      {!downLG ? (
-        <AppBarStyled open={drawerOpen} {...appBar}>
-          {mainHeader}
-        </AppBarStyled>
-      ) : (
-        <AppBar {...appBar}>{mainHeader}</AppBar>
-      )}
-    </>
-  );
 }
