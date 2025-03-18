@@ -58,7 +58,7 @@ export default function Header() {
     sx: {
       borderBottom: '1px solid',
       borderBottomColor: 'divider',
-      zIndex: 2000,
+      zIndex: 1201,
       // width: { xs:1 '100%', lg: drawerOpen ? `calc(100% - ${DRAWER_WIDTH}px)` : `calc(100% - ${MINI_DRAWER_WIDTH}px)` }
     }
   };

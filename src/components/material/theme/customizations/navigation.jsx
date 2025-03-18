@@ -183,12 +183,12 @@ export const navigationCustomizations = {
   MuiTab: {
     styleOverrides: {
       root: ({ theme }) => ({
-        padding: '6px 8px',
-        marginBottom: '8px',
+        // padding: '6px 8px',
+        // marginBottom: '8px',
         textTransform: 'none',
         minWidth: 'fit-content',
-        minHeight: 'fit-content',
-        color: (theme.vars || theme).palette.text.secondary,
+        minHeight: 46,
+        color: (theme.vars || theme).palette.text.primary,
         borderRadius: (theme.vars || theme).shape.borderRadius,
         border: '1px solid',
         borderColor: 'transparent',

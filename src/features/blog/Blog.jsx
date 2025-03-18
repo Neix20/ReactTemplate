@@ -7,9 +7,23 @@ import MainContent from './components/MainContent';
 import Latest from './components/Latest';
 import Footer from './components/Footer';
 
+import { presetPalettes, presetDarkPalettes } from '@ant-design/colors';
+
 export default function Blog(props) {
+
+    return (
+        <>
+            <AppAppBar />
+            <Container maxWidth={"lg"} component={"main"} sx={{ display: 'flex', flexDirection: 'column', my: 2, gap: 4 }}>
+                <MainContent />
+                <Latest />
+            </Container>
+            <Footer />
+        </>
+    )
     // return (
-    //     <>
+    //     <AppTheme {...props}>
+    //         <CssBaseline enableColorScheme />
     //         <AppAppBar />
     //         <Container
     //             maxWidth={"lg"}
@@ -20,21 +34,6 @@ export default function Blog(props) {
     //             <Latest />
     //         </Container>
     //         <Footer />
-    //     </>
-    // )
-    return (
-        <AppTheme {...props}>
-            <CssBaseline enableColorScheme />
-            <AppAppBar />
-            <Container
-                maxWidth={"lg"}
-                component={"main"}
-                sx={{ display: 'flex', flexDirection: 'column', my: 2, gap: 4 }}
-            >
-                <MainContent />
-                <Latest />
-            </Container>
-            <Footer />
-        </AppTheme>
-    );
+    //     </AppTheme>
+    // );
 }

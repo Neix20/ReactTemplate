@@ -1,4 +1,4 @@
-import { alpha } from '@mui/material/styles';
+import { createTheme, alpha } from '@mui/material/styles';
 import { svgIconClasses } from '@mui/material/SvgIcon';
 import { typographyClasses } from '@mui/material/Typography';
 import { buttonBaseClasses } from '@mui/material/ButtonBase';
@@ -8,6 +8,55 @@ import { gray, red, green } from '../themePrimitives';
 
 /* eslint-disable import/prefer-default-export */
 export const dataDisplayCustomizations = {
+  MuiBadge: {
+    styleOverrides: {
+      standard: ({ theme }) => ({
+        minWidth: theme.spacing(2),
+        height: theme.spacing(2),
+        padding: theme.spacing(0.5),
+      }),
+    },
+  },
+  MuiInputLabel: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        color: theme.palette.grey[600],
+      }),
+      outlined: ({ theme }) => ({
+        lineHeight: "0.8em",
+        "&.MuiInputLabel-sizeSmall": {
+          lineHeight: "1em",
+        },
+        "&.MuiInputLabel-shrink": {
+          background: theme.palette.background.paper,
+          padding: "0 8px",
+          marginLeft: -6,
+          lineHeight: "1.4375em",
+        },
+      }),
+    },
+  },
+  MuiTableCell: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        fontSize: "0.875rem",
+        padding: 12,
+        borderColor: theme.palette.divider,
+      }),
+      head: {
+        fontWeight: 600,
+        paddingTop: 20,
+        paddingBottom: 20,
+      },
+    },
+  },
+  MuiTypography: {
+    styleOverrides: {
+      gutterBottom: {
+        marginBottom: 12,
+      },
+    },
+  },
   MuiList: {
     styleOverrides: {
       root: {
