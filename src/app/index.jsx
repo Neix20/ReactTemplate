@@ -13,9 +13,7 @@ import { RouterProvider } from 'react-router-dom';
 
 import router from "./routes";
 
-import ThemeCustomization from '@components/mantis/theme';
-
-import AppTheme from '@components/material/theme/AppTheme';
+import ThemeCustomization from '@components/theme';
 
 function Index() {
     return (

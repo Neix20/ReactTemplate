@@ -6,11 +6,11 @@ import MuiIconButton from '@mui/material/IconButton';
 import { alpha, styled } from '@mui/material/styles';
 
 // project imports
-import getColors from '@utility/getColors';
-import getShadow from '@utility/getShadow';
+import { getColors } from '@components/theme/utility';
+import { getShadow } from '@components/theme/utility';
 
 function getColorStyle({ variant, theme, color }) {
-  
+
   const colors = getColors(theme, color);
   const { lighter, light, dark, main, contrastText } = colors;
 

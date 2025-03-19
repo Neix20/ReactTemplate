@@ -8,14 +8,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Typography } from "./typography";
 import { Shadow } from "./shadows";
 import { ColorScheme } from "./colorscheme";
-import componentsOverride from "./overrides";
-
-import { inputsCustomizations } from '@components/material/theme/customizations/inputs';
-import { dataDisplayCustomizations } from '@components/material/theme/customizations/dataDisplay';
-import { feedbackCustomizations } from '@components/material/theme/customizations/feedback';
-import { navigationCustomizations } from '@components/material/theme/customizations/navigation';
-import { surfacesCustomizations } from '@components/material/theme/customizations/surfaces';
-import { colorSchemes, typography, shadows, shape } from '@components/material/theme/themePrimitives';
+import components from "./overrides";
 
 function ThemeCustomization({ children }) {
     const theme = createTheme({});
@@ -26,7 +19,7 @@ function ThemeCustomization({ children }) {
     const themeTypography = Typography(`'Public Sans', sans-serif`, theme);
     const themeShadow = Shadow(theme);
     const themeColorScheme = ColorScheme();
-    const themeComponent = componentsOverride(theme);
+    const themeComponent = components;
 
     const themeOptions = useMemo(() => ({
         breakpoints: {
@@ -49,16 +42,8 @@ function ThemeCustomization({ children }) {
         colorSchemes: themeColorScheme,
         shadows: themeShadow,
         typography: themeTypography,
-        // colorSchemes: colorSchemes,
-        components: {
-            ...inputsCustomizations,
-            ...dataDisplayCustomizations,
-            ...feedbackCustomizations,
-            ...navigationCustomizations,
-            ...surfacesCustomizations,
-        },
         components: themeComponent
-    }), [theme, themeTypography, themeShadow, themeColorScheme]);
+    }), [theme, themeTypography, themeShadow, themeColorScheme, themeComponent]);
 
     const themes = createTheme(themeOptions);
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-import AppTheme from '@components/material/theme/AppTheme';
 import AppAppBar from './components/AppAppBar';
 import MainContent from './components/MainContent';
 import Latest from './components/Latest';

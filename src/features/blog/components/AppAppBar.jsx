@@ -14,7 +14,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 import Sitemark from './SitemarkIcon';
 
-import ColorModeIconDropdown from '@components/material/theme/ColorModeIconDropdown';
+import { ColorModeIconDropdown } from '@components';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',

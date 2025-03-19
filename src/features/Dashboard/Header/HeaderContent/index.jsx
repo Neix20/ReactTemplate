@@ -8,7 +8,7 @@ import Profile from './Profile';
 import Notification from './Notification';
 import MobileSection from './MobileSection';
 
-import ColorModeIconDropdown from '@components/material/theme/ColorModeIconDropdown';
+import { ColorModeIconDropdown } from '@components';
 
 // ==============================|| HEADER - CONTENT ||============================== //
 
