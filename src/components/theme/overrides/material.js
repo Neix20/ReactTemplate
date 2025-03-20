@@ -65,7 +65,7 @@ const material = {
                             border: `1px solid ${theme.palette.grey[700]}`,
                             '&:hover': {
                                 backgroundImage: 'none',
-                                backgroundColor: theme.palette.grey[400],
+                                backgroundColor: theme.palette.grey[600],
                                 boxShadow: 'none',
                             },
                             '&:active': {
@@ -185,7 +185,7 @@ const material = {
                             ...theme.applyStyles('dark', {
                                 color: theme.palette.grey[50],
                                 '&:hover': {
-                                    backgroundColor: theme.palette.grey[700],
+                                    backgroundColor: theme.palette.grey[300],
                                 },
                                 '&:active': {
                                     backgroundColor: alpha(theme.palette.grey[700], 0.7),
