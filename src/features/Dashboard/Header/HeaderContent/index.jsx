@@ -21,8 +21,8 @@ export default function HeaderContent() {
       {downLG && <Box sx={{ width: '100%', ml: 1 }} />}
       <ColorModeIconDropdown />
       <Notification />
-      {!downLG && <Profile />}
-      {downLG && <MobileSection />}
+      <Profile />
+      {/* {downLG && <MobileSection />} */}
     </>
   );
 }
