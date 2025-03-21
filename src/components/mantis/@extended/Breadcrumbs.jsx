@@ -50,11 +50,6 @@ export default function Breadcrumbs({
 
   let customLocation = location.pathname;
 
-  // only used for component demo breadcrumbs
-  if (customLocation.includes('/@components/mantis-overview/breadcrumbs')) {
-    customLocation = '/apps/customer/customer-card';
-  }
-
   useEffect(() => {
     navigation?.items?.map((menu) => {
       if (menu.type && menu.type === 'group') {
@@ -150,7 +145,7 @@ export default function Breadcrumbs({
           </Grid>
           {card === false && divider !== false && <Divider sx={{ mt: 2 }} />}
         </MainCard>
-      );
+      )
     }
   }
 
@@ -233,6 +228,7 @@ export default function Breadcrumbs({
           {card === false && divider !== false && <Divider sx={{ mt: 2 }} />}
         </MainCard>
       );
+      
     }
   }
 

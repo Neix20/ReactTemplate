@@ -5,6 +5,10 @@ function Dashboard(props) {
   return (<></>)
 }
 
+function Sample(props) {
+  return (<></>)
+}
+
 const Routes = {
   path: '/Admin',
   element: <DashboardLayout />,
@@ -16,6 +20,10 @@ const Routes = {
     {
       path: '/Admin/Dashboard',
       element: <Dashboard />
+    },
+    {
+      path: '/Admin/Sample',
+      element: <Sample />
     }
   ]
 };

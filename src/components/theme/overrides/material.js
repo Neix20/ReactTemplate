@@ -68,7 +68,7 @@ const material = {
                                 backgroundColor: theme.palette.grey[600],
                                 boxShadow: 'none',
                             },
-                            '&:active': {
+                            '&.active': {
                                 backgroundColor: theme.palette.grey[800],
                             },
                             ...theme.applyStyles('dark', {
@@ -82,7 +82,7 @@ const material = {
                                     backgroundColor: theme.palette.grey[300],
                                     boxShadow: 'none',
                                 },
-                                '&:active': {
+                                '&.active': {
                                     backgroundColor: theme.palette.grey[400],
                                 },
                             }),
@@ -103,7 +103,7 @@ const material = {
                                 backgroundColor: brand[700],
                                 boxShadow: 'none',
                             },
-                            '&:active': {
+                            '&.active': {
                                 backgroundColor: brand[700],
                                 backgroundImage: 'none',
                             },
@@ -122,7 +122,7 @@ const material = {
                                 backgroundColor: theme.palette.grey[100],
                                 borderColor: theme.palette.grey[300],
                             },
-                            '&:active': {
+                            '&.active': {
                                 backgroundColor: theme.palette.grey[200],
                             },
                             ...theme.applyStyles('dark', {
@@ -132,7 +132,7 @@ const material = {
                                     backgroundColor: theme.palette.grey[900],
                                     borderColor: theme.palette.grey[600],
                                 },
-                                '&:active': {
+                                '&.active': {
                                     backgroundColor: theme.palette.grey[900],
                                 },
                             }),
@@ -152,7 +152,7 @@ const material = {
                                 backgroundColor: brand[100],
                                 borderColor: brand[400],
                             },
-                            '&:active': {
+                            '&.active': {
                                 backgroundColor: alpha(brand[200], 0.7),
                             },
                             ...theme.applyStyles('dark', {
@@ -164,7 +164,7 @@ const material = {
                                     borderColor: brand[700],
                                     backgroundColor: alpha(brand[900], 0.6),
                                 },
-                                '&:active': {
+                                '&.active': {
                                     backgroundColor: alpha(brand[900], 0.5),
                                 },
                             }),
@@ -179,7 +179,7 @@ const material = {
                             '&:hover': {
                                 backgroundColor: theme.palette.grey[100],
                             },
-                            '&:active': {
+                            '&.active': {
                                 backgroundColor: theme.palette.grey[200],
                             },
                             ...theme.applyStyles('dark', {
@@ -187,8 +187,9 @@ const material = {
                                 '&:hover': {
                                     backgroundColor: theme.palette.grey[300],
                                 },
-                                '&:active': {
-                                    backgroundColor: alpha(theme.palette.grey[700], 0.7),
+                                '&.active': {
+                                    backgroundColor: alpha(theme.palette.grey[100], 0.7),
+                                    color: "#000",
                                 },
                             }),
                         },
@@ -203,7 +204,7 @@ const material = {
                             '&:hover': {
                                 backgroundColor: alpha(brand[100], 0.5),
                             },
-                            '&:active': {
+                            '&.active': {
                                 backgroundColor: alpha(brand[200], 0.7),
                             },
                             ...theme.applyStyles('dark', {
@@ -211,7 +212,7 @@ const material = {
                                 '&:hover': {
                                     backgroundColor: alpha(brand[900], 0.5),
                                 },
-                                '&:active': {
+                                '&.active': {
                                     backgroundColor: alpha(brand[900], 0.3),
                                 },
                             }),
