@@ -16,7 +16,7 @@ import { handlerDrawerOpen, useGetMenuMaster } from '@hooks/mantis/menu';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
-export default function DashboardLayout() {
+export default function DashboardLayout(props) {
   
   const { pathname } = useLocation();
   const { menuMasterLoading } = useGetMenuMaster();
