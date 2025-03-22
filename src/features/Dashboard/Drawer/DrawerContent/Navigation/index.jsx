@@ -4,20 +4,18 @@ import Box from '@mui/material/Box';
 
 // project import
 import NavGroup from './NavGroup';
-import menuItem from '@components/mantis/menu-items';
 
 import { useContext } from "react";
+
+import { Context } from "@config";
 
 // ==============================|| DRAWER CONTENT - NAVIGATION ||============================== //
 
 function Index(props) {
 
-    const { menuItems = [] } = useContext();
+    const { menuItems = [] } = useContext(Context.Admin);
 
-    // todo: Prevent Prop Drilling
-    console.log(menuItems)
-
-    const navGroups = menuItem.items.map((item) => {
+    const navGroups = menuItems.map((item) => {
         switch (item.type) {
             case 'group':
                 return <NavGroup key={item.id} item={item} />;

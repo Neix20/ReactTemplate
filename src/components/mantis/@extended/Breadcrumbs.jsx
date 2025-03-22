@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 // material-ui
@@ -11,12 +11,11 @@ import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
 
 // project imports
 import MainCard from '@components/mantis/MainCard';
-import navigation from '@components/mantis/menu-items';
 
 // assets
-import ApartmentOutlined from '@ant-design/icons/ApartmentOutlined';
-import HomeOutlined from '@ant-design/icons/HomeOutlined';
-import HomeFilled from '@ant-design/icons/HomeFilled';
+import { Home as HomeFilled, HomeOutlined, ApartmentOutlined } from '@mui/icons-material';
+
+import { Context } from "@config";
 
 export default function Breadcrumbs({
   card = false,
@@ -37,6 +36,8 @@ export default function Breadcrumbs({
   const theme = useTheme();
   const location = useLocation();
 
+  const { menuItems = [] } = useContext(Context.Admin);
+
   const [main, setMain] = useState();
   const [item, setItem] = useState();
 
@@ -51,7 +52,7 @@ export default function Breadcrumbs({
   let customLocation = location.pathname;
 
   useEffect(() => {
-    navigation?.items?.map((menu) => {
+    menuItems?.map((menu) => {
       if (menu.type && menu.type === 'group') {
         if (menu?.url && menu.url === customLocation) {
           setMain(menu);
@@ -129,7 +130,7 @@ export default function Breadcrumbs({
           >
             <Grid>
               <MuiBreadcrumbs aria-label="breadcrumb" maxItems={maxItems || 8} separator={separatorIcon}>
-                <Typography component={Link} to="/" color="text.secondary" variant="h6" sx={{ textDecoration: 'none' }}>
+                <Typography component={Link} to="/Admin" color="text.secondary" variant="h6" sx={{ textDecoration: 'none' }}>
                   {icons && <HomeOutlined style={iconSX} />}
                   {icon && !icons && <HomeFilled style={{ ...iconSX, marginRight: 0 }} />}
                   {(!icon || icons) && 'Home'}
@@ -163,7 +164,7 @@ export default function Breadcrumbs({
 
     let tempContent = (
       <MuiBreadcrumbs aria-label="breadcrumb" maxItems={maxItems || 8} separator={separatorIcon}>
-        <Typography component={Link} to="/" color="text.secondary" variant="h6" sx={{ textDecoration: 'none' }}>
+        <Typography component={Link} to="/Admin" color="text.secondary" variant="h6" sx={{ textDecoration: 'none' }}>
           {icons && <HomeOutlined style={iconSX} />}
           {icon && !icons && <HomeFilled style={{ ...iconSX, marginRight: 0 }} />}
           {(!icon || icons) && 'Home'}

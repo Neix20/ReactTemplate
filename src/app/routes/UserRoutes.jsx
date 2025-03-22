@@ -4,6 +4,8 @@ import UserLayout from "@components/layout/User";
 import Blog from "@app/User/Blog";
 import Home from "@app/User/Home";
 
+import { Context } from "@config";
+
 const RouteItems = [
     {
         path: '/',
@@ -24,7 +26,9 @@ const RouteItems = [
 
 const Routes = {
     path: '/',
-    element: <UserLayout menuItems={RouteItems} />,
+    element: <Context.User.Provider value={{ menuItems: RouteItems.filter(x => x.show != false) }}>
+        <UserLayout />
+    </Context.User.Provider>,
     children: RouteItems
 };
 

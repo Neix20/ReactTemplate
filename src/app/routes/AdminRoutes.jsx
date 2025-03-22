@@ -1,43 +1,87 @@
 
 import DashboardLayout from "@features/Dashboard";
 
-import { createContext } from "react";
+import { Context } from "@config";
 
-const Context = createContext();
+import { Dashboard, Google, QuestionMark } from "@mui/icons-material";
 
-function Dashboard(props) {
-  return (<></>)
+function ADashboard(props) {
+    return (<></>)
 }
 
 function Sample(props) {
-  return (<></>)
+    return (<></>)
 }
 
 const menuItems = [
-  "Gay"
+    {
+        id: 'Admin',
+        show: false,
+        children: [
+            {
+                id: 'basic',
+                title: 'Basic',
+                type: 'item',
+                url: '/Admin',
+                element: <ADashboard />
+            }
+        ]
+    },
+    {
+        id: 'group-dashboard',
+        title: 'Navigation',
+        type: 'group',
+        children: [
+            {
+                id: 'dashboard',
+                title: 'Dashboard',
+                type: 'item',
+                url: '/Admin/Dashboard',
+                icon: Dashboard,
+                breadcrumbs: true,
+                element: <ADashboard />
+            }
+        ]
+    },
+    {
+        id: 'support',
+        title: 'Support',
+        type: 'group',
+        children: [
+            {
+                id: 'sample-page',
+                title: 'Sample Page',
+                type: 'item',
+                url: '/Admin/Sample',
+                icon: Google,
+                element: <Sample />
+            },
+            {
+                id: 'documentation',
+                title: 'Documentation',
+                type: 'item',
+                url: 'https://codedthemes.gitbook.io/mantis/',
+                icon: QuestionMark,
+                external: true,
+                target: true
+            }
+        ]
+    }
 ]
 
 const Routes = {
-  path: '/Admin',
-  element: (
-    <Context.Provider value={[menuItems]}>
-    <DashboardLayout />
-  </Context.Provider>
-  ),
-  children: [
-    {
-      path: '/Admin',
-      element: <Dashboard />
-    },
-    {
-      path: '/Admin/Dashboard',
-      element: <Dashboard />
-    },
-    {
-      path: '/Admin/Sample',
-      element: <Sample />
-    }
-  ]
+    path: '/Admin',
+    element: (
+        <Context.Admin.Provider value={{ 
+            menuItems: menuItems.filter(x => x.show != false)
+        }}>
+            <DashboardLayout />
+        </Context.Admin.Provider>
+    ),
+    children: menuItems
+        .reduce((a, b) => [...a, ...b.children], [])
+        .filter(x => ("element" in x))
+        .map(x => ({ ...x, path: x.url}))
 };
 
 export default Routes;

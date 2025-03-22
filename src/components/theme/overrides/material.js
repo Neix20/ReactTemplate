@@ -59,13 +59,12 @@ const material = {
                         },
                         style: {
                             color: 'white',
-                            backgroundColor: theme.palette.grey[900],
-                            backgroundImage: `linear-gradient(to bottom, ${theme.palette.grey[700]}, ${theme.palette.grey[800]})`,
+                            backgroundColor: theme.palette.grey[700],
                             boxShadow: `inset 0 1px 0 ${theme.palette.grey[600]}, inset 0 -1px 0 1px hsl(220, 0%, 0%)`,
                             border: `1px solid ${theme.palette.grey[700]}`,
                             '&:hover': {
                                 backgroundImage: 'none',
-                                backgroundColor: theme.palette.grey[600],
+                                backgroundColor: theme.palette.grey[500],
                                 boxShadow: 'none',
                             },
                             '&.active': {
@@ -74,16 +73,17 @@ const material = {
                             ...theme.applyStyles('dark', {
                                 color: 'black',
                                 backgroundColor: theme.palette.grey[50],
-                                backgroundImage: `linear-gradient(to bottom, ${theme.palette.grey[100]}, ${theme.palette.grey[50]})`,
                                 boxShadow: 'inset 0 -1px 0  hsl(220, 30%, 80%)',
                                 border: `1px solid ${theme.palette.grey[50]}`,
                                 '&:hover': {
                                     backgroundImage: 'none',
-                                    backgroundColor: theme.palette.grey[300],
+                                    backgroundColor: theme.palette.grey[700],
+                                    color: theme.palette.grey[50],
                                     boxShadow: 'none',
                                 },
                                 '&.active': {
-                                    backgroundColor: theme.palette.grey[400],
+                                    backgroundColor: theme.palette.grey[700],
+                                    color: theme.palette.grey[50]
                                 },
                             }),
                         },
@@ -177,19 +177,18 @@ const material = {
                         style: {
                             color: theme.palette.grey[600],
                             '&:hover': {
-                                backgroundColor: theme.palette.grey[100],
+                                backgroundColor: theme.palette.grey[50],
                             },
                             '&.active': {
-                                backgroundColor: theme.palette.grey[200],
+                                backgroundColor: theme.palette.grey[100],
                             },
                             ...theme.applyStyles('dark', {
-                                color: theme.palette.grey[50],
+                                color: theme.palette.grey[100],
                                 '&:hover': {
-                                    backgroundColor: theme.palette.grey[300],
+                                    backgroundColor: theme.palette.grey[600],
                                 },
                                 '&.active': {
-                                    backgroundColor: alpha(theme.palette.grey[100], 0.7),
-                                    color: "#000",
+                                    backgroundColor: theme.palette.grey[600],
                                 },
                             }),
                         },

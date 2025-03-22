@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import { AppBar, Toolbar, Box, Button, IconButton, Divider, Drawer, MenuItem } from "@mui/material";
 import { Menu as MenuIcon, CloseRounded as CloseRoundedIcon } from "@mui/icons-material";
@@ -7,6 +7,8 @@ import { styled } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 
 import { ColorModeIconDropdown } from '@components';
+
+import { Context } from "@config";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     display: 'flex',
@@ -21,9 +23,9 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 function Index(props) {
 
-    const { menuItems = [] } = props;
-
     const [open, setOpen] = useState(false);
+
+    const { menuItems = [] } = useContext(Context.User);
 
     const toggleDrawer = () => {
         setOpen((_open) => !_open);
@@ -44,8 +46,8 @@ function Index(props) {
             <StyledToolbar variant="dense" disableGutters>
                 <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
                     {/* <Sitemark /> */}
-                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        {menuItems.map(renderItem)}
+                    <Box sx={{ display: { xs: 'none', md: 'flex', gap: 3 } }}>
+                        {menuItems?.map(renderItem)}
                     </Box>
                 </Box>
                 <Box
@@ -86,7 +88,7 @@ function Index(props) {
                                     <CloseRoundedIcon />
                                 </IconButton>
                             </Box>
-                            {menuItems.map(renderMenuItem)}
+                            {menuItems?.map(renderMenuItem)}
                             <Divider sx={{ my: 3 }} />
                             <MenuItem>
                                 <Button color="primary" variant="contained" fullWidth>
