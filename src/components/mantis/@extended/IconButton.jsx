@@ -21,7 +21,7 @@ function getColorStyle({ variant, theme, color }) {
     '&::after': {
       boxShadow: `0 0 6px 6px ${alpha(main, 0.9)}`
     },
-    '&:active::after': {
+    '&.active::after': {
       boxShadow: `0 0 0 0 ${alpha(main, 0.9)}`
     },
     '&:focus-visible': {

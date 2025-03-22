@@ -1,18 +1,10 @@
 import * as React from 'react';
-import { alpha, styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
-import MenuItem from '@mui/material/MenuItem';
-import Drawer from '@mui/material/Drawer';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-import Sitemark from './SitemarkIcon';
+import { AppBar, Toolbar, Box, Button, IconButton, Divider, Drawer, MenuItem } from "@mui/material";
+import { MenuIcon, CloseRoundedIcon } from "@mui/icons-material";
+import { styled } from '@mui/material/styles';
+
+import { NavLink } from 'react-router-dom';
 
 import { ColorModeIconDropdown } from '@components';
 
@@ -27,7 +19,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   padding: "12px 8px"
 }));
 
-export default function AppAppBar() {
+function Index() {
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -35,13 +27,13 @@ export default function AppAppBar() {
   };
 
   return (
-    <AppBar position="sticky" enableColorOnDark sx={{ boxShadow: 0 }} >
+    <AppBar position="sticky" enableColorOnDark sx={{ boxShadow: 0 }}>
       <StyledToolbar variant="dense" disableGutters>
         <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
           {/* <Sitemark /> */}
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Button variant="text" color="info" size="small">
-              Features
+            <Button size="small" to={"/Blog"} component={NavLink}>
+              Blog
             </Button>
             <Button variant="text" color="info" size="small">
               Testimonials
@@ -67,9 +59,6 @@ export default function AppAppBar() {
             alignItems: 'center',
           }}
         >
-          <Button color="primary" variant="text" size="small">
-            Sign in
-          </Button>
           <Button color="primary" variant="contained" size="small">
             Sign up
           </Button>
@@ -113,11 +102,6 @@ export default function AppAppBar() {
                   Sign up
                 </Button>
               </MenuItem>
-              <MenuItem>
-                <Button color="primary" variant="outlined" fullWidth>
-                  Sign in
-                </Button>
-              </MenuItem>
             </Box>
           </Drawer>
         </Box>
@@ -125,3 +109,5 @@ export default function AppAppBar() {
     </AppBar>
   );
 }
+
+export default Index;
