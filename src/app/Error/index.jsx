@@ -1,30 +1,17 @@
 
 import { useState, useEffect, useRef } from "react";
-import { Typography, Container, Box } from "@mui/material";
+import { Typography, Container, Box, Grid2 } from "@mui/material";
 
 import { GlobalStyles, SampleData } from "@config";
 
 function Index(props) {
 
     return (
-        <Container maxWidth={"lg"} sx={{ py: { xs: 4, sm: 12, md: 14 } }}>
-            <Box sx={{
-                height: { xs: 200, sm: 150 },
-                width: { xs: 100, sm: 200 },
-            }}>
+        <Container maxWidth={"lg"} sx={{ py: { xs: 12, sm: 16, md: 20 } }}>
+            <Grid2 container justifyContent={"center"}>
                 <Typography variant={"h2"}>404 Error Broken Link</Typography>
-            </Box>
+            </Grid2>
         </Container>
-    )
-
-    return (
-        <Grid2 container alignItems={"center"} justifyContent={"center"}
-            sx={{
-                width: "100%",
-                height: "100%"
-            }}>
-            <Typography variant={"h2"}>404 Error Broken Link</Typography>
-        </Grid2>
     )
 }
 

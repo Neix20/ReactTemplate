@@ -51,7 +51,7 @@ export default function DashboardLayout(props) {
       <Header />
       <Drawer />
 
-      <BxContainer component="main" sx={{ width: 'calc(100% - 260px)', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
+      <Box component="main" sx={{ width: 'calc(100% - 260px)', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
         <Toolbar sx={{ mt: 'inherit' }} />
         <Box
           sx={{
@@ -66,7 +66,7 @@ export default function DashboardLayout(props) {
           <Outlet />
           <Footer />
         </Box>
-      </BxContainer>
+      </Box>
     </Box>
   );
 }
