@@ -1,11 +1,13 @@
-import { CssBaseline, Stack } from "@mui/material";
+import { CssBaseline, Container } from "@mui/material";
 import { styled } from '@mui/material/styles';
 
 import AppBar from "./components/AppBar.jsx";
+import Footer from "./components/Footer";
 
 import { Outlet } from "react-router-dom";
 
-const Container = styled(Stack)(({ theme }) => ({
+
+const BpContainer = styled(Container)(({ theme }) => ({
     minHeight: '100%',
     '&::before': {
         content: '""',
@@ -27,9 +29,10 @@ function Layout(props) {
             <CssBaseline enableColorScheme />
             {/* AppBar */}
             <AppBar />
-            <Container>
+            <BpContainer>
                 <Outlet />
-            </Container>
+                <Footer />
+            </BpContainer>
         </>
     )
 }

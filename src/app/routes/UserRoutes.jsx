@@ -4,6 +4,8 @@ import UserLayout from "@components/layout/User";
 import Blog from "@app/User/Blog";
 import Home from "@app/User/Home";
 
+import Error from "@app/Error";
+
 import { Context } from "@config";
 
 const menuItems = [
@@ -27,6 +29,14 @@ const menuItems = [
         url: '/Blog',
         type: "item",
         element: <Blog />
+    },
+    {
+        id: "error",
+        title: "error",
+        url: '*',
+        show: false,
+        type: "item",
+        element: <Error />
     }
 ]
 
