@@ -5,13 +5,8 @@ import { Context } from "@config";
 
 import { Dashboard, Google, QuestionMark } from "@mui/icons-material";
 
-function ADashboard(props) {
-    return (<></>)
-}
-
-function Sample(props) {
-    return (<></>)
-}
+import ADashboard from "@app/Admin/Dashboard";
+import ASample from "@app/Admin/Sample";
 
 const menuItems = [
     {
@@ -38,7 +33,6 @@ const menuItems = [
                 type: 'item',
                 url: '/Admin/Dashboard',
                 icon: Dashboard,
-                breadcrumbs: true,
                 element: <ADashboard />
             }
         ]
@@ -54,7 +48,7 @@ const menuItems = [
                 type: 'item',
                 url: '/Admin/Sample',
                 icon: Google,
-                element: <Sample />
+                element: <ASample />
             },
             {
                 id: 'documentation',
@@ -72,9 +66,7 @@ const menuItems = [
 const Routes = {
     path: '/Admin',
     element: (
-        <Context.Admin.Provider value={{ 
-            menuItems: menuItems.filter(x => x.show != false)
-        }}>
+        <Context.Admin.Provider value={{ menuItems: menuItems.filter(x => x.show != false) }}>
             <DashboardLayout />
         </Context.Admin.Provider>
     ),

@@ -6,30 +6,59 @@ import Home from "@app/User/Home";
 
 import { Context } from "@config";
 
-const RouteItems = [
+const menuItems = [
     {
-        path: '/',
+        url: '/',
         show: false,
         element: <Home />
     },
     {
-        path: '/Home',
-        text: "home",
+        title: "home",
+        type: "item",
+        url: '/Home',
         element: <Home />
     },
     {
-        path: '/Blog',
-        text: "blog",
+        title: "blog",
+        url: '/Blog',
+        type: "item",
         element: <Blog />
-    }
+    },
+    {
+        title: "about",
+        type: "group",
+        children: [
+            {
+                title: "Test2",
+                url: "/Test1",
+                element: <Blog />
+            },
+            {
+                title: "Test4",
+                url: "/Test3",
+                element: <Blog />
+            },
+            {
+                title: "Test6",
+                url: "/Test5",
+                element: <Blog />
+            },
+            {
+                title: "Test8",
+                url: "/Test7",
+                element: <Blog />
+            },
+        ]
+    },
 ]
 
 const Routes = {
-    path: '/',
-    element: <Context.User.Provider value={{ menuItems: RouteItems.filter(x => x.show != false) }}>
-        <UserLayout />
-    </Context.User.Provider>,
-    children: RouteItems
+    element: (
+        <Context.User.Provider value={{ menuItems: menuItems.filter(x => x.show != false) }}>
+            <UserLayout />
+        </Context.User.Provider>
+    ),
+    children: menuItems.map(x => ({ ...x, path: x.url, children: x.children?.map(y => ({ ...y, path: y.url}))}))
 };
 
 export default Routes;

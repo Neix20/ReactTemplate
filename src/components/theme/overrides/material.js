@@ -7,7 +7,6 @@ import { chipClasses } from '@mui/material/Chip';
 import { svgIconClasses } from '@mui/material/SvgIcon';
 
 import { green, red } from "@mui/material/colors";
-
 const material = {
     MuiButtonBase: {
         defaultProps: {
@@ -180,7 +179,7 @@ const material = {
                                 backgroundColor: theme.palette.grey[50],
                             },
                             '&.active': {
-                                backgroundColor: theme.palette.grey[100],
+                                backgroundColor: alpha(theme.palette.grey[100], 0.5),
                             },
                             ...theme.applyStyles('dark', {
                                 color: theme.palette.grey[100],
@@ -188,7 +187,7 @@ const material = {
                                     backgroundColor: theme.palette.grey[600],
                                 },
                                 '&.active': {
-                                    backgroundColor: theme.palette.grey[600],
+                                    backgroundColor: alpha(theme.palette.grey[600], 0.3),
                                 },
                             }),
                         },

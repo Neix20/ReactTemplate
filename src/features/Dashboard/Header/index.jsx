@@ -11,7 +11,7 @@ import HeaderContent from './HeaderContent';
 import IconButton from '@components/mantis/@extended/IconButton';
 
 import { handlerDrawerOpen, useGetMenuMaster } from '@hooks/mantis/menu';
-// import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from '@config';
+import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from '@config';
 
 // @assets
 import MenuFoldOutlined from '@ant-design/icons/MenuFoldOutlined';
@@ -57,8 +57,8 @@ export default function Header() {
     sx: {
       borderBottom: '1px solid',
       borderBottomColor: 'divider',
-      zIndex: 1201,
-      // width: { xs:1 '100%', lg: drawerOpen ? `calc(100% - ${DRAWER_WIDTH}px)` : `calc(100% - ${MINI_DRAWER_WIDTH}px)` }
+      zIndex: 101,
+      // width: { xs: '100%', lg: drawerOpen ? `calc(100% - ${DRAWER_WIDTH}px)` : `calc(100% - ${MINI_DRAWER_WIDTH}px)` }
     }
   };
 

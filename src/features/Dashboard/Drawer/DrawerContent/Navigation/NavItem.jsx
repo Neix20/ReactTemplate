@@ -98,13 +98,7 @@ export default function NavItem({ item, level, isParents = false, setSelectedID 
                   alignItems: 'center',
                   justifyContent: 'center',
                   '&:hover': { bgcolor: 'secondary.lighter', ...theme.applyStyles('dark', { bgcolor: 'secondary.light' }) }
-                }),
-                ...(!drawerOpen &&
-                  isSelected && {
-                    bgcolor: 'primary.lighter',
-                    ...theme.applyStyles('dark', { bgcolor: 'primary.900' }),
-                    '&:hover': { bgcolor: 'primary.lighter', ...theme.applyStyles('dark', { bgcolor: 'primary.darker' }) }
-                  })
+                })
               })}
             >
               {itemIcon}

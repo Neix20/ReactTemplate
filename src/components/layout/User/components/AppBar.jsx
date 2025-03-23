@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 
-import { AppBar, Toolbar, Box, Button, IconButton, Divider, Drawer, MenuItem } from "@mui/material";
-import { Menu as MenuIcon, CloseRounded as CloseRoundedIcon } from "@mui/icons-material";
+import { AppBar, Toolbar, Box, Button, IconButton, Divider, Drawer, Menu, MenuItem, Grid2 } from "@mui/material";
+import { Menu as MenuIcon, CloseRounded as CloseRoundedIcon, ArrowDropDown } from "@mui/icons-material";
 import { styled } from '@mui/material/styles';
 
 import { NavLink } from 'react-router-dom';
@@ -9,6 +9,8 @@ import { NavLink } from 'react-router-dom';
 import { ColorModeIconDropdown } from '@components';
 
 import { Context } from "@config";
+
+import { clsUtility } from "@utility";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     display: 'flex',
@@ -21,6 +23,9 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     padding: "12px 8px"
 }));
 
+import MenuGroupItem from "./MenuGroup/Item";
+import MenuGroupMobile from "./MenuGroup/Mobile";
+
 function Index(props) {
 
     const [open, setOpen] = useState(false);
@@ -31,15 +36,35 @@ function Index(props) {
         setOpen((_open) => !_open);
     };
 
-    const renderItem = ({ path = "", text = "" }, ind) => (
-        <Button key={`user-btn-${ind}`} component={NavLink} to={path} variant={"text"} color={"info"} size={"small"}>
-            {text}
-        </Button>
-    )
+    const renderItem = ({ url = "", title = "", type = "", children = [] }, ind) => {
+        switch (type) {
+            case "group":
+                return (
+                    <MenuGroupItem menuItems={children}>{clsUtility.capitalize(title)}</MenuGroupItem>
+                )
+            case "item":
+            default:
+                return (
+                    <Button key={`user-btn-${ind}`} component={NavLink} to={url} variant={"text"} color={"info"} size={"small"}>
+                        {clsUtility.capitalize(title)}
+                    </Button>
+                )
+        }
+    }
 
-    const renderMenuItem = ({ path = "", text = "" }, ind) => (
-        <MenuItem key={`user-mobile-btn-${ind}`} onClick={toggleDrawer} component={NavLink} to={path}>{text}</MenuItem>
-    )
+    const renderMenuItem = ({ url = "", title = "", type = "", children = [] }, ind) => {
+        switch (type) {
+            case "group":
+                return (
+                    <MenuGroupMobile menuItems={children}>{clsUtility.capitalize(title)}</MenuGroupMobile>
+                )
+            case "item":
+            default:
+                return (
+                    <MenuItem key={`user-mobile-btn-${ind}`} onClick={toggleDrawer} component={NavLink} to={url}>{clsUtility.capitalize(title)}</MenuItem>
+                )
+        }
+    }
 
     return (
         <AppBar position="sticky" enableColorOnDark sx={{ boxShadow: 0 }}>
@@ -57,8 +82,8 @@ function Index(props) {
                         alignItems: 'center',
                     }}
                 >
-                    <Button color="primary" variant="contained" size="small">
-                        Sign up
+                    <Button color="primary" variant="contained" size="small" component={NavLink} to={"/SignIn"}>
+                        Sign In
                     </Button>
                     <ColorModeIconDropdown />
                 </Box>
@@ -74,25 +99,21 @@ function Index(props) {
                         PaperProps={{
                             sx: {
                                 top: 'var(--template-frame-height, 0px)',
-                            },
+                            }
                         }}
                     >
                         <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    justifyContent: 'flex-end',
-                                }}
-                            >
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                                 <IconButton onClick={toggleDrawer}>
                                     <CloseRoundedIcon />
                                 </IconButton>
                             </Box>
                             {menuItems?.map(renderMenuItem)}
+
                             <Divider sx={{ my: 3 }} />
                             <MenuItem>
-                                <Button color="primary" variant="contained" fullWidth>
-                                    Sign up
+                                <Button color="primary" variant="contained" fullWidth component={NavLink} to={"/SignIn"}>
+                                    Sign In
                                 </Button>
                             </MenuItem>
                         </Box>

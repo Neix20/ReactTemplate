@@ -7,28 +7,11 @@ import { alpha, styled } from '@mui/material/styles';
 
 // project imports
 import { getColors } from '@components/theme/utility';
-import { getShadow } from '@components/theme/utility';
 
 function getColorStyle({ variant, theme, color }) {
 
   const colors = getColors(theme, color);
   const { lighter, light, dark, main, contrastText } = colors;
-
-  const buttonShadow = `${color}Button`;
-  const shadows = getShadow(theme, buttonShadow);
-
-  const commonShadow = {
-    '&::after': {
-      boxShadow: `0 0 6px 6px ${alpha(main, 0.9)}`
-    },
-    '&.active::after': {
-      boxShadow: `0 0 0 0 ${alpha(main, 0.9)}`
-    },
-    '&:focus-visible': {
-      outline: `2px solid ${dark}`,
-      outlineOffset: 2
-    }
-  };
 
   switch (variant) {
     case 'contained':
@@ -38,7 +21,6 @@ function getColorStyle({ variant, theme, color }) {
         '&:hover': {
           background: dark
         },
-        ...commonShadow
       };
     case 'light':
       return {
@@ -47,18 +29,15 @@ function getColorStyle({ variant, theme, color }) {
         '&:hover': {
           background: alpha(light, 0.5)
         },
-        ...commonShadow
       };
     case 'shadow':
       return {
-        boxShadow: shadows,
         color: contrastText,
         background: main,
         '&:hover': {
           boxShadow: 'none',
           background: dark
         },
-        ...commonShadow
       };
     case 'outlined':
       return {
@@ -67,7 +46,6 @@ function getColorStyle({ variant, theme, color }) {
           color: dark,
           borderColor: dark
         },
-        ...commonShadow
       };
     case 'dashed':
       return {
@@ -76,7 +54,6 @@ function getColorStyle({ variant, theme, color }) {
           color: dark,
           borderColor: dark
         },
-        ...commonShadow
       };
     case 'text':
     default:
@@ -85,7 +62,6 @@ function getColorStyle({ variant, theme, color }) {
           color: dark,
           background: color === 'secondary' ? alpha(light, 0.1) : lighter
         },
-        ...commonShadow
       };
   }
 }

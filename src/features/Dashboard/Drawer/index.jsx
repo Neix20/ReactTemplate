@@ -28,7 +28,7 @@ export default function MainDrawer({ window }) {
   const drawerHeader = useMemo(() => <DrawerHeader open={drawerOpen} />, [drawerOpen]);
 
   return (
-    <Box component="nav" sx={{ flexShrink: { md: 0 }, zIndex: 1200 }} aria-label="mailbox folders">
+    <Box component="nav" sx={{ flexShrink: { md: 0 }, zIndex: 100 }} aria-label="mailbox folders">
       {!downLG ? (
         <MiniDrawerStyled variant="permanent" open={drawerOpen}>
           {drawerHeader}
@@ -37,7 +37,6 @@ export default function MainDrawer({ window }) {
       ) : (
         <Drawer
           container={container}
-          variant="temporary"
           open={drawerOpen}
           onClose={() => handlerDrawerOpen(!drawerOpen)}
           ModalProps={{ keepMounted: true }}
