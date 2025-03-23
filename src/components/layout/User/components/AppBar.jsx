@@ -75,7 +75,7 @@ function Index(props) {
                 </Box>
                 <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
                     <Button color="primary" variant="contained" size="small" component={NavLink} to={"/SignIn"}>
-                        Sign In
+                        Login
                     </Button>
                     <ColorModeIconDropdown />
                 </Box>
@@ -104,7 +104,7 @@ function Index(props) {
                             <Divider sx={{ my: 3 }} />
                             <MenuItem>
                                 <Button color="primary" variant="contained" fullWidth component={NavLink} to={"/SignIn"}>
-                                    Sign In
+                                    Login
                                 </Button>
                             </MenuItem>
                         </Box>
