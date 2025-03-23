@@ -26,15 +26,13 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 import MenuGroupItem from "./MenuGroup/Item";
 import MenuGroupMobile from "./MenuGroup/Mobile";
 
+import { useToggle } from "@hooks";
+
 function Index(props) {
-
-    const [open, setOpen] = useState(false);
-
+    
     const { menuItems = [] } = useContext(Context.User);
 
-    const toggleDrawer = () => {
-        setOpen((_open) => !_open);
-    };
+    const { flag: open, toggle: toggleDrawer} = useToggle(false);
 
     const renderItem = ({ url = "", title = "", type = "", children = [] }, ind) => {
         switch (type) {
@@ -56,7 +54,7 @@ function Index(props) {
         switch (type) {
             case "group":
                 return (
-                    <MenuGroupMobile menuItems={children}>{clsUtility.capitalize(title)}</MenuGroupMobile>
+                    <MenuGroupMobile menuItems={children} callback={toggleDrawer}>{clsUtility.capitalize(title)}</MenuGroupMobile>
                 )
             case "item":
             default:
@@ -75,13 +73,7 @@ function Index(props) {
                         {menuItems?.map(renderItem)}
                     </Box>
                 </Box>
-                <Box
-                    sx={{
-                        display: { xs: 'none', md: 'flex' },
-                        gap: 1,
-                        alignItems: 'center',
-                    }}
-                >
+                <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
                     <Button color="primary" variant="contained" size="small" component={NavLink} to={"/SignIn"}>
                         Sign In
                     </Button>
@@ -109,7 +101,6 @@ function Index(props) {
                                 </IconButton>
                             </Box>
                             {menuItems?.map(renderMenuItem)}
-
                             <Divider sx={{ my: 3 }} />
                             <MenuItem>
                                 <Button color="primary" variant="contained" fullWidth component={NavLink} to={"/SignIn"}>

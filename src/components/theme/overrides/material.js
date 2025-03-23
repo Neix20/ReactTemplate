@@ -187,7 +187,7 @@ const material = {
                                     backgroundColor: theme.palette.grey[600],
                                 },
                                 '&.active': {
-                                    backgroundColor: alpha(theme.palette.grey[600], 0.3),
+                                    backgroundColor: alpha(theme.palette.grey[600], 0.5),
                                 },
                             }),
                         },

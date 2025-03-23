@@ -12,7 +12,7 @@ import { useToggle } from "@hooks";
 
 function Index(props) {
 
-    const { children = (<></>), menuItems = [] } = props;
+    const { children = (<></>), menuItems = [], callback = () => {} } = props;
 
     const navigate = useNavigate();
     // const theme = useTheme();
@@ -24,7 +24,8 @@ function Index(props) {
         const lbl = clsUtility.capitalize(title);
 
         const onClick = () => {
-            navigate(url)
+            navigate(url);
+            callback();
         }
 
         return (

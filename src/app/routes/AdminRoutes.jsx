@@ -1,5 +1,5 @@
 
-import DashboardLayout from "@features/Dashboard";
+import DashboardLayout from "@components/layout/Admin";
 
 import { Context } from "@config";
 
