@@ -16,6 +16,8 @@ import { styled } from '@mui/material/styles';
 import ForgotPassword from './components/ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './components/CustomIcons';
 
+import { ColorModeIconDropdown } from '@components';
+
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -115,6 +117,7 @@ export default function SignIn(props) {
     <>
 
       <CssBaseline enableColorScheme />
+      <ColorModeIconDropdown sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
       <SignInContainer direction="column" justifyContent="space-between">
         {/* <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} /> */}
         <Card variant="outlined">

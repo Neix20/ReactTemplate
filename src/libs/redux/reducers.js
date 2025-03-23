@@ -1,6 +1,5 @@
 
 const initialState = {
-    theme: "bootstrapTheme",
     user: {
         isLogin: false,
         lastSession: ""
@@ -10,11 +9,6 @@ const initialState = {
 
 function setReducer(state = initialState, action = {}) {
     switch (action.type) {
-        case "SET_THEME":
-            return {
-                ...state,
-                theme: action.theme,
-            };
         case "SET_USER":
             return {
                 ...state,

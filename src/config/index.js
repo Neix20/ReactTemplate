@@ -7,9 +7,6 @@ import GlobalStyles from "./cssStyles.js";
 
 import * as Context from "./context/index.js";
 
-export const DRAWER_WIDTH = 260;
-export const MINI_DRAWER_WIDTH = 60;
-
 export {
     clsConst,
     Context,

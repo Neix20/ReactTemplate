@@ -11,7 +11,9 @@ import HeaderContent from './HeaderContent';
 import IconButton from '@components/mantis/@extended/IconButton';
 
 import { handlerDrawerOpen, useGetMenuMaster } from '@hooks/mantis/menu';
-import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from '@config';
+
+import { clsConst } from '@config';
+const { DRAWER_WIDTH, MINI_DRAWER_WIDTH } = clsConst;
 
 // @assets
 import MenuFoldOutlined from '@ant-design/icons/MenuFoldOutlined';
@@ -20,6 +22,7 @@ import MenuUnfoldOutlined from '@ant-design/icons/MenuUnfoldOutlined';
 // ==============================|| MAIN LAYOUT - HEADER ||============================== //
 
 export default function Header() {
+  
   const downLG = useMediaQuery((theme) => theme.breakpoints.down('lg'));
 
   const { menuMaster } = useGetMenuMaster();

@@ -12,13 +12,18 @@ const COGNITO_CONFIG = {
 
 const TIME_FOR_AUTH = 60 * 60 * 1000;
 
+const DRAWER_WIDTH = 260;
+const MINI_DRAWER_WIDTH = 60;
+
 const data = {
     APP_VERSION,
     APP_NAME,
     API_URL,
     LOG_URL,
     COGNITO_CONFIG,
-    TIME_FOR_AUTH
+    TIME_FOR_AUTH,
+    DRAWER_WIDTH,
+    MINI_DRAWER_WIDTH
 }
 
 export default data;

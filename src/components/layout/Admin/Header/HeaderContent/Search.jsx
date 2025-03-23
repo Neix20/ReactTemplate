@@ -6,12 +6,14 @@ import Box from '@mui/material/Box';
 
 // @assets
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
+import { BpLogo } from "@components";
 
 // ==============================|| HEADER CONTENT - SEARCH ||============================== //
 
 export default function Search() {
   return (
-    <Box sx={{ width: '100%', ml: { xs: 0, md: 1 } }}>
+    <Box sx={{ width: '100%', ml: { xs: 0, md: 1 }, display: "flex", alignItems: "center", gap: 1 }}>
+      <BpLogo />
       {/* <FormControl sx={{ width: { xs: '100%', md: 224 } }}>
         <OutlinedInput
           size="small"

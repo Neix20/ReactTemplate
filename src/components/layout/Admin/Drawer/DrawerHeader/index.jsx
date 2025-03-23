@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 // project imports
 import DrawerHeaderStyled from './DrawerHeaderStyled';
+import { BpLogo } from '@components';
 
 // ==============================|| DRAWER HEADER ||============================== //
 
@@ -15,7 +16,7 @@ export default function DrawerHeader({ open }) {
         paddingLeft: open ? '24px' : 0
       }}
     >
-      {/* <Logo isIcon={!open} sx={{ width: open ? 'auto' : 35, height: 35 }} /> */}
+      <BpLogo />
     </DrawerHeaderStyled>
   );
 }

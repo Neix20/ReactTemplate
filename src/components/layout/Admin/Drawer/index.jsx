@@ -10,7 +10,9 @@ import DrawerHeader from './DrawerHeader';
 import DrawerContent from './DrawerContent';
 import MiniDrawerStyled from './MiniDrawerStyled';
 
-import { DRAWER_WIDTH } from '@config';
+import { clsConst } from '@config';
+const { DRAWER_WIDTH } = clsConst;
+
 import { handlerDrawerOpen, useGetMenuMaster } from '@hooks/mantis/menu';
 
 // ==============================|| MAIN LAYOUT - DRAWER ||============================== //

@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import { ColorModeSelect } from '@components';
+import { ColorModeSelect, ColorModeIconDropdown } from '@components';
 import { GoogleIcon, FacebookIcon } from './components/CustomIcons';
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -121,7 +121,7 @@ export default function SignUp(props) {
     <>
 
       <CssBaseline enableColorScheme />
-      <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
+      <ColorModeIconDropdown sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
       <SignUpContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
           <Typography
@@ -217,7 +217,7 @@ export default function SignUp(props) {
             <Typography sx={{ textAlign: 'center' }}>
               Already have an account?{' '}
               <Link
-                href="/material-ui/getting-started/templates/sign-in/"
+                href="/SignIn"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >

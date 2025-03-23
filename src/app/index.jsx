@@ -6,10 +6,18 @@ import router from "./routes";
 
 import ThemeCustomization from '@components/theme';
 
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "@libs/redux";
+
 function Index() {
     return (
         <ThemeCustomization>
-            <RouterProvider router={router} />
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <RouterProvider router={router} />
+                </PersistGate>
+            </Provider>
         </ThemeCustomization>
     );
 }

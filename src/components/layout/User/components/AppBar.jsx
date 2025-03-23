@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 
 import { NavLink } from 'react-router-dom';
 
-import { ColorModeIconDropdown } from '@components';
+import { ColorModeIconDropdown, BpLogo } from '@components';
 
 import { Context } from "@config";
 
@@ -67,8 +67,8 @@ function Index(props) {
     return (
         <AppBar position="sticky" enableColorOnDark sx={{ boxShadow: 0 }}>
             <StyledToolbar variant="dense" disableGutters>
-                <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
-                    {/* <Sitemark /> */}
+                <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0, gap: 1 }}>
+                    <BpLogo />
                     <Box sx={{ display: { xs: 'none', md: 'flex', gap: 3 } }}>
                         {menuItems?.map(renderItem)}
                     </Box>

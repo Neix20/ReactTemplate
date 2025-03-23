@@ -1,11 +1,4 @@
 
-const onChangeTheme = (theme) => {
-    return {
-        type: "SET_THEME",
-        theme: theme,
-    }
-};
-
 const onChangeUser = (user) => {
     return {
         type: "SET_USER",
@@ -14,6 +7,5 @@ const onChangeUser = (user) => {
 };
 
 export {
-    onChangeTheme,
     onChangeUser
 }

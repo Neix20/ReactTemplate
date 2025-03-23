@@ -3,7 +3,8 @@ import { styled } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 
 // project imports
-import { DRAWER_WIDTH } from '@config';
+import { clsConst } from '@config';
+const { DRAWER_WIDTH } = clsConst;
 
 const openedMixin = (theme) => ({
   width: DRAWER_WIDTH,

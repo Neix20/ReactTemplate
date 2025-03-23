@@ -13,8 +13,25 @@ import Footer from './Footer';
 import Loader from '@components/mantis/Loader';
 import Breadcrumbs from '@components/mantis/@extended/Breadcrumbs';
 import { handlerDrawerOpen, useGetMenuMaster } from '@hooks/mantis/menu';
+import { styled } from '@mui/material';
 
 // ==============================|| MAIN LAYOUT ||============================== //
+
+const BxContainer = styled(Box)(({ theme }) => ({
+  minHeight: '100%',
+  '&::before': {
+      content: '""',
+      display: 'block',
+      position: "absolute",
+      zIndex: -1,
+      inset: 0,
+      backgroundImage: 'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
+      backgroundRepeat: 'no-repeat',
+      ...theme.applyStyles('dark', {
+          backgroundImage: 'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+      }),
+  },
+}));
 
 export default function DashboardLayout(props) {
   
@@ -34,7 +51,7 @@ export default function DashboardLayout(props) {
       <Header />
       <Drawer />
 
-      <Box component="main" sx={{ width: 'calc(100% - 260px)', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
+      <BxContainer component="main" sx={{ width: 'calc(100% - 260px)', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
         <Toolbar sx={{ mt: 'inherit' }} />
         <Box
           sx={{
@@ -42,14 +59,14 @@ export default function DashboardLayout(props) {
             position: 'relative',
             minHeight: 'calc(100vh - 110px)',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
           }}
         >
           <Breadcrumbs />
           <Outlet />
           <Footer />
         </Box>
-      </Box>
+      </BxContainer>
     </Box>
   );
 }
