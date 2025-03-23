@@ -14,6 +14,8 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/X';
 // import SitemarkIcon from './SitemarkIcon';
 
+import { Grid2 } from '@mui/material';
+
 import { BpLogo } from "@components";
 
 function Copyright() {
@@ -38,8 +40,8 @@ export default function Footer() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: { xs: 4, sm: 8 },
-          py: { xs: 8, sm: 10 },
+          gap: { xs: 4, sm: 4 },
+          py: { xs: 4, sm: 4 },
           textAlign: { sm: 'center', md: 'left' },
         }}
       >
@@ -59,51 +61,54 @@ export default function Footer() {
               minWidth: { xs: '100%', sm: '60%' },
             }}
           >
-            <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
+            <Box sx={{ width: { xs: '100%', sm: '60%' }, display: "flex", flexDirection: "column", gap: 2 }}>
               {/* <SitemarkIcon /> */}
               <BpLogo />
-              <Typography
-                variant="body2"
-                gutterBottom
-                sx={{ fontWeight: 600, mt: 2 }}
-              >
-                Join the newsletter
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
-                Subscribe for weekly updates. No spams ever!
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ fontWeight: 600 }}
-              >
-                Email
-              </Typography>
-              <Stack direction="row" spacing={1} useFlexGap>
-                <TextField
-                  id="email-newsletter"
-                  hiddenLabel
-                  size="small"
-                  variant="outlined"
-                  fullWidth
-                  aria-label="Enter your email address"
-                  placeholder="Your email address"
-                  slotProps={{
-                    htmlInput: {
-                      autoComplete: 'off',
-                      'aria-label': 'Enter your email address',
-                    },
-                  }}
-                  sx={{ width: '250px' }}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  sx={{ flexShrink: 0 }}
+              <Grid2 container flexDirection={"column"} spacing={1}>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 600 }}
                 >
-                  Subscribe
-                </Button>
-              </Stack>
+                  Join the newsletter
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  Subscribe for weekly updates. No spams ever!
+                </Typography>
+              </Grid2>
+              <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 600 }}
+                >
+                  Email
+                </Typography>
+                <Stack direction="row" spacing={1} useFlexGap>
+                  <TextField
+                    id="email-newsletter"
+                    hiddenLabel
+                    size="small"
+                    variant="outlined"
+                    fullWidth
+                    aria-label="Enter your email address"
+                    placeholder="Your email address"
+                    slotProps={{
+                      htmlInput: {
+                        autoComplete: 'off',
+                        'aria-label': 'Enter your email address',
+                      },
+                    }}
+                    sx={{ width: '250px' }}
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    sx={{ flexShrink: 0 }}
+                  >
+                    Subscribe
+                  </Button>
+                </Stack>
+              </Box>
             </Box>
           </Box>
           <Box
@@ -176,25 +181,28 @@ export default function Footer() {
         <Box
           sx={{
             display: 'flex',
+            alignItems: "center",
             justifyContent: 'space-between',
-            pt: { xs: 4, sm: 8 },
+            pt: { xs: 4, sm: 4 },
             width: '100%',
             borderTop: '1px solid',
             borderColor: 'divider',
           }}
         >
-          <div>
-            <Link color="text.secondary" variant="body2" href="#">
-              Privacy Policy
-            </Link>
-            <Typography sx={{ display: 'inline', mx: 0.5, opacity: 0.5 }}>
-              &nbsp;•&nbsp;
-            </Typography>
-            <Link color="text.secondary" variant="body2" href="#">
-              Terms of Service
-            </Link>
+          <Box>
+            <div>
+              <Link color="text.secondary" variant="body2" href="#">
+                Privacy Policy
+              </Link>
+              <Typography sx={{ display: 'inline', mx: 0.5, opacity: 0.5 }}>
+                &nbsp;•&nbsp;
+              </Typography>
+              <Link color="text.secondary" variant="body2" href="#">
+                Terms of Service
+              </Link>
             <Copyright />
-          </div>
+            </div>
+          </Box>
           <Stack
             direction="row"
             spacing={1}
