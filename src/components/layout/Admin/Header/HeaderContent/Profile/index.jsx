@@ -135,7 +135,7 @@ export default function Profile() {
                       </Grid>
                       <Grid>
                         <Tooltip title="Logout">
-                          <IconButton size="large" sx={{ color: 'text.primary' }}>
+                          <IconButton size="large" sx={{ color: 'text.primary' }} onClick={() => {}}>
                             <LogoutOutlined />
                           </IconButton>
                         </Tooltip>

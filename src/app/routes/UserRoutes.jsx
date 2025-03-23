@@ -1,7 +1,8 @@
 
 import UserLayout from "@components/layout/User";
 
-import Blog from "@app/User/Blog";
+import Incident from "@app/User/Incident";
+import Report from "@app/User/Report";
 import Home from "@app/User/Home";
 
 import Error from "@app/Error";
@@ -24,11 +25,18 @@ const menuItems = [
         element: <Home />
     },
     {
-        id: "blog",
-        title: "blog",
-        url: '/Blog',
+        id: "incident",
+        title: "incident",
+        url: '/Incident',
         type: "item",
-        element: <Blog />
+        element: <Incident />
+    },
+    {
+        id: "report",
+        title: "report",
+        url: '/Report',
+        type: "item",
+        element: <Report />
     },
     {
         id: "error",

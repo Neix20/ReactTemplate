@@ -5,9 +5,10 @@ import { Container, Grid2, Typography, Button, Paper, IconButton, Box, Tooltip }
 function Index(props) {
     return (
         <Container maxWidth={"lg"}>
-            <Grid2 container>
-                <Typography>This is Home Page</Typography>
-            </Grid2>
+            {/* Title */}
+            {/* Search System */}
+            {/* Info System */}
+            {/* Graph */}
         </Container>
     )
 }

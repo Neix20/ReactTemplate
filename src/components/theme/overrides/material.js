@@ -63,7 +63,8 @@ const material = {
                             border: `1px solid ${theme.palette.grey[700]}`,
                             '&:hover': {
                                 backgroundImage: 'none',
-                                backgroundColor: theme.palette.grey[500],
+                                backgroundColor: "#FFF",
+                                color: "#000",
                                 boxShadow: 'none',
                             },
                             '&.active': {

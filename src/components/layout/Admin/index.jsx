@@ -53,7 +53,7 @@ export default function DashboardLayout(props) {
 
       <Box component="main" sx={{ width: 'calc(100% - 260px)', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
         <Toolbar sx={{ mt: 'inherit' }} />
-        <Box
+        <BxContainer
           sx={{
             ...{ px: { xs: 0, sm: 2 } },
             position: 'relative',
@@ -65,7 +65,7 @@ export default function DashboardLayout(props) {
           {/* <Breadcrumbs /> */}
           <Outlet />
           <Footer />
-        </Box>
+        </BxContainer>
       </Box>
     </Box>
   );
