@@ -62,7 +62,7 @@ export default function DashboardLayout(props) {
             flexDirection: 'column',
           }}
         >
-          <Breadcrumbs />
+          {/* <Breadcrumbs /> */}
           <Outlet />
           <Footer />
         </Box>

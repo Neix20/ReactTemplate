@@ -5,7 +5,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test": "vitest",
+  "test:watch": "vitest --watch",
+  "test:coverage": "vitest --coverage"
   },
   "dependencies": {
     "@ant-design/icons": "^5.6.1",
@@ -39,7 +44,22 @@
     "uuid": "^11.0.5"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^3",
+    "@storybook/addon-essentials": "^8.6.8",
+    "@storybook/addon-onboarding": "^8.6.8",
+    "@storybook/blocks": "^8.6.8",
+    "@storybook/experimental-addon-test": "^8.6.8",
+    "@storybook/react": "^8.6.8",
+    "@storybook/react-vite": "^8.6.8",
+    "@storybook/test": "^8.6.8",
+    "@testing-library/react": "^16.2.0",
     "@vitejs/plugin-react": "latest",
-    "vite": "latest"
+    "@vitest/browser": "^3.0.9",
+    "@vitest/coverage-v8": "^3.0.9",
+    "jsdom": "^26.0.0",
+    "playwright": "^1.51.1",
+    "storybook": "^8.6.8",
+    "vite": "latest",
+    "vitest": "^3.0.9"
   }
 }
