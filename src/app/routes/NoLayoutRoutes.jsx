@@ -4,6 +4,8 @@
 import SignIn from "@features/sign-in/SignIn";
 import SignUp from "@features/sign-up/SignUp";
 
+import Debug from "@app/Debug";
+
 const menuItems = [
     {
         path: '/SignIn',
@@ -12,6 +14,10 @@ const menuItems = [
     {
         path: '/SignUp',
         element: <SignUp />
+    },
+    {
+        path: '/Debug',
+        element: <Debug />
     }
 ]
 

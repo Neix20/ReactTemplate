@@ -134,14 +134,6 @@ function Index(props) {
             flexDirection: 'column', 
             gap: '1rem' 
         },
-        tblPaper: {
-            ...GlobalStyles.main
-        },
-        tblContainer: {
-            height: "80%" 
-        },
-        tblTop: { alignItems: "center" },
-        tblBottom: { height: 80 },
         ...sx
     }
 
@@ -212,10 +204,6 @@ function Index(props) {
         renderCreateRowDialogContent: renderCreateModal,
         renderEditRowDialogContent: renderUpdateModal,
         renderTopToolbarCustomActions: ({ table }) => (<AddItemBtn table={table} onPreAdd={onPreAdd} />),
-        muiTablePaperProps: { sx: style.tblPaper },
-        muiTopToolbarProps: { sx: style.tblTop },
-        muiTableContainerProps: { sx: style.tblContainer },
-        muiBottomToolbarProps: { sx: style.tblBottom },
         initialState: { 
             columnOrder: fieldOrder, // Must Be Full, Otherwise Wont Work
             columnVisibility: hideField.reduce((res, item) => { res[item] = false; return res; }, {})

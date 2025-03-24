@@ -26,7 +26,7 @@ function Index(props) {
             <Grid2 container alignItems={"center"} justifyContent={"center"} sx={GlobalStyles.main}>
                 <Grid2 container flexDirection={"column"} spacing={2} alignItems={"center"} sx={style.main}>
                     <Lottie options={animOption} />
-                    <Typography variant={"h3"}>Loading ...</Typography>
+                    <Typography variant={"h2"}>Loading ...</Typography>
                 </Grid2>
             </Grid2>
         </Modal>

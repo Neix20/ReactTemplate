@@ -3,10 +3,10 @@ import DashboardLayout from "@components/layout/Admin";
 
 import { Context } from "@config";
 
-import { Dashboard, Google, QuestionMark } from "@mui/icons-material";
+import { Dashboard, Google, QuestionMark, Article } from "@mui/icons-material";
 
-import ADashboard from "@app/Admin/Dashboard";
-import ASample from "@app/Admin/Sample";
+import Incident from "@app/Admin/Incident";
+// import ASample from "@app/Admin/Sample";
 
 const menuItems = [
     {
@@ -18,49 +18,49 @@ const menuItems = [
                 title: 'Basic',
                 type: 'item',
                 url: '/Admin',
-                element: <ADashboard />
+                element: <Incident />
             }
         ]
     },
     {
-        id: 'group-dashboard',
-        title: 'Navigation',
+        id: 'group-incident',
+        title: 'Incident',
         type: 'group',
         children: [
             {
-                id: 'dashboard',
-                title: 'Dashboard',
+                id: 'admin-incident',
+                title: 'incident',
                 type: 'item',
-                url: '/Admin/Dashboard',
-                icon: Dashboard,
-                element: <ADashboard />
+                url: '/Admin/Incident',
+                icon: Article,
+                element: <Incident />
             }
         ]
     },
-    {
-        id: 'support',
-        title: 'Support',
-        type: 'group',
-        children: [
-            {
-                id: 'sample-page',
-                title: 'Sample Page',
-                type: 'item',
-                url: '/Admin/Sample',
-                icon: Google,
-                element: <ASample />
-            },
-            {
-                id: 'documentation',
-                title: 'Documentation',
-                type: 'item',
-                url: 'https://codedthemes.gitbook.io/mantis/',
-                icon: QuestionMark,
-                external: true,
-                target: true
-            }
-        ]
-    }
+    // {
+    //     id: 'support',
+    //     title: 'Support',
+    //     type: 'group',
+    //     children: [
+    //         {
+    //             id: 'sample-page',
+    //             title: 'Sample Page',
+    //             type: 'item',
+    //             url: '/Admin/Sample',
+    //             icon: Google,
+    //             element: <ASample />
+    //         },
+    //         {
+    //             id: 'documentation',
+    //             title: 'Documentation',
+    //             type: 'item',
+    //             url: 'https://codedthemes.gitbook.io/mantis/',
+    //             icon: QuestionMark,
+    //             external: true,
+    //             target: true
+    //         }
+    //     ]
+    // }
 ]
 
 const Routes = {

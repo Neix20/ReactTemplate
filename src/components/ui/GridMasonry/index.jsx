@@ -16,7 +16,7 @@ function partitionStrategy(arr, sz, ind) {
 function Index(props) {
 
     const { children = [], numCols = 3 } = props;
-    const { strategy = "filter", sx = {} } = props;
+    const { strategy = "filter" } = props;
 
     const sz = Math.floor(12 / numCols);
     const groupSz = Math.ceil(children.length / numCols);
@@ -28,27 +28,17 @@ function Index(props) {
 
     const strategyMethod = strategyDict[strategy];
 
-    const style = {
-        container: {
-            minWidth: 300,
-            marginX: 2,
-        },
-        col: {
-        },
-        ...sx
-    }
-
     // Render Column Then Space
     const renderCol = (_, ind) => (
         <Grid2 size={sz}>
-            <Grid2 container spacing={2} sx={style.col}>
+            <Grid2 container spacing={2}>
                 {strategyMethod(children, ind)}
             </Grid2>
         </Grid2>
     )
 
     return (
-        <Grid2 container spacing={2} sx={style.container}>
+        <Grid2 container spacing={2}>
             {Array.from({ length: numCols }).map(renderCol)}
         </Grid2>
     )

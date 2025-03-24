@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 
-import { Container, Grid2, Typography, Button, Paper, IconButton, Box, Tooltip, Collapse, TextField, Link as MuLink } from "@mui/material";
+import { Container, Grid2, Typography, Button, Paper, Box, Tooltip, Collapse, TextField, Link as MuLink } from "@mui/material";
 
 import { Images } from "@config";
 import { clsUtility } from "@utility";
 
+// #region Components
 function TitleSection() {
     return (
         <Grid2 container flexDirection={"column"} alignItems={"center"} justifyContent={"center"}>
@@ -36,10 +37,13 @@ const template = {
 
 function SearchSection(props) {
     
-    const { flag, open, close } = useToggle();
-
     const { flag: loadingFlag, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
+    
+    const { flag, open, close } = useToggle();
     const { flag: isScammer, open: setScammerTrue, close: setScammerFalse } = useToggle();
+
+    // const flag = true;
+    // const isScammer = true;
 
     const { key, data, field, updateDataHtml, resetData } = useForm(template.Scammer);
 
@@ -71,12 +75,12 @@ function SearchSection(props) {
 
     const style = {
         success: {
-            background: "linear-gradient(to bottom right, #A8E6CF, #2E7D32)",
+            background: "radial-gradient(ellipse at 50% 50%, #98c390, #2E7D32)",
             minHeight: { xs: 0, sm: 100 },
             p: 2,
         },
         error: {
-            background: "linear-gradient(to right, #FFCDD2, #B71C1C)",
+            background: "radial-gradient(ellipse at 50% 50%, #d96b76, #B71C1C)",
             minHeight: { xs: 0, sm: 100 },
             p: 2
         },
@@ -90,10 +94,9 @@ function SearchSection(props) {
     }
 
     const SearchSuccess = () => {
-
         return (
             <Grid2 container alignItems={"center"} justifyContent={"center"} sx={style.success}>
-                <Typography variant={"h2"} sx={{ fontSize: { xs: "1.25rem", sm: "2.25rem" } }}>Everything's Good! This person doesn't exists in our database!</Typography>
+                <Typography variant={"h2"} sx={{ fontSize: { xs: "1rem", sm: "2.25rem" } }}>This person doesn't exists in our database!</Typography>
             </Grid2>
         )
     }
@@ -120,7 +123,6 @@ function SearchSection(props) {
             <BpLoading loading={loadingFlag} />
             <Grid2 container alignItems={"center"} justifyContent={"center"}
                 sx={{
-                    gap: { xs: 2, sm: 5 },
                     borderTop: '1px solid',
                     borderColor: 'divider',
                     pt: { xs: 4, sm: 4 }
@@ -148,7 +150,6 @@ function SearchSection(props) {
     )
 }
 
-
 function AnalyticSection() {
 
     const data = [
@@ -169,7 +170,7 @@ function AnalyticSection() {
     const renderItem = ({ name, value }) => (
         <Grid2 container spacing={1} flexDirection={"column"} alignItems={"center"}>
             <Typography variant={"h2"} sx={{ fontSize: { xs: "1.5rem", sm: "2rem" } }}>{value}</Typography>
-            <Typography variant={"body"} color={"text.secondary"} sx={{ fontSize: { xs: "0.75rem", sm: "1rem" } }}>{clsUtility.capitalize(name)}</Typography>
+            <Typography variant={"body"} color={"text.secondary"} sx={{ fontSize: { xs: "0.6rem", sm: "1rem" } }}>{clsUtility.capitalize(name)}</Typography>
         </Grid2>
     )
 
@@ -240,6 +241,7 @@ function ChartSection() {
         </Paper>
     )
 }
+// #endregion
 
 function Index(props) {
     return (
@@ -251,9 +253,7 @@ function Index(props) {
             pb: { xs: 4, sm: 4 }
         }}>
             <TitleSection />
-            {/* Search System */}
             <SearchSection />
-
             <AnalyticSection />
             <SourceSection />
             <ChartSection />

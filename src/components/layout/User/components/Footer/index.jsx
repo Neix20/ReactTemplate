@@ -34,7 +34,6 @@ function Copyright() {
 export default function Footer() {
   return (
     <React.Fragment>
-      <Divider />
       <Container
         sx={{
           display: 'flex',
