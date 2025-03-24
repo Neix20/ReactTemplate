@@ -29,6 +29,8 @@ import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 
+import { alpha, styled } from '@mui/material/styles';
+
 // import avatar1 from '@assets/images/users/avatar-1.png';
 
 import { Images } from "@config";

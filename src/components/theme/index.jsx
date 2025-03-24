@@ -40,7 +40,7 @@ function ThemeCustomization({ children }) {
             borderRadius: 8,
         },
         colorSchemes: themeColorScheme,
-        shadows: themeShadow,
+        // shadows: themeShadow,
         typography: themeTypography,
         components: themeComponent
     }), [theme, themeTypography, themeShadow, themeColorScheme, themeComponent]);

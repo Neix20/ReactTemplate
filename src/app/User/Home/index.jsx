@@ -250,7 +250,6 @@ function Index(props) {
             flexDirection: "column",
             gap: { xs: 5, sm: 5 },
             pt: { xs: 4, sm: 8 },
-            pb: { xs: 4, sm: 4 }
         }}>
             <TitleSection />
             <SearchSection />

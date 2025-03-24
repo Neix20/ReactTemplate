@@ -27,7 +27,7 @@ const Index = (props = {}) => {
         value, 
         required, 
         variant, 
-        label, 
+        // label, 
         placeholder,
         sx: style.txtInput,
         slotProps: {

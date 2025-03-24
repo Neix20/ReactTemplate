@@ -27,7 +27,7 @@ function Index(props) {
             display: "flex",
             flexDirection: "column",
             gap: { xs: 4, sm: 4 },
-            py: { xs: 4, sm: 4 }
+            pt: { xs: 4, sm: 4 }
         }}>
             {/* Title Section */}
             <Grid2>
@@ -44,7 +44,6 @@ function Index(props) {
                     <InfoCard key={item.PK || index} {...item} />
                 ))}
             </BpGridMasonry>
-
         </Container>
 
     )
