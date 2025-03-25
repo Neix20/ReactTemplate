@@ -1,59 +1,15 @@
 import { useState } from "react";
-import { Grid2, Typography, Button, Paper, IconButton, Box, Tooltip, Modal } from "@mui/material";
-import { ArrowBack, ArrowForward, Close, Cancel } from "@mui/icons-material";
+import { Grid2, Modal, Box, IconButton, Typography } from "@mui/material";
+import { ArrowBack, ArrowForward, Close } from "@mui/icons-material";
 
 import { useToggle } from "@hooks";
 
-function ImagePreviewItem(props) {
-
-    const { imgName = "", imgData = "" } = props;
-    const { onDelete = () => { }, onClick = () => {} } = props;
-
-    const style = {
-        btn: {
-            transition: "transform 0.2s",
-            cursor: "pointer",
-            "&:hover": {
-                transform: "scale(1.05)",
-            },
-            "&:hover .remove-btn": { opacity: 1 },
-            position: "relative",
-        },
-        img: {
-            width: "128px",
-            height: "128px",
-            objectFit: "cover",
-            borderRadius: "8px",
-        },
-        closeIcon: {
-            position: "absolute",
-            top: -12,
-            right: -16,
-            backgroundColor: "rgba(0,0,0,0.6)",
-            color: "white",
-            opacity: 0,
-            transition: "opacity 0.2s",
-            "&:hover": { backgroundColor: "rgba(0,0,0,0.8)" },
-        }
-    }
-
-    return (
-        <Box sx={style.btn}>
-            <Box component={"img"} onClick={onClick}
-                src={imgData} alt={imgName} sx={style.img} />
-            <IconButton size="small" className="remove-btn"
-                onClick={onDelete}
-                sx={style.closeIcon}>
-                <Cancel fontSize="small" />
-            </IconButton>
-        </Box>
-    )
-}
+import ImagePreview from "./components/ImagePreview";
+import ImagePreviewWithDelete from "./components/ImagePreviewWithDelete";
 
 function Index(props) {
 
-    const { images = [], onDelete = () => {} } = props;
-
+    const { images = [], onDelete = () => { }, readOnly = false } = props;
 
     if (images.length == 0) {
         return (<></>)
@@ -81,18 +37,9 @@ function Index(props) {
     };
 
     const style = {
-        icon: {
-            width: 40,
-            height: 40,
-            borderRadius: 2,
-            transition: "transform 0.2s",
-            cursor: "pointer",
-            "&:hover": {
-                transform: "scale(1.05)",
-            },
-        },
         modalImg: {
-            width: 320,
+            width: { xs: "280px", sm: "320px" },
+            height: "100%",
             objectFit: "contain"
         },
         closeBtn: {
@@ -129,16 +76,25 @@ function Index(props) {
         }
     }
 
-    const renderImg = (item, ind) => {
+    const renderImg = (img, ind) => {
 
         const onImgClick = () => handleOpen(ind);
         const onImgDelete = () => onDelete(ind);
 
+        if (readOnly) {
+            return (
+                <ImagePreview key={`img-asset-${ind}`}
+                    onClick={onImgClick}
+                    {...img} />
+            );
+        }
+
         return (
-            <ImagePreviewItem key={`img-asset-${ind}`}
-                onDelete={onImgDelete}
+            <ImagePreviewWithDelete key={`img-asset-${ind}`}
                 onClick={onImgClick}
-                {...item} />
+                onDelete={onImgDelete}
+                {...img}
+            />
         )
     }
 
@@ -176,7 +132,7 @@ function Index(props) {
                     </IconButton>
 
                     {/* Image Display */}
-                    <Box component="img" src={images[curIdx].imgData} alt={images[curIdx].name} sx={style.modalImg} />
+                    <Box component="img" src={images[curIdx].imgData} alt={images[curIdx].imgName} sx={style.modalImg} />
 
                     {/* Navigation Controls */}
                     <Grid2 container

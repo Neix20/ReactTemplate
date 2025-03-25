@@ -9,7 +9,7 @@ import { GlobalStyles, Images } from "@config";
 
 function Index(props) {
 
-    const { start = (<></>), end = (<></>), enableBack = true } = props;
+    const { start = (<></>), end = (<></>), enableBack = true, sx = {} } = props;
 
     const navigate = useNavigate();
 
@@ -17,8 +17,15 @@ function Index(props) {
         navigate(-1);
     }
 
+    const style = {
+        main: {
+            mb: 2
+        },
+        ...sx
+    }
+
     return (
-        <Grid2 container alignItems={"center"} justifyContent={"space-between"} sx={{ mb: 2 }}>
+        <Grid2 container alignItems={"center"} justifyContent={"space-between"} sx={style.main}>
             <Grid2 container alignItems={"center"} spacing={1}>
                 {enableBack && (<IconButton onClick={goBack}><ArrowBack /></IconButton>)}
                 {start}

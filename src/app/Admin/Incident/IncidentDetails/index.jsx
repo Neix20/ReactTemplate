@@ -2,87 +2,18 @@ import { useState, useEffect, useRef } from "react";
 
 import { Grid2, Typography, Button, Paper, IconButton, Modal, Tooltip, Box } from "@mui/material";
 
-import { BpLoading, BpForm, BpFormItem, BpHeader } from "@components";
-import { useToggle, useForm, useFormDataLs } from "@hooks";
+import { BpLoading, BpForm, BpFormItem, BpHeader, BpImageGallery, BpImageUpload } from "@components";
+import { useToggle, useForm, useCusMedia } from "@hooks";
 
-import { Add, Save, Cancel, FileUpload } from "@mui/icons-material";
+import { Add, Save, Cancel } from "@mui/icons-material";
 
-import { GlobalStyles, Images, Models, SampleData } from "@config";
+import { GlobalStyles, Models, SampleData } from "@config";
 
 import { useNavigate, useParams } from "react-router-dom";
 
 import { fetchIncidentGet, fetchIncidentAdd, fetchIncidentUpdate, fetchIncidentUploadImg, fetchScammerGetAll } from "@api";
 
-import TImageGallery from "./components/ImageGallery";
 import SearchMenuList from "./components/SearchMenuList";
-
-function ImageUpload(props) {
-
-    const { onAddImage = () => { } } = props;
-
-    const fileUploadRef = useRef(null);
-
-    const onFileUpload = (e) => {
-
-        if (!e.target.files) {
-            alert("File Upload Error!")
-            return;
-        }
-
-        const file = e.target.files?.[0]; // Get the first file
-
-        const { name: fileName, type: fileType } = file;
-
-        // Create a FileReader to read the file
-        const reader = new FileReader();
-
-        // Set up the onload event to handle the Base64 result
-        reader.onload = (evt) => {
-            const base64String = evt.target.result; // This contains the Base64 string
-
-            const item = {
-                imgName: fileName,
-                imgData: base64String,
-                imgType: fileType
-            }
-
-            onAddImage(item);
-        };
-
-        // Read the file as a data URL (Base64)
-        reader.readAsDataURL(file);
-    }
-
-    const style = {
-        modalCnt: {
-            cursor: "pointer",
-            height: "400px",
-            border: "2px dashed",
-            borderColor: "grey.400",
-            borderRadius: 2,
-            padding: 3
-        }
-    }
-
-    return (
-        <>
-            <Grid2 onClick={_ => fileUploadRef?.current.click()}
-                container flexDirection={"column"}
-                spacing={1}
-                alignItems={"center"}
-                justifyContent={"center"}
-                sx={style.modalCnt}>
-                <FileUpload fontSize={"large"} />
-                <Typography variant={"body1"}>Drag and drop your images here, or click to browse</Typography>
-                <Typography variant={"body2"}>Maximum file size: 5 MB</Typography>
-            </Grid2>
-            <input ref={fileUploadRef}
-                hidden
-                type="file"
-                accept="image/*" onChange={onFileUpload} />
-        </>
-    );
-}
 
 function UploadModal(props) {
 
@@ -132,7 +63,7 @@ function UploadModal(props) {
                 </Box>
 
                 {/* Make it Draggable */}
-                <ImageUpload {..._props} />
+                <BpImageUpload {..._props} sx={{ height: "400px" }} />
 
                 {/* Show Images */}
                 <ImageGallery />
@@ -179,7 +110,7 @@ function Index(props) {
 
                 const { incident, incidentAsset } = res;
                 loadIncData(incident);
-                setImgAsset(_ => incidentAsset)
+                setImgAsset(_ => incidentAsset);
             })
             .catch(err => {
                 setLoadingFalse();
@@ -293,7 +224,7 @@ function Index(props) {
     }
 
     const ImageGallery = () => (
-        <TImageGallery images={imgAsset} onDelete={deleteImgAsset} />
+        <BpImageGallery images={imgAsset} onDelete={deleteImgAsset} />
     );
     // #endregion
 
@@ -308,7 +239,6 @@ function Index(props) {
 
             {/* Multiple Scammer */}
             <SearchMenuList selection={scammer.map(x => x.name)} sx={{ width: "100%" }} />
-
 
             {/* Multi-Form */}
             <Grid2 container spacing={2} flexDirection={"column"} sx={{ width: "100%" }}>
@@ -326,7 +256,16 @@ function Index(props) {
         </Grid2>
     );
 
-
+    const { value: bpFormObj } = useCusMedia({
+        xs: {
+            cols: 1,
+            spacing: 1
+        },
+        sm: {
+            cols: 2,
+            spacing: 2
+        }
+    })
 
     return (
         <>
@@ -347,26 +286,42 @@ function Index(props) {
                     </Grid2>
                 }
             />
-            <Box sx={{
-                ...GlobalStyles.bordered,
-                borderColor: (theme) => theme.palette.grey[200]
-            }}>
-                <BpForm
-                    numCols={2}
-                    colSpacing={2}
-                    hasLabel={true}
-                    key={incKey} idx={incKey}
-                    data={incData} field={incField}
-                    onUpdate={updateIncData}>
-                    <BpFormItem
-                        hasLabel={true} size={2}
-                        type={"dropdown"} placeholder={"Select Platform"}
-                        name={"platform"} value={incData["platform"]}
-                        selection={SampleData.Platform}
-                        onChange={updateIncData}
-                    />
-                </BpForm>
-            </Box>
+            <Grid2 container spacing={1}>
+                <Box sx={{ ...GlobalStyles.bordered, borderColor: (theme) => theme.palette.grey[200] }}>
+                    <BpForm
+                        numCols={bpFormObj?.cols}
+                        colSpacing={bpFormObj?.spacing}
+                        hasLabel={true}
+                        key={incKey} idx={incKey}
+                        data={incData} field={incField}
+                        onUpdate={updateIncData}>
+                        <BpFormItem
+                            hasLabel={true} size={bpFormObj?.cols}
+                            type={"dropdown"} placeholder={"Select Platform"}
+                            name={"platform"} value={incData["platform"]}
+                            selection={SampleData.Platform}
+                            onChange={updateIncData}
+                        />
+                    </BpForm>
+                </Box>
+
+                {/* Multiple Scammer */}
+                <SearchMenuList selection={scammer.map(x => x.name)} />
+
+                <Grid2 container spacing={2} flexDirection={"column"} sx={{ width: "100%" }}>
+                    <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
+                        <Typography variant="h4" sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>Image Asset</Typography>
+                        <Grid2 container spacing={1}>
+                            <Button variant={"contained"} onClick={uploadImgAsset} disabled={imgAsset.length == 0}>Upload</Button>
+                            <Button variant={"contained"} onClick={openUploadModal}>Add New</Button>
+                        </Grid2>
+                    </Grid2>
+
+                    {/* Images */}
+                    <ImageGallery />
+                </Grid2>
+
+            </Grid2>
         </>
     )
 }

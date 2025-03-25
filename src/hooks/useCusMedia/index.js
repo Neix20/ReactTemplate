@@ -5,7 +5,7 @@ import {useMediaQuery} from "@mui/material";
 
 function useCusMedia(obj) {
 
-    const [value, setValue] = useState(obj["xs"]);
+    const [value, setValue] = useState(obj["sm"]);
 
     const isXs = useMediaQuery((theme) => theme.breakpoints.down("sm"));
     const isSm = useMediaQuery((theme) => theme.breakpoints.down("md"));

@@ -23,7 +23,9 @@ import BpJsonDataTable from "./ui/DataTable/json.jsx";
 
 import BpGridMasonry from "./ui/GridMasonry";
 import BpTab from "./ui/Tab";
-import BpImageGallery from "./ui/ImageGallery";
+
+import BpImageGallery from "./ui/Image/ImageGallery";
+import BpImageUpload from "./ui/Image/ImageUpload";
 
 import BpSessionChecker from "./ui/SessionChecker";
 
@@ -44,12 +46,16 @@ export {
 }
 
 export {
+    BpImageGallery,
+    BpImageUpload,
+}
+
+export {
     BpLoading,
     BpHeader,
     BpLogo,
     BpGridMasonry,
     BpTab,
-    BpImageGallery,
     BpSessionChecker
 }
 

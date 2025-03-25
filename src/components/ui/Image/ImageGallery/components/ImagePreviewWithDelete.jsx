@@ -5,10 +5,10 @@ import { ArrowBack, ArrowForward, Close, Cancel } from "@mui/icons-material";
 function Index(props) {
 
     const { imgName = "", imgData = "" } = props;
-    const { onDelete = () => { }, onClick = () => {} } = props;
+    const { onDelete = () => { }, onClick = () => {}, sx={} } = props;
 
     const style = {
-        btn: {
+        main: {
             transition: "transform 0.2s",
             cursor: "pointer",
             "&:hover": {
@@ -18,9 +18,8 @@ function Index(props) {
             position: "relative",
         },
         img: {
-            width: "128px",
+            width: { xs: "120px", sm: "128px" },
             height: "128px",
-            objectFit: "cover",
             borderRadius: "8px",
         },
         closeIcon: {
@@ -32,11 +31,12 @@ function Index(props) {
             opacity: 0,
             transition: "opacity 0.2s",
             "&:hover": { backgroundColor: "rgba(0,0,0,0.8)" },
-        }
+        },
+        ...sx
     }
 
     return (
-        <Box sx={style.btn}>
+        <Box sx={style.main}>
             <Box component={"img"} onClick={onClick}
                 src={imgData} alt={imgName} sx={style.img} />
             <IconButton size="small" className="remove-btn"
