@@ -7,7 +7,7 @@ import Incident from "./Incident";
 import IpSeries from "./IpSeries";
 import Account from "./Account";
 
-export default {
+export {
     Product,
     Scammer,
     ScammerAttr,

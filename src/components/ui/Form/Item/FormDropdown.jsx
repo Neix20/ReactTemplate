@@ -3,7 +3,7 @@ import { Typography, FormControl, InputLabel, Select, MenuItem } from "@mui/mate
 
 const FormDropdown = (props = {}) => {
 
-    const { idx: key = "", label = "", name = "", value = "", required = false } = props;
+    const { idx: key = "", placeholder = "", name = "", value = "", required = false } = props;
     const { selection = [], onChange = () => { }, sx = {} } = props;
 
     // if (selection.length == 0) {
@@ -16,10 +16,9 @@ const FormDropdown = (props = {}) => {
 
     return (
         <FormControl variant={"outlined"} required={required} sx={sx}>
-            <InputLabel>{label}</InputLabel>
-            <Select onChange={onChange} name={name} value={value}>
+            <Select displayEmpty onChange={onChange} name={name} value={value}>
                 <MenuItem value="" disabled>
-                    -- Please Select --
+                    {placeholder}
                 </MenuItem>
                 {selection.map(renderItem)}
             </Select>

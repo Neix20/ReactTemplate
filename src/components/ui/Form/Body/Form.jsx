@@ -6,20 +6,19 @@ import { BpFormItem } from "@components";
 import { clsUtility } from "@utility";
 
 function Wrapper(props) {
-    const { title = "", children = (<></>) } = props;
-    const { hasTitle = false, sx = {} } = props;
+    const { children = (<></>) } = props;
+    const { colSpacing = 1, sx = {} } = props;
 
-    const style = {
-        main: {
-            width: "100%",
-            ...sx
-        }
-    }
+    return (
+        <Grid2 container flexWrap={"wrap"} spacing={colSpacing} alignItems={"flex-start"}>
+            {children}
+        </Grid2>
+    )
 
     return (
         <Grid2 container spacing={2} flexDirection={"column"} sx={style.main}>
             {hasTitle ? (<Typography variant={"h2"} sx={{ color: "text.primary" }}>{title}</Typography>) : (<></>)}
-            <Grid2 container flexWrap={"wrap"} spacing={2} alignItems={"flex-start"}>
+            <Grid2 container flexWrap={"wrap"} spacing={spacing} alignItems={"flex-start"}>
                 {children}
             </Grid2>
         </Grid2>
@@ -29,13 +28,10 @@ function Wrapper(props) {
 function Index(props) {
 
     const { idx: key = "", field = [], children = (<></>) } = props;
-    const { hasTitle = false, sx = {} } = props;
-
-    const lbl = clsUtility.capitalize(key);
+    const { colSpacing = 1, sx = {} } = props;
 
     const wrapperProps = {
-        title: lbl,
-        hasTitle: hasTitle,
+        colSpacing: colSpacing,
         sx: sx
     }
 

@@ -18,7 +18,7 @@ const openedMixin = (theme) => ({
 
   overflowX: 'hidden',
   boxShadow: 'none',
-  // ...theme.applyStyles('dark', { boxShadow: `0px 2px 8px ${alpha('hsl(220, 35%, 3%)', 0.15)}` })
+  ...theme.applyStyles('dark', { boxShadow: `0px 2px 8px ${alpha('hsl(220, 35%, 3%)', 0.15)}` })
 });
 
 const closedMixin = (theme) => ({
@@ -30,7 +30,8 @@ const closedMixin = (theme) => ({
   overflowX: 'hidden',
   width: theme.spacing(7.5),
   borderRight: 'none',
-  boxShadow: `0px 2px 8px ${alpha('hsl(220, 35%, 3%)', 0.15)}`
+  boxShadow: `0px 2px 8px ${alpha('hsl(220, 35%, 3%)', 0.15)}`,
+  ...theme.applyStyles('dark', { boxShadow: `0px 2px 8px ${alpha(theme.palette.grey[100], 0.15)}` })
 });
 
 // ==============================|| DRAWER - MINI STYLED ||============================== //

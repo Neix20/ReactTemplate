@@ -9,14 +9,6 @@ const obj = {
             "type": "text"
         },
         {
-            "name": "subtitle",
-            "type": "textarea"
-        },
-        {
-            "name": "description",
-            "type": "textarea"
-        },
-        {
             "name": "scammer_type",
             "type": "dropdown",
             "selection": [
@@ -29,6 +21,14 @@ const obj = {
                     "value": "Buyer"
                 }
             ]
+        },
+        {
+            "name": "subtitle",
+            "type": "textarea"
+        },
+        {
+            "name": "description",
+            "type": "textarea"
         },
         {
             "name": "social_url",
@@ -69,11 +69,6 @@ const obj = {
                     "value": "Alert"
                 }
             ]
-        },
-        {
-            "name": "platform",
-            "type": "dropdown",
-            "selection": SampleData.Platform
         }
     ]
 }

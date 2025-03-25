@@ -7,7 +7,7 @@ import { Grid2, Box } from '@mui/material';
 
 export default function Footer() {
   return (
-    <Grid2 container alignItems={"center"} justifyContent={"space-between"} sx={{ p: '12px 12px 0px', mt: 'auto' }}>
+    <Grid2 container alignItems={"center"} justifyContent={"space-between"} sx={{ pt: "12px", mt: 'auto' }}>
       <Box sx={{ width: { xs: 150, sm: 300 } }}>
         <Typography variant="caption">
           &copy; All rights reserved{' '}

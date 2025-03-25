@@ -70,10 +70,7 @@ function Index(props = {}) {
     const lbl = clsUtility.capitalize(key);
 
     return (
-        <Grid2 container spacing={1} flexDirection={"column"} sx={{
-            width: "100%",
-            ...sx
-        }}>
+        <Grid2 container spacing={1} flexDirection={"column"} sx={{ width: "100%", ...sx }}>
             <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
                 <Typography variant="h4" sx={{ color: "#FFF"}}>{lbl}</Typography>
                 <Button variant={"contained"} onClick={onAdd} sx={style.btnAdd}>Add New</Button>

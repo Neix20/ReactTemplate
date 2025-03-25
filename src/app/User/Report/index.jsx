@@ -47,7 +47,7 @@ function SocialMediaSection(props) {
                 <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Grid2 item size={3} sx={{ display: "flex" }}>
                         <BpBasicFormItem
-                            type={"dropdown"} label={"Select Platform"}
+                            type={"dropdown"} placeholder={"Select Platform"}
                             name={"platform"} value={item["platform"]}
                             selection={SampleData.Platform}
                             onChange={onUpdateItem}
@@ -68,7 +68,7 @@ function SocialMediaSection(props) {
 
                     <Grid2 item size={10} container spacing={1}>
                         <BpBasicFormItem
-                            type={"dropdown"} label={"Select Platform"}
+                            type={"dropdown"} placeholder={"Select Platform"}
                             name={"platform"} value={item["platform"]}
                             selection={SampleData.Platform}
                             onChange={onUpdateItem}
@@ -121,7 +121,7 @@ function PaymentMethod(props) {
                 <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Grid2 item size={3} sx={{ display: "flex" }}>
                         <BpBasicFormItem
-                            type={"dropdown"} label={"Select Platform"}
+                            type={"dropdown"} placeholder={"Select Platform"}
                             name={"platform"} value={item["platform"]}
                             selection={SampleData.Platform}
                             onChange={onUpdateItem}
@@ -142,7 +142,7 @@ function PaymentMethod(props) {
 
                     <Grid2 item size={10} container spacing={1}>
                         <BpBasicFormItem
-                            type={"dropdown"} label={"Select Platform"}
+                            type={"dropdown"} placeholder={"Select Platform"}
                             name={"platform"} value={item["platform"]}
                             selection={SampleData.Platform}
                             onChange={onUpdateItem}
@@ -289,7 +289,7 @@ function Index(props) {
                 <Stepper step={step} />
             </Grid2>
 
-            <Paper sx={{ width: "80%", padding: 2 }}>
+            <Paper sx={{ width: "100%", padding: 2 }}>
                 {/* First Page */}
                 <Grid2 hidden={step !== 0} sx={style.reportBody}>
                     <Grid2 container flexDirection={"column"} spacing={2}>

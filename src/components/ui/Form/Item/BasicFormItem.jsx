@@ -27,7 +27,6 @@ const Index = (props = {}) => {
         value, 
         required, 
         variant, 
-        // label, 
         placeholder,
         sx: style.txtInput,
         slotProps: {
@@ -73,10 +72,10 @@ const Index = (props = {}) => {
     // We Should Make This Flexible to be able to customize our own Form Item
     const elemDict = {
         "text": (
-            <TextField type={"text"} onChange={onChange} {...propsToPass} />
+            <TextField type={"text"} label={label} onChange={onChange} {...propsToPass} />
         ),
         "email": (
-            <TextField type={"text"} onChange={onChange} {...propsToPass} />
+            <TextField type={"text"} label={label} onChange={onChange} {...propsToPass} />
         ),
         "color": (
             <BpFormColor onChange={onChangeColor} value={value} sx={style.txtInput} />
@@ -85,14 +84,15 @@ const Index = (props = {}) => {
             <TextField type={"password"} onChange={onChange} {...propsToPass} />
         ),
         "textarea": (
-            <TextField multiline rows={rows} onChange={onChange} {...propsToPass} />
+            <TextField multiline rows={rows} onChange={onChange} label={label} {...propsToPass} />
         ),
         "int": (
-            <TextField type={"number"} onChange={onChangeNum} {...propsToPass} />
+            <TextField type={"number"} onChange={onChangeNum} label={label} {...propsToPass} />
         ),
         "decimal": (
             <TextField
                 type={"number"}
+                label={label}
                 slotProps={{
                     input: {
                         inputProps: {

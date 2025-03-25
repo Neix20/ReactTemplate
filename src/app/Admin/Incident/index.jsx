@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { Grid2, Typography, Button, Paper, IconButton, Box, Tooltip } from "@mui/material";
 
-import { BpLoading, BpDataTable } from "@components";
+import { BpLoading, BpDataTable, BpHeader } from "@components";
 
 import { useToggle } from "@hooks";
 
@@ -10,11 +10,9 @@ import { fetchIncidentGetAll, fetchIncidentDelete } from "@api";
 
 import { useNavigate, Link } from "react-router-dom";
 
-import { SampleData, GlobalStyles } from "@config";
+import { Models } from "@config";
 
-import Models from "@config/models";
-
-import { Add } from "@mui/icons-material";
+import { Add, ArrowBack } from "@mui/icons-material";
 
 function Index(props) {
 
@@ -75,26 +73,24 @@ function Index(props) {
     return (
         <>
             <BpLoading loading={loading} />
-            {/* <Paper>
-
-            </Paper> */}
-            {/* <BpHeader
+            <BpHeader
                 enableBack={false}
-                start={<Typography variant={"h2"}>{Models.Incident.key}</Typography>} 
-                end={<Button variant={"outlined"}
-                onClick={GoToAddIncident}
-                startIcon={<Add />}>New</Button>}
-            /> */}
+                start={<Typography variant={"h2"} sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem"} }}>{Models.Incident.key}</Typography>}
+                end={
+                    <Button variant={"contained"}
+                        onClick={GoToAddIncident}
+                        startIcon={<Add />}>New</Button>}
+            />
             <BpDataTable
-                    data={[...data, ...data, ...data]}
-                    field={Models.Incident.field}
-                    fieldOrder={colOrder}
-                    hideField={["description", "social_url", "post_date", "category"]}
-                    enableRowAction={true}
-                    enableTopAction={true}
-                    onUpdate={onTblUpdate}
-                    onDelete={onTblDelete}
-                />
+                data={data}
+                field={Models.Incident.field}
+                fieldOrder={colOrder}
+                hideField={["description", "social_url", "post_date", "category"]}
+                enableRowAction={true}
+                enableTopAction={true}
+                onUpdate={onTblUpdate}
+                onDelete={onTblDelete}
+            />
         </>
     )
 }

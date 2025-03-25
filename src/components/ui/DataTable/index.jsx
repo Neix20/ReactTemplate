@@ -122,7 +122,7 @@ function Index(props) {
     const { enableRowAction = false, enableTopAction = false } = props;
     const { onPreAdd = null, onPosUpdate = () => { } } = props;
     const { onAdd = () => { }, onUpdate = () => { }, onDelete = () => { } } = props;
-    const { sx = {} } = props;
+    // const { sx = {} } = props;
 
     const style = {
         tableImg: {
@@ -133,8 +133,7 @@ function Index(props) {
             display: 'flex', 
             flexDirection: 'column', 
             gap: '1rem' 
-        },
-        ...sx
+        }
     }
 
     const columns = generateColumns(field, style);
@@ -204,6 +203,10 @@ function Index(props) {
         renderCreateRowDialogContent: renderCreateModal,
         renderEditRowDialogContent: renderUpdateModal,
         renderTopToolbarCustomActions: ({ table }) => (<AddItemBtn table={table} onPreAdd={onPreAdd} />),
+        // muiTablePaperProps: { sx: style.tblPaper },
+        // muiTopToolbarProps: { sx: style.tblTop },
+        // muiTableContainerProps: { sx: style.tblContainer },
+        // muiBottomToolbarProps: { sx: style.tblBottom },
         initialState: { 
             columnOrder: fieldOrder, // Must Be Full, Otherwise Wont Work
             columnVisibility: hideField.reduce((res, item) => { res[item] = false; return res; }, {})

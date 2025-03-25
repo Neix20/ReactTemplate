@@ -6,6 +6,7 @@ import { Context } from "@config";
 import { Dashboard, Google, QuestionMark, Article } from "@mui/icons-material";
 
 import Incident from "@app/Admin/Incident";
+import IncidentDetails from "@app/Admin/Incident/IncidentDetails";
 // import ASample from "@app/Admin/Sample";
 
 const menuItems = [
@@ -34,7 +35,15 @@ const menuItems = [
                 url: '/Admin/Incident',
                 icon: Article,
                 element: <Incident />
-            }
+            },
+            {
+                id: 'admin-incident-details',
+                title: 'incident details',
+                type: 'item',
+                show: false,
+                url: '/Admin/Incident/:IncidentId',
+                element: <IncidentDetails />
+            },
         ]
     },
     // {

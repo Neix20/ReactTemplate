@@ -27,8 +27,9 @@ import BpImageGallery from "./ui/ImageGallery";
 
 import BpSessionChecker from "./ui/SessionChecker";
 
+import BpHeader from "./ui/Header";
+
 export {
-    BpLoading,
     BpBasicFormLayout,
     BpForm,
     BpSubForm,
@@ -43,6 +44,8 @@ export {
 }
 
 export {
+    BpLoading,
+    BpHeader,
     BpLogo,
     BpGridMasonry,
     BpTab,

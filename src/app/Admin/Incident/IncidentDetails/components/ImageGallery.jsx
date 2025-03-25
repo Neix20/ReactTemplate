@@ -20,7 +20,7 @@ function ImagePreviewItem(props) {
             position: "relative",
         },
         img: {
-            width: { xs: "100%", sm: "150px" },
+            width: "128px",
             height: "128px",
             objectFit: "cover",
             borderRadius: "8px",
@@ -92,7 +92,7 @@ function Index(props) {
             },
         },
         modalImg: {
-            width: { xs: "280px", sm: "320px" },
+            width: 320,
             objectFit: "contain"
         },
         closeBtn: {
