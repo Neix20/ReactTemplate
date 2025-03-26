@@ -17,6 +17,8 @@ import Transitions from '@components/mantis/@extended/Transitions';
 // @assets
 import MoreOutlined from '@ant-design/icons/MoreOutlined';
 
+import { alpha, styled } from '@mui/material/styles';
+
 // ==============================|| HEADER CONTENT - MOBILE ||============================== //
 
 export default function MobileSection() {

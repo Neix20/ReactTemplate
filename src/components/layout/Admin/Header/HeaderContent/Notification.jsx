@@ -28,6 +28,8 @@ import GiftOutlined from '@ant-design/icons/GiftOutlined';
 import MessageOutlined from '@ant-design/icons/MessageOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 
+import { alpha, styled } from '@mui/material/styles';
+
 // sx styles
 const avatarSX = {
   width: 36,

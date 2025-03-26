@@ -29,6 +29,8 @@ import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 
+import { alpha, styled } from '@mui/material/styles';
+
 // import avatar1 from '@assets/images/users/avatar-1.png';
 
 import { Images } from "@config";
@@ -91,7 +93,7 @@ export default function Profile() {
         onClick={handleToggle}
       >
         <Stack direction="row" sx={{ gap: 1.25, alignItems: 'center', p: 0.5 }}>
-          <Avatar alt="profile user" src={Images.defaultAvatar} size="sm" />
+          <Avatar alt="profile user" src={Images.defaultAvatar} sx={{ width: "32px", height: "32px" }} />
           <Typography variant="subtitle1" sx={{ textTransform: 'capitalize' }}>
             John Doe
           </Typography>
@@ -135,7 +137,7 @@ export default function Profile() {
                       </Grid>
                       <Grid>
                         <Tooltip title="Logout">
-                          <IconButton size="large" sx={{ color: 'text.primary' }}>
+                          <IconButton size="large" sx={{ color: 'text.primary' }} onClick={() => {}}>
                             <LogoutOutlined />
                           </IconButton>
                         </Tooltip>

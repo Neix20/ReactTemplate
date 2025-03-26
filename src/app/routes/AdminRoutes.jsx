@@ -3,70 +3,99 @@ import DashboardLayout from "@components/layout/Admin";
 
 import { Context } from "@config";
 
-import { Dashboard, Google, QuestionMark } from "@mui/icons-material";
+import { Settings, PersonOff, Article, AssignmentTurnedIn, SmartToy } from "@mui/icons-material";
 
-import ADashboard from "@app/Admin/Dashboard";
-import ASample from "@app/Admin/Sample";
+import Incident from "@app/Admin/Incident";
+import IncidentDetails from "@app/Admin/Incident/IncidentDetails";
+import IpSeries from "@app/Admin/IpSeries";
+import Approve from "@app/Admin/Approve";
+import Scammer from "@app/Admin/Scammer";
+// import ASample from "@app/Admin/Sample";
 
 const menuItems = [
     {
-        id: 'Admin',
-        show: false,
+        id: 'general',
+        title: 'Admin',
+        type: 'group',
         children: [
             {
                 id: 'basic',
                 title: 'Basic',
                 type: 'item',
+                show: false,
                 url: '/Admin',
-                element: <ADashboard />
-            }
-        ]
-    },
-    {
-        id: 'group-dashboard',
-        title: 'Navigation',
-        type: 'group',
-        children: [
-            {
-                id: 'dashboard',
-                title: 'Dashboard',
-                type: 'item',
-                url: '/Admin/Dashboard',
-                icon: Dashboard,
-                element: <ADashboard />
-            }
-        ]
-    },
-    {
-        id: 'support',
-        title: 'Support',
-        type: 'group',
-        children: [
-            {
-                id: 'sample-page',
-                title: 'Sample Page',
-                type: 'item',
-                url: '/Admin/Sample',
-                icon: Google,
-                element: <ASample />
+                element: <Incident />
             },
             {
-                id: 'documentation',
-                title: 'Documentation',
+                id: 'admin-scammer',
+                title: 'Scammer',
                 type: 'item',
-                url: 'https://codedthemes.gitbook.io/mantis/',
-                icon: QuestionMark,
-                external: true,
-                target: true
-            }
+                url: '/Admin/Scammer',
+                icon: PersonOff,
+                element: <Scammer />
+            },
+            {
+                id: 'admin-incident',
+                title: 'Incident',
+                type: 'item',
+                url: '/Admin/Incident',
+                icon: Article,
+                element: <Incident />
+            },
+            {
+                id: 'admin-incident-details',
+                show: false,
+                url: '/Admin/Incident/:IncidentId',
+                element: <IncidentDetails />
+            },
+            {
+                id: 'admin-approve',
+                title: 'Approve',
+                type: 'item',
+                url: '/Admin/Approve',
+                icon: AssignmentTurnedIn,
+                element: <Approve />
+            },
+            {
+                id: 'admin-ip-series',
+                title: 'IP Series',
+                type: 'item',
+                url: '/Admin/IpSeries',
+                icon: SmartToy,
+                element: <IpSeries />
+            },
         ]
-    }
+    },
+    // {
+    //     id: 'support',
+    //     title: 'Support',
+    //     type: 'group',
+    //     children: [
+    //         {
+    //             id: 'sample-page',
+    //             title: 'Sample Page',
+    //             type: 'item',
+    //             url: '/Admin/Sample',
+    //             icon: Google,
+    //             element: <ASample />
+    //         },
+    //         {
+    //             id: 'documentation',
+    //             title: 'Documentation',
+    //             type: 'item',
+    //             url: 'https://codedthemes.gitbook.io/mantis/',
+    //             icon: QuestionMark,
+    //             external: true,
+    //             target: true
+    //         }
+    //     ]
+    // }
 ]
 
 const Routes = {
     path: '/Admin',
     element: (
-        <Context.Admin.Provider value={{ menuItems: menuItems.filter(x => x.show != false) }}>
+        <Context.Admin.Provider value={{ menuItems: menuItems.map(x => ({...x, children: x.children.filter(x => x.show != false)})).filter(x => x.show != false) }}>
             <DashboardLayout />
         </Context.Admin.Provider>
     ),
