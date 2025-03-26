@@ -3,34 +3,40 @@ import DashboardLayout from "@components/layout/Admin";
 
 import { Context } from "@config";
 
-import { Dashboard, Google, QuestionMark, Article } from "@mui/icons-material";
+import { Settings, PersonOff, Article, AssignmentTurnedIn, SmartToy } from "@mui/icons-material";
 
 import Incident from "@app/Admin/Incident";
 import IncidentDetails from "@app/Admin/Incident/IncidentDetails";
+import IpSeries from "@app/Admin/IpSeries";
+import Approve from "@app/Admin/Approve";
+import Scammer from "@app/Admin/Scammer";
 // import ASample from "@app/Admin/Sample";
 
 const menuItems = [
     {
-        id: 'Admin',
-        show: false,
+        id: 'general',
+        title: 'Admin',
+        type: 'group',
         children: [
             {
                 id: 'basic',
                 title: 'Basic',
                 type: 'item',
+                show: false,
                 url: '/Admin',
                 element: <Incident />
-            }
-        ]
-    },
-    {
-        id: 'group-incident',
-        title: 'Incident',
-        type: 'group',
-        children: [
+            },
+            {
+                id: 'admin-scammer',
+                title: 'Scammer',
+                type: 'item',
+                url: '/Admin/Scammer',
+                icon: PersonOff,
+                element: <Scammer />
+            },
             {
                 id: 'admin-incident',
-                title: 'incident',
+                title: 'Incident',
                 type: 'item',
                 url: '/Admin/Incident',
                 icon: Article,
@@ -38,11 +44,25 @@ const menuItems = [
             },
             {
                 id: 'admin-incident-details',
-                title: 'incident details',
-                type: 'item',
                 show: false,
                 url: '/Admin/Incident/:IncidentId',
                 element: <IncidentDetails />
+            },
+            {
+                id: 'admin-approve',
+                title: 'Approve',
+                type: 'item',
+                url: '/Admin/Approve',
+                icon: AssignmentTurnedIn,
+                element: <Approve />
+            },
+            {
+                id: 'admin-ip-series',
+                title: 'IP Series',
+                type: 'item',
+                url: '/Admin/IpSeries',
+                icon: SmartToy,
+                element: <IpSeries />
             },
         ]
     },
@@ -75,7 +95,7 @@ const menuItems = [
 const Routes = {
     path: '/Admin',
     element: (
-        <Context.Admin.Provider value={{ menuItems: menuItems.filter(x => x.show != false) }}>
+        <Context.Admin.Provider value={{ menuItems: menuItems.map(x => ({...x, children: x.children.filter(x => x.show != false)})).filter(x => x.show != false) }}>
             <DashboardLayout />
         </Context.Admin.Provider>
     ),
