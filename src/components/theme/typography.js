@@ -46,7 +46,7 @@ export const Typography = (fontFamily, theme) => ({
     subtitle2: {
         fontSize: theme.typography.pxToRem(14),
         // fontSize: '0.875rem',
-        fontWeight: 500,
+        fontWeight: 600,
     },
     body1: {
         fontSize: theme.typography.pxToRem(14),

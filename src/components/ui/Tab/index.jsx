@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 
-import { Grid2, Tabs, Tab, Paper } from "@mui/material";
+import { Grid2, Box, Tabs, Tab, Paper } from "@mui/material";
 
 import { GlobalStyles } from "@config";
 
@@ -16,9 +16,8 @@ function Index(props) {
     const { HeadWrapper = Empty, BodyWrapper = Empty } = props;
 
     const style = {
-        tabItem: {
-            ...GlobalStyles.main
-        },
+        tabBody: {},
+        tabHeadItem: {},
         ...sx
     }
 
@@ -29,13 +28,13 @@ function Index(props) {
     };
 
     const renderTab = ({ title = "", icon = (<></>) }, idx) => (
-        <Tab key={`${title}-${idx}`} label={title} icon={icon} iconPosition="start" />
+        <Tab key={`${title}-${idx}`} label={title} icon={icon} iconPosition="start" sx={style.tabHeadItem} />
     )
 
     const renderTabItem = ({ element = (<></>) }, idx) => (
-        <Grid2 key={`tabpanel-${idx}`} hidden={tabIdx !== idx} sx={style.tabItem}>
+        <Box key={`tabpanel-${idx}`} hidden={tabIdx !== idx} sx={style.tabBody}>
             {element}
-        </Grid2>
+        </Box>
     )
 
     return (

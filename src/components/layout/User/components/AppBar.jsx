@@ -74,9 +74,9 @@ function Index(props) {
                     </Box>
                 </Box>
                 <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
-                    <Button color="primary" variant="contained" size="small" component={NavLink} to={"/SignIn"}>
+                    {/* <Button color="primary" variant="contained" size="small" component={NavLink} to={"/SignIn"}>
                         Login
-                    </Button>
+                    </Button> */}
                     <ColorModeIconDropdown />
                 </Box>
                 <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
@@ -88,11 +88,6 @@ function Index(props) {
                         anchor="top"
                         open={open}
                         onClose={toggleDrawer}
-                        PaperProps={{
-                            sx: {
-                                top: 'var(--template-frame-height, 0px)',
-                            }
-                        }}
                     >
                         <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
                             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -101,12 +96,12 @@ function Index(props) {
                                 </IconButton>
                             </Box>
                             {menuItems?.map(renderMenuItem)}
-                            <Divider sx={{ my: 3 }} />
+                            {/* <Divider sx={{ my: 3 }} />
                             <MenuItem>
                                 <Button color="primary" variant="contained" fullWidth component={NavLink} to={"/SignIn"}>
                                     Login
                                 </Button>
-                            </MenuItem>
+                            </MenuItem> */}
                         </Box>
                     </Drawer>
                 </Box>

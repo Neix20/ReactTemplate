@@ -31,20 +31,9 @@ function Copyright() {
   );
 }
 
-export default function Footer() {
+function FooterLinks(props) {
   return (
-    <React.Fragment>
-      <Container
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: { xs: 4, sm: 4 },
-          py: { xs: 4, sm: 4 },
-          textAlign: "left",
-        }}
-      >
-        <Box
+    <Box
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', sm: 'row' },
@@ -177,15 +166,32 @@ export default function Footer() {
             </Link>
           </Box>
         </Box>
+  )
+}
+
+export default function Footer() {
+  return (
+    <React.Fragment>
+      <Container
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: { xs: 4, sm: 4 },
+          py: { xs: 4, sm: 4 },
+          textAlign: "left",
+        }}
+      >
+        {/* <FooterLinks /> */}
         <Box
           sx={{
             display: 'flex',
             alignItems: "center",
             justifyContent: 'space-between',
-            pt: { xs: 4, sm: 4 },
             width: '100%',
-            borderTop: '1px solid',
-            borderColor: 'divider',
+            // pt: { xs: 4, sm: 4 },
+            // borderTop: '1px solid',
+            // borderColor: 'divider',
           }}
         >
           <Box>

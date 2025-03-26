@@ -209,8 +209,11 @@ function Index(props) {
         // muiBottomToolbarProps: { sx: style.tblBottom },
         initialState: { 
             columnOrder: fieldOrder, // Must Be Full, Otherwise Wont Work
-            columnVisibility: hideField.reduce((res, item) => { res[item] = false; return res; }, {})
-        }
+            columnVisibility: hideField.reduce((res, item) => { res[item] = false; return res; }, {}),
+            columnPinning: {
+                left: ["mrt-row-actions"]
+            }
+        },
     }
 
     const table = useMaterialReactTable(tblOption);

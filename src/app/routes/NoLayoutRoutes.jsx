@@ -8,7 +8,7 @@ import Debug from "@app/Debug";
 
 const menuItems = [
     {
-        path: '/SignIn',
+        path: '/NeixQingXiEn',
         element: <SignIn />
     },
     {

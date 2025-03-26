@@ -15,63 +15,6 @@ import { fetchIncidentGet, fetchIncidentAdd, fetchIncidentUpdate, fetchIncidentU
 
 import SearchMenuList from "./components/SearchMenuList";
 
-function UploadModal(props) {
-
-    const { open, onClose, ImageGallery = (<></>), ..._props } = props;
-
-    const style = {
-        modalMain: {
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            borderRadius: 2,
-            maxWidth: "90vw",
-            maxHeight: "90vh",
-            width: "90%",
-            padding: 2,
-            backgroundColor: "background.paper",
-            overflowY: "auto",
-            display: "flex",
-            flexDirection: "column",
-            rowGap: 2
-        },
-        closeBtn: {
-            position: "absolute",
-            top: 8,
-            right: 8
-        }
-    }
-
-    return (
-        <Modal open={open} onClose={onClose}>
-            <Grid2 sx={style.modalMain}>
-
-                {/* Close Button */}
-                <Grid2 sx={style.closeBtn}>
-                    <Tooltip title={"Close"}>
-                        <IconButton onClick={onClose}>
-                            <Cancel />
-                        </IconButton>
-                    </Tooltip>
-                </Grid2>
-
-                {/* Title */}
-                <Box>
-                    <Typography variant={"h6"}>Upload Images</Typography>
-                    <Typography variant={"body2"}>Drag and drop your images here or click to browse</Typography>
-                </Box>
-
-                {/* Make it Draggable */}
-                <BpImageUpload {..._props} sx={{ height: "400px" }} />
-
-                {/* Show Images */}
-                <ImageGallery />
-            </Grid2>
-        </Modal>
-    )
-}
-
 function Index(props) {
 
     const { IncidentId = "0" } = useParams();
@@ -190,8 +133,6 @@ function Index(props) {
         _func();
     };
 
-    const { flag: uploadModal, open: openUploadModal, close: closeUploadModal } = useToggle(false);
-
     // #region Images
     const addImgAsset = (item) => {
         setImgAsset((arr) => [...arr, item]);
@@ -222,39 +163,7 @@ function Index(props) {
                 console.error(err);
             })
     }
-
-    const ImageGallery = () => (
-        <BpImageGallery images={imgAsset} onDelete={deleteImgAsset} />
-    );
     // #endregion
-
-    const Body = () => (
-        <Grid2 container spacing={2}>
-            {/* Incident */}
-            {/* All We need to do is Modify it To Accept Child Item */}
-            <BpForm
-                key={incKey} idx={incKey}
-                data={incData} field={incField}
-                onUpdate={updateIncData} />
-
-            {/* Multiple Scammer */}
-            <SearchMenuList selection={scammer.map(x => x.name)} sx={{ width: "100%" }} />
-
-            {/* Multi-Form */}
-            <Grid2 container spacing={2} flexDirection={"column"} sx={{ width: "100%" }}>
-                <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
-                    <Typography variant="h4" sx={{ color: "#FFF" }}>Image Asset</Typography>
-                    <Grid2 container spacing={1}>
-                        <Button variant={"contained"} onClick={uploadImgAsset} disabled={imgAsset.length == 0}>Upload</Button>
-                        <Button variant={"contained"} onClick={openUploadModal}>Add New</Button>
-                    </Grid2>
-                </Grid2>
-
-                {/* Images */}
-                <ImageGallery />
-            </Grid2>
-        </Grid2>
-    );
 
     const { value: bpFormObj } = useCusMedia({
         xs: {
@@ -265,11 +174,10 @@ function Index(props) {
             cols: 2,
             spacing: 2
         }
-    })
+    });
 
     return (
         <>
-            <UploadModal open={uploadModal} onClose={closeUploadModal} ImageGallery={ImageGallery} onAddImage={addImgAsset} />
             <BpLoading loading={loading} />
             <BpHeader
                 start={<Typography variant={"h2"} sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>{Models.Incident.key}</Typography>}
@@ -311,16 +219,15 @@ function Index(props) {
                 <Grid2 container spacing={2} flexDirection={"column"} sx={{ width: "100%" }}>
                     <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
                         <Typography variant="h4" sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>Image Asset</Typography>
-                        <Grid2 container spacing={1}>
-                            <Button variant={"contained"} onClick={uploadImgAsset} disabled={imgAsset.length == 0}>Upload</Button>
-                            <Button variant={"contained"} onClick={openUploadModal}>Add New</Button>
-                        </Grid2>
+                        <Button variant={"contained"} onClick={uploadImgAsset} disabled={imgAsset.length == 0}>Upload</Button>
                     </Grid2>
 
-                    {/* Images */}
-                    <ImageGallery />
-                </Grid2>
+                    {/* Upload Image */}
+                    <BpImageUpload onAddImage={addImgAsset} sx={{ height: "180px" }} />
 
+                    {/* Images */}
+                    <BpImageGallery images={imgAsset} onDelete={deleteImgAsset} />
+                </Grid2>
             </Grid2>
         </>
     )
