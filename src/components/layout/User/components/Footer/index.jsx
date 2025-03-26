@@ -41,7 +41,7 @@ export default function Footer() {
           alignItems: 'center',
           gap: { xs: 4, sm: 4 },
           py: { xs: 4, sm: 4 },
-          textAlign: { sm: 'center', md: 'left' },
+          textAlign: "left",
         }}
       >
         <Box

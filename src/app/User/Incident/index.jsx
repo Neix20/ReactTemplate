@@ -45,7 +45,6 @@ function Index(props) {
                 ))}
             </BpGridMasonry>
         </Container>
-
     )
 }
 

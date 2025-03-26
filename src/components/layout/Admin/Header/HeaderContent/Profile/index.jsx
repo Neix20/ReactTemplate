@@ -93,7 +93,7 @@ export default function Profile() {
         onClick={handleToggle}
       >
         <Stack direction="row" sx={{ gap: 1.25, alignItems: 'center', p: 0.5 }}>
-          <Avatar alt="profile user" src={Images.defaultAvatar} size="sm" />
+          <Avatar alt="profile user" src={Images.defaultAvatar} sx={{ width: "32px", height: "32px" }} />
           <Typography variant="subtitle1" sx={{ textTransform: 'capitalize' }}>
             John Doe
           </Typography>

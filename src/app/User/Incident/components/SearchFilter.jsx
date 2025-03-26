@@ -37,25 +37,6 @@ const App = () => {
         setSelectedFilters(_ => _obj);
     }
 
-    const FilterBtn = ({ filterId, value }) => (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Button
-                key={filterId}
-                variant="outlined"
-                endIcon={<ExpandMore />}
-                onClick={(event) => {
-                    setAnchorEl(event.currentTarget);
-                    setCurrentFilter(filterId);
-                }}
-            >
-                {value}
-            </Button>
-            <IconButton size={"small"} onClick={_ => onDeleteFilter(filterId)}>
-                <Close />
-            </IconButton>
-        </Box>
-    )
-
     const renderFilterBtn = ([filterId, value]) => {
         return (
             <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -96,8 +77,9 @@ const App = () => {
 
     return (
         <>
-            <Grid2 container flexDirection={"column"} spacing={1.5}>
-                <Grid2 container spacing={1.5}>
+            <Grid2 container flexDirection={"column"} spacing={1}>
+                {/* Normal Section */}
+                {/* <Grid2 container spacing={1}>
                     <TextField
                         variant="outlined"
                         placeholder="Search by scammer name..."
@@ -105,14 +87,24 @@ const App = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         sx={{ flexGrow: 1 }}
                     />
-                    {/* Add Button Here */}
                     <Button variant={"contained"} startIcon={<Search />}>Search</Button>
+                </Grid2> */}
+                {/* Mobile Section */}
+                <Grid2 container spacing={1}>
+                <TextField
+                        variant="outlined"
+                        placeholder="Search by scammer name..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        sx={{ flex: .8, flexGrow: 1 }}
+                    />
+                    <Button variant={"contained"} startIcon={<Search />} sx={{ flex: .2, maxWidth: "100px", minWidth: "100px" }}>Search</Button>
                 </Grid2>
+                
                 {/* Normal Section */}
                 <Grid2 container flexWrap={"wrap"} spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Button
                         variant="contained"
-                        color="primary"
                         startIcon={<Add />}
                         onClick={() => setShowAddFilter(true)}
                     >
@@ -136,7 +128,6 @@ const App = () => {
                         <Grid2 item size={6}>
                             <Button fullWidth
                                 variant="contained"
-                                color="primary"
                                 startIcon={<Add />}
                                 onClick={() => setShowAddFilter(true)}
                             >
@@ -191,14 +182,14 @@ const App = () => {
                         <TextField
                             fullWidth
                             type="date"
-                            label="Start Date"
+                            placeholder="Start Date"
                             value={dateRange.start}
                             onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
                         />
                         <TextField
                             fullWidth
                             type="date"
-                            label="End Date"
+                            placeholder="Start Date"
                             value={dateRange.end}
                             onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
                         />

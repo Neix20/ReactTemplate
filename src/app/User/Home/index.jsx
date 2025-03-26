@@ -85,9 +85,10 @@ function SearchSection(props) {
             p: 2
         },
         search: {
-            width: { xs: "100%", sm: "60%" },
+            width: { xs: "100%", sm: "80%", md: "60%" },
         },
         txtInput: {
+            flex: .8,
             flexGrow: 1,
             borderRadius: 0,
         }
@@ -140,7 +141,8 @@ function SearchSection(props) {
                         variant={"contained"}
                         color={"warning"}
                         onClick={onSearch}
-                        endIcon={<Search />}>Search</Button>
+                        endIcon={<Search />}
+                        sx={{ flex: .2, maxWidth: "100px", minWidth: "100px" }}>Search</Button>
                 </Grid2>
             </Grid2>
             <Collapse in={flag} sx={{ display: flag ? "block": "none" }}>
