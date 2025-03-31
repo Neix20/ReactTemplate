@@ -7,7 +7,7 @@ import { GlobalStyles, SampleData } from "@config";
 function Index(props) {
 
     return (
-        <Container maxWidth={"lg"} sx={{ py: { xs: 12, sm: 16, md: 20 } }}>
+        <Container maxWidth={"xl"} sx={{ py: { xs: 12, sm: 16, md: 20 } }}>
             <Grid2 container justifyContent={"center"}>
                 <Typography variant={"h2"}>404 Error Broken Link</Typography>
             </Grid2>

@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 
-import { Grid2, Box, Tabs, Tab, Paper } from "@mui/material";
+import { Container, Grid2, Box, Tabs, Tab, Paper } from "@mui/material";
 
 import { GlobalStyles } from "@config";
 

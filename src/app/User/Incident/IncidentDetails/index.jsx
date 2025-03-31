@@ -239,13 +239,13 @@ function Index(props) {
         <>
             <BpLoading loading={loading} />
             <Box sx={{ py: 4 }}>
-                <Container maxWidth={"lg"}>
+                <Container maxWidth={"xl"}>
                     {/* Title */}
                     <TitleSection />
                 </Container>
             </Box>
             <Box sx={{ backgroundColor: "#1a2332", py: 1 }}>
-                <Container maxWidth={"lg"}>
+                <Container maxWidth={"xl"}>
                     <BpTab
                         tabPages={tabPages}
                         sx={{

@@ -23,7 +23,7 @@ function Index(props) {
     }, []);
 
     return (
-        <Container maxWidth={"lg"} sx={{
+        <Container maxWidth={"xl"} sx={{
             display: "flex",
             flexDirection: "column",
             gap: { xs: 4, sm: 4 },

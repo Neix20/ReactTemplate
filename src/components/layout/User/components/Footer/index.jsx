@@ -22,9 +22,7 @@ function Copyright() {
   return (
     <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
       {'Copyright © '}
-      <Link color="text.secondary" href="https://mui.com/">
-        Sitemark
-      </Link>
+      Sitemark
       &nbsp;
       {new Date().getFullYear()}
     </Typography>
@@ -34,145 +32,145 @@ function Copyright() {
 function FooterLinks(props) {
   return (
     <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', sm: 'row' },
-            width: '100%',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 4,
-              minWidth: { xs: '100%', sm: '60%' },
-            }}
-          >
-            <Box sx={{ width: { xs: '100%', sm: '60%' }, display: "flex", flexDirection: "column", gap: 2 }}>
-              {/* <SitemarkIcon /> */}
-              <BpLogo />
-              <Grid2 container flexDirection={"column"} spacing={1}>
-                <Typography
-                  variant="body2"
-                  sx={{ fontWeight: 600 }}
-                >
-                  Join the newsletter
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  Subscribe for weekly updates. No spams ever!
-                </Typography>
-              </Grid2>
-              <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                <Typography
-                  variant="body2"
-                  sx={{ fontWeight: 600 }}
-                >
-                  Email
-                </Typography>
-                <Stack direction="row" spacing={1} useFlexGap>
-                  <TextField
-                    id="email-newsletter"
-                    hiddenLabel
-                    size="small"
-                    variant="outlined"
-                    fullWidth
-                    aria-label="Enter your email address"
-                    placeholder="Your email address"
-                    slotProps={{
-                      htmlInput: {
-                        autoComplete: 'off',
-                        'aria-label': 'Enter your email address',
-                      },
-                    }}
-                    sx={{ width: '250px' }}
-                  />
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    sx={{ flexShrink: 0 }}
-                  >
-                    Subscribe
-                  </Button>
-                </Stack>
-              </Box>
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: { xs: 'none', sm: 'flex' },
-              flexDirection: 'column',
-              gap: 1,
-            }}
-          >
-            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-              Product
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' },
+        width: '100%',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4,
+          minWidth: { xs: '100%', sm: '60%' },
+        }}
+      >
+        <Box sx={{ width: { xs: '100%', sm: '60%' }, display: "flex", flexDirection: "column", gap: 2 }}>
+          {/* <SitemarkIcon /> */}
+          <BpLogo />
+          <Grid2 container flexDirection={"column"} spacing={1}>
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 600 }}
+            >
+              Join the newsletter
             </Typography>
-            <Link color="text.secondary" variant="body2" href="#">
-              Features
-            </Link>
-            <Link color="text.secondary" variant="body2" href="#">
-              Testimonials
-            </Link>
-            <Link color="text.secondary" variant="body2" href="#">
-              Highlights
-            </Link>
-            <Link color="text.secondary" variant="body2" href="#">
-              Pricing
-            </Link>
-            <Link color="text.secondary" variant="body2" href="#">
-              FAQs
-            </Link>
-          </Box>
-          <Box
-            sx={{
-              display: { xs: 'none', sm: 'flex' },
-              flexDirection: 'column',
-              gap: 1,
-            }}
-          >
-            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-              Company
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              Subscribe for weekly updates. No spams ever!
             </Typography>
-            <Link color="text.secondary" variant="body2" href="#">
-              About us
-            </Link>
-            <Link color="text.secondary" variant="body2" href="#">
-              Careers
-            </Link>
-            <Link color="text.secondary" variant="body2" href="#">
-              Press
-            </Link>
-          </Box>
-          <Box
-            sx={{
-              display: { xs: 'none', sm: 'flex' },
-              flexDirection: 'column',
-              gap: 1,
-            }}
-          >
-            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-              Legal
+          </Grid2>
+          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 600 }}
+            >
+              Email
             </Typography>
-            <Link color="text.secondary" variant="body2" href="#">
-              Terms
-            </Link>
-            <Link color="text.secondary" variant="body2" href="#">
-              Privacy
-            </Link>
-            <Link color="text.secondary" variant="body2" href="#">
-              Contact
-            </Link>
+            <Stack direction="row" spacing={1} useFlexGap>
+              <TextField
+                id="email-newsletter"
+                hiddenLabel
+                size="small"
+                variant="outlined"
+                fullWidth
+                aria-label="Enter your email address"
+                placeholder="Your email address"
+                slotProps={{
+                  htmlInput: {
+                    autoComplete: 'off',
+                    'aria-label': 'Enter your email address',
+                  },
+                }}
+                sx={{ width: '250px' }}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                sx={{ flexShrink: 0 }}
+              >
+                Subscribe
+              </Button>
+            </Stack>
           </Box>
         </Box>
+      </Box>
+      <Box
+        sx={{
+          display: { xs: 'none', sm: 'flex' },
+          flexDirection: 'column',
+          gap: 1,
+        }}
+      >
+        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+          Product
+        </Typography>
+        <Link color="text.secondary" variant="body2" href="#">
+          Features
+        </Link>
+        <Link color="text.secondary" variant="body2" href="#">
+          Testimonials
+        </Link>
+        <Link color="text.secondary" variant="body2" href="#">
+          Highlights
+        </Link>
+        <Link color="text.secondary" variant="body2" href="#">
+          Pricing
+        </Link>
+        <Link color="text.secondary" variant="body2" href="#">
+          FAQs
+        </Link>
+      </Box>
+      <Box
+        sx={{
+          display: { xs: 'none', sm: 'flex' },
+          flexDirection: 'column',
+          gap: 1,
+        }}
+      >
+        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+          Company
+        </Typography>
+        <Link color="text.secondary" variant="body2" href="#">
+          About us
+        </Link>
+        <Link color="text.secondary" variant="body2" href="#">
+          Careers
+        </Link>
+        <Link color="text.secondary" variant="body2" href="#">
+          Press
+        </Link>
+      </Box>
+      <Box
+        sx={{
+          display: { xs: 'none', sm: 'flex' },
+          flexDirection: 'column',
+          gap: 1,
+        }}
+      >
+        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+          Legal
+        </Typography>
+        <Link color="text.secondary" variant="body2" href="#">
+          Terms
+        </Link>
+        <Link color="text.secondary" variant="body2" href="#">
+          Privacy
+        </Link>
+        <Link color="text.secondary" variant="body2" href="#">
+          Contact
+        </Link>
+      </Box>
+    </Box>
   )
 }
 
 export default function Footer() {
   return (
     <React.Fragment>
-      <Container
+      <Container maxWidth={"xl"}
         sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -205,7 +203,7 @@ export default function Footer() {
               <Link color="text.secondary" variant="body2" href="#">
                 Terms of Service
               </Link>
-            <Copyright />
+              <Copyright />
             </div>
           </Box>
           <Stack

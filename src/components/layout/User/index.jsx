@@ -14,7 +14,6 @@ const BpContainer = styled(Box)(({ theme }) => ({
         position: 'absolute',
         zIndex: -1,
         inset: 0,
-        // backgroundImage: 'linear-gradient(210deg, rgba(244,238,255,1) 0%, rgba(255,255,255,1) 100%)',
         backgroundImage: 'linear-gradient(180deg, rgba(80,150,209, 0.2) 0%, rgba(255,255,255,1) 75%)',
         backgroundRepeat: 'no-repeat',
         ...theme.applyStyles('dark', {
@@ -27,10 +26,9 @@ function Layout(props) {
 
     return (
         <>
-            {/* <CssBaseline enableColorScheme /> */}
             <AppBar />
             <BpContainer>
-            <Outlet />
+                <Outlet />
                 <Footer />
             </BpContainer>
         </>

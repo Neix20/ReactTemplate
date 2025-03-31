@@ -207,7 +207,7 @@ function Index(props) {
     // #endregion
 
     return (
-        <Container maxWidth={"lg"} sx={{
+        <Container maxWidth={"xl"} sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

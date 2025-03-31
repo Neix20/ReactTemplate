@@ -12,8 +12,13 @@ import IpSeries from "@app/Admin/IpSeries";
 import IpSeriesDetails from "@app/Admin/IpSeries/IpSeriesDetails";
 
 import Approve from "@app/Admin/Approve";
+
 import Scammer from "@app/Admin/Scammer";
+import ScammerDetails from "@app/Admin/Scammer/ScammerDetails";
+import ScammerAttr from "@app/Admin/Scammer/ScammerAttr";
 // import ASample from "@app/Admin/Sample";
+
+import Error from "@app/Error";
 
 const menuItems = [
     {
@@ -21,6 +26,14 @@ const menuItems = [
         title: 'Admin',
         type: 'group',
         children: [
+            {
+                id: "admin-error",
+                title: "error",
+                url: '/Admin/*',
+                show: false,
+                type: "item",
+                element: <Error />
+            },
             {
                 id: 'basic',
                 title: 'Basic',
@@ -36,6 +49,18 @@ const menuItems = [
                 url: '/Admin/Scammer',
                 icon: PersonOff,
                 element: <Scammer />
+            },
+            {
+                id: 'admin-scammer-details',
+                show: false,
+                url: '/Admin/Scammer/:ScammerId',
+                element: <ScammerDetails />
+            },
+            {
+                id: 'admin-scammer-attribute',
+                show: false,
+                url: '/Admin/Scammer/:ScammerId/ScammerAttr/:ScammerAttrId',
+                element: <ScammerAttr />
             },
             {
                 id: 'admin-incident',
@@ -72,7 +97,7 @@ const menuItems = [
                 show: false,
                 url: '/Admin/IpSeries/:IpSeriesId',
                 element: <IpSeriesDetails />
-            },
+            }
         ]
     },
     // {

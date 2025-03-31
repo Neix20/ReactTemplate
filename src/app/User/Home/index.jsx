@@ -247,7 +247,7 @@ function ChartSection() {
 
 function Index(props) {
     return (
-        <Container maxWidth={"lg"} sx={{
+        <Container maxWidth={"xl"} sx={{
             display: "flex",
             flexDirection: "column",
             gap: { xs: 5, sm: 5 },
