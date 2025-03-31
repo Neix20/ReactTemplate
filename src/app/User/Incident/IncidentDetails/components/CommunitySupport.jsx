@@ -64,7 +64,7 @@ const CommunityDiscussions = () => {
 
       {/* Share Your Thoughts */}
       < Box sx={{ bgcolor: "#1E293B", borderRadius: 2, p: 3 }}>
-        <Typography sx={{ color: "#38BDF8", fontSize: "1.125rem", fontWeight: "medium", mb: 2 }}>
+        <Typography sx={{ fontSize: "1.125rem", fontWeight: "medium", mb: 2 }}>
           Share Your Thoughts
         </Typography>
         <TextField
@@ -72,7 +72,7 @@ const CommunityDiscussions = () => {
           multiline
           rows={4}
           placeholder="Share your experience, advice, or support for other victims..."
-          sx={{ bgcolor: "#243757", borderRadius: 2, input: { color: "white" } }}
+          sx={{ borderRadius: 2}}
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
         />

@@ -10,7 +10,7 @@ function Wrapper(props) {
     const { colSpacing = 1, sx = {} } = props;
 
     return (
-        <Grid2 container flexWrap={"wrap"} spacing={colSpacing} alignItems={"flex-start"}>
+        <Grid2 container flexWrap={"wrap"} spacing={{xs: 1, sm: 2}} alignItems={"flex-start"}>
             {children}
         </Grid2>
     )
@@ -28,27 +28,22 @@ function Wrapper(props) {
 function Index(props) {
 
     const { idx: key = "", field = [], children = (<></>) } = props;
-    const { colSpacing = 1, sx = {} } = props;
+    const { sx = {} } = props;
 
-    const wrapperProps = {
-        colSpacing: colSpacing,
-        sx: sx
-    }
-
-    const { data = {}, onUpdate = () => { }, hasLabel = false, numCols = 2 } = props;
+    const { data = {}, onUpdate = () => { }, hasLabel = false } = props;
 
     const renderItem = (obj) => {
         const { name = "" } = obj;
         return (
             <BpFormItem key={`${key}-${name}`} idx={`${key}-${name}`}
                 value={data[name]} onChange={onUpdate}
-                hasLabel={hasLabel} size={numCols}
+                hasLabel={hasLabel}
                 {...obj} />
         )
     }
 
     return (
-        <Wrapper {...wrapperProps}>
+        <Wrapper sx={sx}>
             {field.filter(x => x.editable !== false).map(renderItem)}
             {children}
         </Wrapper>

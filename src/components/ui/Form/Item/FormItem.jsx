@@ -7,7 +7,7 @@ import BasicFormItem from "./BasicFormItem";
 
 const FormItem = (props = {}) => {
 
-    const { size = 2, hasLabel = false } = props;
+    const { hasLabel = false } = props;
 
     const { required = false, name = "" } = props;
 
@@ -20,11 +20,8 @@ const FormItem = (props = {}) => {
     // Parameters
     const placeholder = clsUtility.capitalize(name);
     const lbl = hasLabel ? "" : placeholder;
-
-    const sz = Math.floor(12 / size);
-
     return (
-        <Grid2 container size={sz} alignItems={"center"}>
+        <Grid2 container size={{ xs: 12, sm: 6 }} alignItems={"center"}>
             {hasLabel ? (<Typography sx={style.txtLabel}>{placeholder}{required ? "*" : ""}</Typography>) : (<></>)}
             <BasicFormItem label={lbl} placeholder={placeholder} {...props} />
         </Grid2>

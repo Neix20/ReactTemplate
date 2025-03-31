@@ -7,7 +7,10 @@ import { Settings, PersonOff, Article, AssignmentTurnedIn, SmartToy } from "@mui
 
 import Incident from "@app/Admin/Incident";
 import IncidentDetails from "@app/Admin/Incident/IncidentDetails";
+
 import IpSeries from "@app/Admin/IpSeries";
+import IpSeriesDetails from "@app/Admin/IpSeries/IpSeriesDetails";
+
 import Approve from "@app/Admin/Approve";
 import Scammer from "@app/Admin/Scammer";
 // import ASample from "@app/Admin/Sample";
@@ -63,6 +66,12 @@ const menuItems = [
                 url: '/Admin/IpSeries',
                 icon: SmartToy,
                 element: <IpSeries />
+            },
+            {
+                id: 'admin-ip-series-details',
+                show: false,
+                url: '/Admin/IpSeries/:IpSeriesId',
+                element: <IpSeriesDetails />
             },
         ]
     },

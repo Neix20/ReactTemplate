@@ -77,7 +77,7 @@ const App = () => {
 
     return (
         <>
-            <Grid2 container flexDirection={"column"} spacing={1}>
+            <Grid2 container flexDirection={"column"} spacing={1.5}>
                 {/* Normal Section */}
                 {/* <Grid2 container spacing={1}>
                     <TextField

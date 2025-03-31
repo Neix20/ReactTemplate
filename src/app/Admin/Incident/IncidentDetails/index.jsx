@@ -39,7 +39,7 @@ function Index(props) {
     const navigate = useNavigate();
 
     const goBack = () => {
-        navigate(`/Admin/Incident`);
+        navigate(-1);
     }
 
     // #region Action
@@ -164,18 +164,6 @@ function Index(props) {
             })
     }
     // #endregion
-
-    const { value: bpFormObj } = useCusMedia({
-        xs: {
-            cols: 1,
-            spacing: 1
-        },
-        sm: {
-            cols: 2,
-            spacing: 2
-        }
-    });
-
     return (
         <>
             <BpLoading loading={loading} />
@@ -197,14 +185,12 @@ function Index(props) {
             <Grid2 container spacing={1}>
                 <Box sx={{ ...GlobalStyles.bordered, borderColor: (theme) => theme.palette.grey[200] }}>
                     <BpForm
-                        numCols={bpFormObj?.cols}
-                        colSpacing={bpFormObj?.spacing}
                         hasLabel={true}
                         key={incKey} idx={incKey}
                         data={incData} field={incField}
                         onUpdate={updateIncData}>
                         <BpFormItem
-                            hasLabel={true} size={bpFormObj?.cols}
+                            hasLabel={true}
                             type={"dropdown"} placeholder={"Select Platform"}
                             name={"platform"} value={incData["platform"]}
                             selection={SampleData.Platform}
