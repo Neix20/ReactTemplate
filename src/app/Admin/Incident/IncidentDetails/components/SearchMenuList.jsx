@@ -5,12 +5,14 @@ import { Add, Close, Search, Cancel } from "@mui/icons-material";
 
 import { useToggle } from "@hooks";
 
+import { clsUtility } from "@utility";
+
 function useFilterData(val) {
     const [data, setData] = useState([]);
 
-    const handleAddData = (scammer) => {
-        if (!data.includes(scammer)) {
-            setData([...data, scammer]);
+    const handleAddData = (_data) => {
+        if (!data.includes(_data)) {
+            setData([...data, _data]);
         }
     };
 
@@ -25,7 +27,7 @@ function useFilterData(val) {
 
 const Index = (props) => {
 
-    const { selection = [], sx = {} } = props;
+    const { searchField = "", selection = [], sx = {} } = props;
 
     const { data, handleAddData, handleRemoveData } = useFilterData();
     const [searchTerm, setSearchTerm] = useState("");
@@ -70,12 +72,12 @@ const Index = (props) => {
         <Box sx={style.main}>
             <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
                 <Typography variant="h4" sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>
-                    Scammers
+                    {clsUtility.capitalize(searchField)}
                 </Typography>
-                <Button variant="contained" color="primary" startIcon={<Add />} onClick={open}>Scammer</Button>
+                <Button variant="contained" color="primary" startIcon={<Add />} onClick={open}>{clsUtility.capitalize(searchField)}</Button>
             </Grid2>
 
-            {/* Scammer Search Dropdown */}
+            {/* Search Dropdown */}
             <MenuList sx={(theme) => (
                 {
                     mt: 1,
@@ -88,7 +90,7 @@ const Index = (props) => {
                 <Grid2 container spacing={0}>
                     <TextField
                         variant="standard"
-                        placeholder="Search scammers..."
+                        placeholder={`Search ${searchField}...`}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         slotProps={{

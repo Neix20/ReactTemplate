@@ -46,7 +46,7 @@ function Index(props) {
             getData();
         }
         getAllIpSeries();
-    }, [IpSeriesId]);
+    }, [refresh]);
 
     // #region Actions
     const getAllIpSeries = () => {
@@ -56,7 +56,12 @@ function Index(props) {
                 setLoadingFalse();
 
                 const { data } = res;
-                setIpAsset(_ => data);
+
+                const _arr = data.map(x => ({
+                    name: x.name,
+                    value: x.PK
+                }));
+                setIpAsset(_ => _arr);
             })
             .catch(err => {
                 setLoadingFalse();
@@ -146,7 +151,7 @@ function Index(props) {
                             hasLabel={true}
                             type={"dropdown"} placeholder={"Select Parent"}
                             name={"parent"} value={ipData["parent"]}
-                            selection={ipAsset.map(x => ({ name: x.name, value: x.name }))}
+                            selection={ipAsset}
                             onChange={updateIpData}
                         />
                     </BpForm>

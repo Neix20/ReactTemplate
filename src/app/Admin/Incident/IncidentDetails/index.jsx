@@ -11,7 +11,7 @@ import { GlobalStyles, Models, SampleData } from "@config";
 
 import { useNavigate, useParams } from "react-router-dom";
 
-import { fetchIncidentGet, fetchIncidentAdd, fetchIncidentUpdate, fetchIncidentUploadImg, fetchScammerGetAll } from "@api";
+import { fetchIncidentGet, fetchIncidentAdd, fetchIncidentUpdate, fetchIncidentUploadImg, fetchScammerGetAll, fetchIpSeriesGetAll } from "@api";
 
 import SearchMenuList from "./components/SearchMenuList";
 
@@ -24,6 +24,7 @@ function Index(props) {
 
     const [imgAsset, setImgAsset] = useState([]);
     const [scammer, setScammer] = useState([]);
+    const [ipSeries, setIpSeries] = useState([]);
 
     const {
         key: incKey,
@@ -41,6 +42,14 @@ function Index(props) {
     const goBack = () => {
         navigate(-1);
     }
+
+    useEffect(() => {
+        getAllIpSeries();
+        getAllScammer();
+        if (IncidentId != "0") {
+            getData();
+        }
+    }, [refresh]);
 
     // #region Action
     const getData = () => {
@@ -114,19 +123,34 @@ function Index(props) {
                 setLoadingFalse();
             })
     }
-    // #endregion
 
-    useEffect(() => {
-        getAllScammer();
-        if (IncidentId != "0") {
-            getData();
-        }
-    }, [refresh])
+    const getAllIpSeries = () => {
+        setLoadingTrue();
+        fetchIpSeriesGetAll()
+            .then(res => {
+                setLoadingFalse();
+
+                const { data = [] } = res;
+
+                const _arr = data.map(x => ({
+                    name: x.name,
+                    value: x.PK
+                }));
+
+                setIpSeries(_ => _arr);
+            })
+            .catch(() => {
+                setLoadingFalse();
+            })
+    }
+    // #endregion
 
     const onSave = () => {
         const _data = {
             incident: incData,
-            incidentAsset: imgAsset
+            incidentAsset: imgAsset,
+            scammer: scammer,
+            ipSeries: ipSeries
         }
 
         const _func = (IncidentId == "0") ? () => addData(_data) : () => updateData(_data);
@@ -200,10 +224,12 @@ function Index(props) {
                 </Box>
 
                 {/* Multiple Scammer */}
-                <SearchMenuList selection={scammer.map(x => x.name)} />
+                <SearchMenuList searchField={"scammer"} selection={scammer.map(x => x.name)} />
 
                 {/* Multiple Ip Series */}
+                <SearchMenuList searchField={"ip_series"} selection={ipSeries.map(x => x.name)} />
 
+                {/* Image Asset */}
                 <Grid2 container spacing={2} flexDirection={"column"} sx={{ width: "100%" }}>
                     <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
                         <Typography variant="h4" sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>Image Asset</Typography>
