@@ -202,6 +202,8 @@ function Index(props) {
                 {/* Multiple Scammer */}
                 <SearchMenuList selection={scammer.map(x => x.name)} />
 
+                {/* Multiple Ip Series */}
+
                 <Grid2 container spacing={2} flexDirection={"column"} sx={{ width: "100%" }}>
                     <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
                         <Typography variant="h4" sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>Image Asset</Typography>

@@ -6,21 +6,16 @@ import { BpFormItem } from "@components";
 import { clsUtility } from "@utility";
 
 function Wrapper(props) {
-    const { children = (<></>) } = props;
-    const { colSpacing = 1, sx = {} } = props;
+    const { children = (<></>), sx = {} } = props;
+
+    const style = {
+        main: {},
+        ...sx
+    }
 
     return (
-        <Grid2 container flexWrap={"wrap"} spacing={{xs: 1, sm: 2}} alignItems={"flex-start"}>
+        <Grid2 container flexWrap={"wrap"} spacing={{xs: 1, sm: 2}} alignItems={"flex-start"} sx={style.main}>
             {children}
-        </Grid2>
-    )
-
-    return (
-        <Grid2 container spacing={2} flexDirection={"column"} sx={style.main}>
-            {hasTitle ? (<Typography variant={"h2"} sx={{ color: "text.primary" }}>{title}</Typography>) : (<></>)}
-            <Grid2 container flexWrap={"wrap"} spacing={spacing} alignItems={"flex-start"}>
-                {children}
-            </Grid2>
         </Grid2>
     )
 }
@@ -33,7 +28,8 @@ function Index(props) {
     const { data = {}, onUpdate = () => { }, hasLabel = false } = props;
 
     const renderItem = (obj) => {
-        const { name = "" } = obj;
+        const { name = "", show = false } = obj;
+
         return (
             <BpFormItem key={`${key}-${name}`} idx={`${key}-${name}`}
                 value={data[name]} onChange={onUpdate}
@@ -44,7 +40,7 @@ function Index(props) {
 
     return (
         <Wrapper sx={sx}>
-            {field.filter(x => x.editable !== false).map(renderItem)}
+            {field.filter(x => x.show !== false).map(renderItem)}
             {children}
         </Wrapper>
     )

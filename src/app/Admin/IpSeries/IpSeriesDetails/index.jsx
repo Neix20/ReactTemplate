@@ -11,7 +11,7 @@ import { GlobalStyles, Models, SampleData } from "@config";
 
 import { useNavigate, useParams } from "react-router-dom";
 
-import { fetchIpSeriesGet, fetchIpSeriesAdd, fetchIpSeriesUpdate } from "@api";
+import { fetchIpSeriesGetAll, fetchIpSeriesGet, fetchIpSeriesAdd, fetchIpSeriesUpdate } from "@api";
 
 import { clsUtility } from "@utility";
 
@@ -21,6 +21,8 @@ function Index(props) {
 
     const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
     const { flag: refresh, toggle: toggleRefresh } = useToggle();
+
+    const [ipAsset, setIpAsset] = useState([]);
 
     const {
         key: ipKey,
@@ -37,6 +39,29 @@ function Index(props) {
 
     const goBack = () => {
         navigate(-1);
+    }
+
+    useEffect(() => {
+        if (IpSeriesId !== "0") {
+            getData();
+        }
+        getAllIpSeries();
+    }, [IpSeriesId]);
+
+    // #region Actions
+    const getAllIpSeries = () => {
+        setLoadingTrue();
+        fetchIpSeriesGetAll()
+            .then(res => {
+                setLoadingFalse();
+
+                const { data } = res;
+                setIpAsset(_ => data);
+            })
+            .catch(err => {
+                setLoadingFalse();
+                console.error(err);
+            })
     }
 
     const getData = () => {
@@ -85,16 +110,11 @@ function Index(props) {
             })
     }
 
-    useEffect(() => {
-        if (IpSeriesId !== "0") {
-            getData();
-        }
-    }, [IpSeriesId]);
-
     const onSave = () => {
         const _func = (IpSeriesId == "0") ? () => addData() : () => updateData();
         _func();
     };
+    // #endregion
 
     return (
         <>
@@ -122,6 +142,13 @@ function Index(props) {
                         key={ipKey} idx={ipKey}
                         data={ipData} field={ipField}
                         onUpdate={updateIpData}>
+                        <BpFormItem
+                            hasLabel={true}
+                            type={"dropdown"} placeholder={"Select Parent"}
+                            name={"parent"} value={ipData["parent"]}
+                            selection={ipAsset.map(x => ({ name: x.name, value: x.name }))}
+                            onChange={updateIpData}
+                        />
                     </BpForm>
                 </Box>
             </Grid2>

@@ -16,7 +16,8 @@ const obj = {
         },
         {
             "name": "parent",
-            "type": "dropdown"
+            "type": "dropdown",
+            "show": false
         },
         {
             "name": "image",
