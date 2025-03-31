@@ -182,7 +182,7 @@ export default function Footer() {
           textAlign: "left",
         }}
       >
-        {/* <FooterLinks /> */}
+        <FooterLinks />
         <Box
           sx={{
             display: 'flex',

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 
 import { Container, Grid2, Typography, Button, Paper, IconButton, Box, Tooltip, Chip } from "@mui/material";
 
+import { Card, Avatar, CardContent } from "@mui/material";
+
 import { GlobalStyles, Images, Models } from "@config";
 
 import { useParams } from "react-router-dom";
@@ -12,6 +14,12 @@ import { BpLoading, BpJsonDataTable, BpImageGallery, BpHeader, BpTab } from "@co
 import { fetchIncidentGet, fetchScammerGetAllAttr } from "@api";
 
 import { clsUtility } from "@utility";
+
+import BodyWrapper from "./components/BodyWrapper";
+
+import ScamReport from "./components/ScamReport";
+import CommunitySupport from "./components/CommunitySupport";
+import HelpResource from "./components/HelpResource";
 
 const sampleData = {
     incident: [
@@ -130,32 +138,6 @@ const sampleData = {
     ]
 };
 
-function ScamReport(props) {
-    return (
-        <Grid2 container>
-            <Typography>This is Scam Reports Page</Typography>
-        </Grid2>
-    )
-}
-
-function CommunitySupport(props) {
-    return (
-        <Grid2 container>
-            <Typography>This is Community Support Page</Typography>
-        </Grid2>
-    )
-}
-
-function HelpResource(props) {
-    return (
-        <Grid2 container>
-            <Typography>This is Help Resource Page</Typography>
-        </Grid2>
-    )
-}
-
-import { Card, CardContent } from "@mui/material";
-
 function Index(props) {
 
     const { IncidentId = "" } = useParams();
@@ -231,108 +213,51 @@ function Index(props) {
     const tabPages = [
         {
             title: "SCAM REPORTS",
-            element: (<ScamReport />)
+            element: (<BodyWrapper>
+                <ScamReport />
+            </BodyWrapper>)
         },
         {
             title: "COMMUNITY SUPPORT",
-            element: (<CommunitySupport />)
+            element: (
+                <BodyWrapper>
+                    <CommunitySupport />
+                </BodyWrapper>
+            )
         },
         {
             title: "HELP RESOURCES",
-            element: (<HelpResource />)
+            element: (
+                <BodyWrapper>
+                    <HelpResource />
+                </BodyWrapper>
+            )
         },
     ];
-
-    const TabHead = ({ children }) => (
-        <Grid2 container alignItems={"center"} sx={{ px: 1 }}>
-            {children}
-        </Grid2>
-    )
 
     return (
         <>
             <BpLoading loading={loading} />
-            <Container maxWidth={"lg"} sx={{
-                pt: { xs: 4, sm: 4 }
-            }}>
-                {/* Title */}
-                <TitleSection />
-
-                <Box sx={{
-                    mt: 2
-                }}>
+            <Box sx={{ py: 4 }}>
+                <Container maxWidth={"lg"}>
+                    {/* Title */}
+                    <TitleSection />
+                </Container>
+            </Box>
+            <Box sx={{ backgroundColor: "#1a2332", py: 1 }}>
+                <Container maxWidth={"lg"}>
                     <BpTab
-                        HeadWrapper={TabHead}
                         tabPages={tabPages}
                         sx={{
                             tabHeadItem: {
                                 mr: 2
                             },
                             tabBody: {
-                                p: 2
+                                py: 2
                             }
                         }} />
-                </Box>
-
-                {/* Scammer Details */}
-                <Card variant={"outlined"}>
-                    <CardContent>
-                        <Typography variant={"h4"}>Scammer Details</Typography>
-                        <Box>
-                            <Typography variant={"subtitle2"}>Known Aliases</Typography>
-                            <Typography variant={"body1"}>Jimmy Investments, Jay Rod</Typography>
-                        </Box>
-                        <Box>
-                            <Typography variant={"subtitle2"}>Social Media</Typography>
-                            <Typography variant={"body1"}>Facebook: Test</Typography>
-                            <Typography variant={"body1"}>Instagram: Test</Typography>
-                        </Box>
-                        <Box>
-                            <Typography variant={"subtitle2"}>Payment Methods</Typography>
-                            <Typography variant={"body1"}>Facebook: Test</Typography>
-                            <Typography variant={"body1"}>Instagram: Test</Typography>
-                        </Box>
-                    </CardContent>
-                </Card>
-
-                {/* Scam Statistics */}
-                <Card variant={"outlined"}>
-                    <CardContent>
-                        <Typography variant={"h4"}>Scam Statistics</Typography>
-                        <Box>
-                            <Typography variant={"subtitle2"}>Known Aliases</Typography>
-                            <Typography variant={"body1"}>Jimmy Investments, Jay Rod</Typography>
-                        </Box>
-                        <Box>
-                            <Typography variant={"subtitle2"}>Social Media</Typography>
-                            <Typography variant={"body1"}>Facebook: Test</Typography>
-                            <Typography variant={"body1"}>Instagram: Test</Typography>
-                        </Box>
-                        <Box>
-                            <Typography variant={"subtitle2"}>Payment Methods</Typography>
-                            <Typography variant={"body1"}>Facebook: Test</Typography>
-                            <Typography variant={"body1"}>Instagram: Test</Typography>
-                        </Box>
-                    </CardContent>
-                </Card>
-
-                {/* IP Series Involved */}
-                <Card variant={"outlined"}>
-                    <CardContent>
-                        <Typography variant={"h4"}>IP Series Involved</Typography>
-                        <Card>
-                            <Grid2 container spacing={1} sx={{ p: 2 }}>
-                            <Box component="img" src={Images.bgStock01} alt="Background" sx={style.img} />
-
-                            <Grid2>
-                                <Typography variant={"h4"}>CryBaby</Typography>
-                                <Typography variant={"body1"}>Nostrud incididunt voluptate esse id laborum exercitation laborum esse minim minim.</Typography>
-                            </Grid2>
-                            </Grid2>
-                        </Card>
-                    </CardContent>
-                </Card>
-            </Container>
+                </Container>
+            </Box>
         </>
     )
 }

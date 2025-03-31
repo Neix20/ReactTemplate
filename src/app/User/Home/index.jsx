@@ -257,7 +257,7 @@ function Index(props) {
             <SearchSection />
             <AnalyticSection />
             <SourceSection />
-            <ChartSection />
+            {/* <ChartSection /> */}
         </Container>
     )
 }

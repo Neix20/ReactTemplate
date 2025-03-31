@@ -67,16 +67,16 @@ function Index(props) {
     return (
         <AppBar position="sticky" enableColorOnDark sx={{ boxShadow: 0 }}>
             <StyledToolbar variant="dense" disableGutters>
-                <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0, gap: 1 }}>
+                <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
                     <BpLogo />
                     <Box sx={{ display: { xs: 'none', md: 'flex', gap: 3 } }}>
                         {menuItems?.map(renderItem)}
                     </Box>
                 </Box>
                 <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
-                    {/* <Button color="primary" variant="contained" size="small" component={NavLink} to={"/SignIn"}>
+                    <Button color="primary" variant="contained" size="small" component={NavLink} to={"/SignIn"}>
                         Login
-                    </Button> */}
+                    </Button>
                     <ColorModeIconDropdown />
                 </Box>
                 <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>

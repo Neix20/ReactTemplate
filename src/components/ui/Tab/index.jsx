@@ -40,7 +40,7 @@ function Index(props) {
     return (
         <>
             <HeadWrapper>
-                <Tabs value={tabIdx} onChange={handleChangeTab}>
+                <Tabs variant={"scrollable"} value={tabIdx} onChange={handleChangeTab}>
                     {tabPages.map(renderTab)}
                 </Tabs>
             </HeadWrapper>

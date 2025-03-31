@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-import { Container, Grid2, Typography, Button, Paper, IconButton, Box, Tooltip } from "@mui/material";
+import { Container, Grid2, Typography, Button, IconButton, Box, Tooltip, Paper, Card } from "@mui/material";
 import { GlobalStyles, SampleData } from "@config";
 
 import Stepper from "./components/Stepper";
@@ -245,7 +245,7 @@ function Index(props) {
                         </Grid2>
                         <Grid2 container flexDirection={"column"} spacing={1}>
                             <Typography>Pretend to Be</Typography>
-                            <BpBasicFormItem type={"text"}
+                            <BpBasicFormItem type={"dropdown"}
                                 placeholder={"What did they pretend to be?"}
                                 name={"pretend_to_be"}
                                 sx={style.txtInput} />
