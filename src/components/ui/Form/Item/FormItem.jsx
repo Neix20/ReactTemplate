@@ -13,7 +13,7 @@ const FormItem = (props = {}) => {
 
     const style = {
         txtLabel: {
-            width: { xs: "120px" },
+            width: { xs: "135px" },
         }
     }
 

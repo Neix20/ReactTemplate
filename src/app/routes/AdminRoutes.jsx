@@ -40,7 +40,7 @@ const menuItems = [
                 type: 'item',
                 show: false,
                 url: '/Admin',
-                element: <Incident />
+                element: <Scammer />
             },
             {
                 id: 'admin-scammer',

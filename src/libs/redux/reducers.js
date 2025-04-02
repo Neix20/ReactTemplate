@@ -1,7 +1,6 @@
 
 const initialState = {
     user: {
-        isLogin: false,
         lastSession: ""
     }
 

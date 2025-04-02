@@ -1,6 +1,8 @@
 
 import { clsConst } from "@config";
 
+// This needs to follow the same pattern as Amplify
+
 const signIn = async (data, callBack) => {
 
     const { username = "", password = "" } = data;
@@ -26,7 +28,7 @@ const signUp = () => { }
 const confirmSignUp = () => { }
 const forgotPassword = () => { }
 
-const isUserAuthenticated = async (data) => {
+const isAuthenticated = async (data) => {
 
     const { isLogin = false, lastSession = "" } = data;
 
@@ -45,7 +47,7 @@ const isUserAuthenticated = async (data) => {
     const flag = (isLogin && timeDiff < ttl);
 
     if (!flag) {
-        throw new Error("User Session has Expired")
+        throw new Error("User Session has Expired");
     }
 
     return true;
@@ -57,5 +59,5 @@ export {
     signUp,
     confirmSignUp,
     forgotPassword,
-    isUserAuthenticated
+    isAuthenticated
 }
