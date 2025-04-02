@@ -10,7 +10,7 @@ const data = {
         padding: 2,
         borderWidth: "1px",
         borderStyle: "solid",
-        borderColor: "background.border",
+        borderColor: (theme) => theme.palette.grey[200],
     },
     body: {
         height: "90%",

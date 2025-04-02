@@ -5,45 +5,52 @@ import { BpFormItem } from "@components";
 
 import { clsUtility } from "@utility";
 
-function Wrapper(props) {
-    const { children = (<></>), sx = {} } = props;
+function Index(props) {
+
+    const { idx: key = "", field = [] } = props;
+    const { children = (<></>), sx = {}, size = {} } = props;
+
+    const { data = {}, onUpdate = () => { }, hasLabel = false } = props;
+
+    const _spacing= {
+        xs: 1, 
+        sm: 2,
+        ...size
+    };
+
+    const renderItem = (obj) => {
+        const { name = "" } = obj;
+
+        const idx = `${key}-${name}`;
+
+        const _xs = 12 / _spacing.xs;
+        const _sm = 12 / _spacing.sm;
+
+        const _size = {
+            xs: _xs,
+            sm: _sm,
+        }
+
+        return (
+            <BpFormItem key={idx} idx={idx}
+                value={data[name]} onChange={onUpdate}
+                hasLabel={hasLabel} size={_size}
+                {...obj} />
+        )
+    };
 
     const style = {
         main: {},
         ...sx
-    }
+    };
 
     return (
-        <Grid2 container flexWrap={"wrap"} spacing={{xs: 1, sm: 2}} alignItems={"flex-start"} sx={style.main}>
-            {children}
-        </Grid2>
-    )
-}
-
-function Index(props) {
-
-    const { idx: key = "", field = [], children = (<></>) } = props;
-    const { sx = {} } = props;
-
-    const { data = {}, onUpdate = () => { }, hasLabel = false } = props;
-
-    const renderItem = (obj) => {
-        const { name = "", show = false } = obj;
-
-        return (
-            <BpFormItem key={`${key}-${name}`} idx={`${key}-${name}`}
-                value={data[name]} onChange={onUpdate}
-                hasLabel={hasLabel}
-                {...obj} />
-        )
-    }
-
-    return (
-        <Wrapper sx={sx}>
+        <Grid2 container flexWrap={"wrap"} spacing={_spacing} 
+            alignItems={"flex-start"} sx={style.main}>
             {field.filter(x => x.show !== false).map(renderItem)}
             {children}
-        </Wrapper>
-    )
+        </Grid2>
+    );
 }
 
 export default Index;

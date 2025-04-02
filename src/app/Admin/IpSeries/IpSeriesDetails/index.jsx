@@ -141,7 +141,7 @@ function Index(props) {
                 }
             />
             <Grid2 container>
-                <Box sx={{ ...GlobalStyles.bordered, borderColor: (theme) => theme.palette.grey[200] }}>
+                <Box sx={GlobalStyles.bordered}>
                     <BpForm
                         hasLabel={true}
                         key={ipKey} idx={ipKey}

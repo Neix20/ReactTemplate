@@ -15,6 +15,27 @@ import { fetchIncidentGet, fetchIncidentAdd, fetchIncidentUpdate, fetchIncidentU
 
 import SearchMenuList from "./components/SearchMenuList";
 
+function useFilterData() {
+    const [data, setData] = useState([]);
+
+    const handleAddData = (_data) => {
+        setData((prevData) => {
+            if (!prevData.includes(_data)) {
+                return [...prevData, _data];
+            }
+            return prevData;
+        });
+    };
+
+    const handleRemoveData = (obj) => {
+        setData((prevData) => prevData.filter((s) => s !== obj));
+    };
+
+    return {
+        data, setData, handleAddData, handleRemoveData
+    }
+}
+
 function Index(props) {
 
     const { IncidentId = "0" } = useParams();
@@ -23,8 +44,14 @@ function Index(props) {
     const { flag: refresh, toggle: toggleRefresh } = useToggle();
 
     const [imgAsset, setImgAsset] = useState([]);
-    const [scammer, setScammer] = useState([]);
-    const [ipSeries, setIpSeries] = useState([]);
+
+    const { data: scammer, setData: setScammer,
+        handleAddData: handleAddScammer, handleRemoveData: handleRemoveScammer } = useFilterData();
+    const [scammerSelection, setScammerSelection] = useState([]);
+
+    const { data: ipSeries, setData: setIpSeries,
+        handleAddData: handleAddIpSeries, handleRemoveData: handleRemoveIpSeries } = useFilterData();
+    const [ipSeriesSelection, setIpSeriesSelection] = useState([]);
 
     const {
         key: incKey,
@@ -60,9 +87,12 @@ function Index(props) {
             .then(res => {
                 setLoadingFalse();
 
-                const { incident, incidentAsset } = res;
+                const { incident, incidentAsset, scammer, ipSeries } = res;
                 loadIncData(incident);
                 setImgAsset(_ => incidentAsset);
+                setScammer(_ => scammer);
+                setIpSeries(_ => ipSeries);
+
             })
             .catch(err => {
                 setLoadingFalse();
@@ -117,7 +147,7 @@ function Index(props) {
                     value: x.PK
                 }));
 
-                setScammer(_ => _arr);
+                setScammerSelection(_ => _arr);
             })
             .catch(() => {
                 setLoadingFalse();
@@ -137,7 +167,7 @@ function Index(props) {
                     value: x.PK
                 }));
 
-                setIpSeries(_ => _arr);
+                setIpSeriesSelection(_ => _arr);
             })
             .catch(() => {
                 setLoadingFalse();
@@ -149,9 +179,9 @@ function Index(props) {
         const _data = {
             incident: incData,
             incidentAsset: imgAsset,
-            scammer: scammer,
-            ipSeries: ipSeries
-        }
+            scammer,
+            ipSeries
+        };
 
         const _func = (IncidentId == "0") ? () => addData(_data) : () => updateData(_data);
         _func();
@@ -207,7 +237,7 @@ function Index(props) {
                 }
             />
             <Grid2 container spacing={1}>
-                <Box sx={{ ...GlobalStyles.bordered, borderColor: (theme) => theme.palette.grey[200] }}>
+            <Box sx={GlobalStyles.bordered}>
                     <BpForm
                         hasLabel={true}
                         key={incKey} idx={incKey}
@@ -224,10 +254,14 @@ function Index(props) {
                 </Box>
 
                 {/* Multiple Scammer */}
-                <SearchMenuList searchField={"scammer"} selection={scammer.map(x => x.name)} />
+                <SearchMenuList searchField={"scammer"} selection={scammerSelection}
+                    data={scammer} handleAddData={handleAddScammer} handleRemoveData={handleRemoveScammer}
+                />
 
                 {/* Multiple Ip Series */}
-                <SearchMenuList searchField={"ip_series"} selection={ipSeries.map(x => x.name)} />
+                <SearchMenuList searchField={"ip_series"} selection={ipSeriesSelection}
+                    data={ipSeries} handleAddData={handleAddIpSeries} handleRemoveData={handleRemoveIpSeries}
+                />
 
                 {/* Image Asset */}
                 <Grid2 container spacing={2} flexDirection={"column"} sx={{ width: "100%" }}>

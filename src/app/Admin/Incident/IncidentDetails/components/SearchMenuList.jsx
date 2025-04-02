@@ -7,34 +7,15 @@ import { useToggle } from "@hooks";
 
 import { clsUtility } from "@utility";
 
-function useFilterData(val) {
-    const [data, setData] = useState([]);
-
-    const handleAddData = (_data) => {
-        if (!data.includes(_data)) {
-            setData([...data, _data]);
-        }
-    };
-
-    const handleRemoveData = (obj) => {
-        setData(data.filter((s) => s !== obj));
-    };
-
-    return {
-        data, handleAddData, handleRemoveData
-    }
-}
-
 const Index = (props) => {
 
     const { searchField = "", selection = [], sx = {} } = props;
-
-    const { data, handleAddData, handleRemoveData } = useFilterData();
+    const { data = [], handleAddData = () => {}, handleRemoveData = () => {} } = props;
     const [searchTerm, setSearchTerm] = useState("");
 
     const { flag, open, close } = useToggle(false);
 
-    const filteredData = selection.filter((obj) => obj.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filteredData = selection.filter((obj) => obj.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
     const renderMenuItem = (obj, index) => {
         const addData = () => {
@@ -44,7 +25,7 @@ const Index = (props) => {
         };
         return (
             <MenuItem key={index} onClick={addData}>
-                {obj}
+                {obj.name}
             </MenuItem>
         )
     }
@@ -54,7 +35,7 @@ const Index = (props) => {
         return (
             <Chip
                 key={index}
-                label={obj}
+                label={obj.name}
                 onDelete={removeData}
                 deleteIcon={<Close />}
             />

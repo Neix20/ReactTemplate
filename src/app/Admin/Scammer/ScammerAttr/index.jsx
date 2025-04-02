@@ -98,7 +98,7 @@ function Index(props) {
         <>
             <BpLoading loading={loading} />
             <BpHeader
-                start={<Typography variant={"h2"} sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>{clsUtility.capitalize(Models.IpSeries.key)}</Typography>}
+                start={<Typography variant={"h2"} sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>{clsUtility.capitalize(Models.ScammerAttr.key)}</Typography>}
                 end={
                     <Grid2 container spacing={1}>
                         <Button
@@ -113,7 +113,7 @@ function Index(props) {
                     </Grid2>
                 }
             />
-            <Box sx={{ ...GlobalStyles.bordered, borderColor: (theme) => theme.palette.grey[200] }}>
+            <Box sx={GlobalStyles.bordered}>
                     <BpForm
                         hasLabel={true}
                         key={key} idx={key}

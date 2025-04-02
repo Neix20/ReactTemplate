@@ -6,8 +6,13 @@ const API_URL = import.meta.env.VITE_API_URL;
 const LOG_URL = import.meta.env.VITE_LOG_URL;
 
 const COGNITO_CONFIG = {
-    UserPoolId: import.meta.env.VITE_COGNITO_USER_POOL_ID,
-    ClientId: import.meta.env.VITE_COGNITO_CLIENT_ID,
+    Auth: {
+        Cognito: {
+            region: import.meta.env.VITE_AWS_REGION,
+        userPoolId: import.meta.env.VITE_COGNITO_USER_POOL_ID,
+        userPoolWebClientId: import.meta.env.VITE_COGNITO_CLIENT_ID,
+        }
+    }
 }
 
 const TIME_FOR_AUTH = 60 * 60 * 1000;

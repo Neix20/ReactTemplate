@@ -7,6 +7,14 @@ const obj = {
             "type": "text"
         },
         {
+            "name": "value",
+            "type": "text"
+        },
+        {
+            "name": "category",
+            "type": "dropdown",
+        },
+        {
             "name": "type",
             "type": "dropdown",
             "selection": [
@@ -23,10 +31,6 @@ const obj = {
                     "value": "others"
                 }
             ]
-        },
-        {
-            "name": "value",
-            "type": "text"
         }
     ]
 

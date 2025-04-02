@@ -15,10 +15,11 @@ const App = () => {
     const [dateRange, setDateRange] = useState({ start: "", end: "" });
     const [showDateDialog, setShowDateDialog] = useState(false);
 
+    // todo: Get From General API
     const filterOptions = [
         { id: "platform", label: "Platform", options: ["Facebook", "Instagram", "Twitter", "LinkedIn", "WhatsApp"] },
         { id: "time", label: "Time", options: ["Last 24 Hours", "Last 7 Days", "Last 30 Days", "Last 6 Months", "Last Year", "Custom Range"] },
-        { id: "type", label: "Type", options: ["Phishing", "Identity Theft", "Investment Fraud", "Romance Scam", "Tech Support Scam"] },
+        { id: "category", label: "Category", options: ["Phishing", "Identity Theft", "Investment Fraud", "Romance Scam", "Tech Support Scam"] },
     ];
 
     const handleFilterSelect = (filterId, option) => {

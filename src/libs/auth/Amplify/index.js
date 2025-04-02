@@ -1,20 +1,35 @@
 
-// import { signIn, signOut, signUp, confirmSignUp } from 'aws-amplify/auth';
+import { signIn, signOut, signUp, confirmSignUp } from 'aws-amplify/auth';
 
-// import { Amplify } from 'aws-amplify';
+import { Amplify } from "aws-amplify";
 
-// import {AmplifyOutputs} from "@config";
+import { clsConst } from "@config";
 
-// Amplify.configure(AmplifyOutputs);
+Amplify.configure(clsConst.COGNITO_CONFIG);
 
-// const cognitoUserPool = null;
+export const configureAuth = () => Auth.configure();
 
-// export {
-//     cognitoUserPool,
-//     signIn,
-//     signOut,
-//     signUp,
-//     confirmSignUp
-// }
+export const register = async (username, password) => {
+    try {
+        const res = await signUp({
+            username,
+            password,
+            attributes: {
+                email: username,
+            }
+        });
 
-export {}
+        return res;
+    } catch (error) {
+        console.log('error signing up:', error);
+    }
+
+    return null;
+}
+
+export {
+    signIn,
+    signOut,
+    signUp,
+    confirmSignUp
+}

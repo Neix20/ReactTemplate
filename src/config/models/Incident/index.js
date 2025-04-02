@@ -69,6 +69,11 @@ const obj = {
                     "value": "Alert"
                 }
             ]
+        },
+        {
+            "name": "platform",
+            "type": "dropdown",
+            "show": false
         }
     ]
 }
