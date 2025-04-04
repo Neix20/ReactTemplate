@@ -12,7 +12,6 @@ const handleSignIn = async (data) => {
     const { username = "", password = "" } = data;
     try {
         const res = await signIn({ username, password });
-        // console.log("User signed in! Token:", signInUserSession.idToken.jwtToken);
         return res; // Store token if needed
     } catch (error) {
         console.error("Error signing in:", error);
@@ -23,12 +22,10 @@ const handleSignIn = async (data) => {
 const handleSignUp = async (data) => {
     const { username = "", password = "" } = data;
     try {
-        // Check if userId is same as signInUserSession
         const { userId } = await signUp({
             username,
             password,
             options: { userAttributes: { email: username } },
-            // attributes: { email: username },
         });
         return userId;
     } catch (error) {

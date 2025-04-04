@@ -102,9 +102,6 @@ function Index(props) {
             .then((res) => {
                 alert("User has signed in!");
                 setUserTrue();
-
-                // Set Session
-                setSession(_ => res);
             })
             .catch(err => {
                 alert(err);
@@ -145,9 +142,6 @@ function Index(props) {
     }
 
     const onDebug = async () => {
-        // const res = await getCurrentUser();
-        // console.log(res);
-
         const res = await fetchAuthSession();
         console.log(res);
     }

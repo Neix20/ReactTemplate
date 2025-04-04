@@ -203,6 +203,7 @@ export default function SignUp(props) {
               variant="outlined"
               onClick={() => alert('Sign up with Google')}
               startIcon={<GoogleIcon />}
+              sx={{ display: "none" }}
             >
               Sign up with Google
             </Button>
@@ -211,6 +212,7 @@ export default function SignUp(props) {
               variant="outlined"
               onClick={() => alert('Sign up with Facebook')}
               startIcon={<FacebookIcon />}
+              sx={{ display: "none" }}
             >
               Sign up with Facebook
             </Button>
