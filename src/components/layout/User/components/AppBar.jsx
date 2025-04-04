@@ -26,6 +26,8 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 import MenuGroupItem from "./MenuGroup/Item";
 import MenuGroupMobile from "./MenuGroup/Mobile";
 
+import Profile from "./../../Admin/Header/HeaderContent/Profile";
+
 import { useToggle } from "@hooks";
 
 function Index(props) {
@@ -64,6 +66,8 @@ function Index(props) {
         }
     }
 
+    const signIn = true;
+
     return (
         <AppBar position="sticky" enableColorOnDark sx={{ boxShadow: 0 }}>
             <StyledToolbar variant="dense" disableGutters>
@@ -74,9 +78,15 @@ function Index(props) {
                     </Box>
                 </Box>
                 <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
-                    <Button color="primary" variant="contained" size="small" component={NavLink} to={"/SignIn"}>
+                    {
+                        (signIn) ? (
+                            <Profile />
+                        ) : (
+                            <Button color="primary" variant="contained" size="small" component={NavLink} to={"/SignIn"}>
                         Login
                     </Button>
+                        )
+                    }
                     <ColorModeIconDropdown />
                 </Box>
                 <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
