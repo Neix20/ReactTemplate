@@ -5,7 +5,7 @@ import { GlobalStyles, SampleData } from "@config";
 
 import Stepper from "./components/Stepper";
 
-import { BpBasicFormItem, BpImageGallery, BpImageUpload } from "@components";
+import { BpFormItem, BpBasicFormItem, BpImageGallery, BpImageUpload, BpSearchMenuList } from "@components";
 import { useFormDataLs } from "@hooks";
 
 import { Delete, Add, FileUpload } from "@mui/icons-material";
@@ -27,12 +27,7 @@ import Page3 from "./img/page_3.jpeg";
 
 function SocialMediaSection(props) {
 
-    const {
-        data,
-        addDataHtml: onAdd,
-        updateDataHtml: onUpdate,
-        deleteData: onDelete
-    } = useFormDataLs();
+    const { data, addDataHtml: onAdd, updateDataHtml: onUpdate, deleteData: onDelete } = useFormDataLs();
 
     const renderItem = (item, ind) => {
 
@@ -99,7 +94,7 @@ function SocialMediaSection(props) {
     )
 }
 
-function PaymentMethod(props) {
+function PaymentMethodSection(props) {
 
     const {
         data,
@@ -173,6 +168,170 @@ function PaymentMethod(props) {
     )
 }
 
+function PretendToSellSection(props) {
+    const { data, addDataHtml: onAdd, updateDataHtml: onUpdate, deleteData: onDelete } = useFormDataLs();
+
+    const renderItem = (item, ind) => {
+
+        const { idx = "" } = item;
+
+        const onUpdateItem = (evt) => onUpdate(evt, idx);
+        const onDeleteItem = () => onDelete(idx);
+
+        return (
+            <>
+                <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
+                    <Grid2 item size={3} sx={{ display: "flex" }}>
+                        <BpBasicFormItem type={"text"} placeholder={"Title"} name={"title"} value={item["title"]} onChange={onUpdateItem} />
+                    </Grid2>
+                    <Grid2 item size={9} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <BpBasicFormItem type={"text"} placeholder={"Description"} name={"post_url"} value={item["post_url"]} onChange={onUpdateItem} />
+                        <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
+                            <Delete />
+                        </IconButton>
+                    </Grid2>
+                </Grid2>
+                <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
+
+                    <Grid2 item size={10} container spacing={1}>
+                        <BpBasicFormItem type={"text"} placeholder={"Title"} name={"title"} value={item["title"]} onChange={onUpdateItem} />
+                        <BpBasicFormItem type={"text"} placeholder={"Description"} name={"post_url"} value={item["post_url"]} onChange={onUpdateItem} />
+                    </Grid2>
+                    <Grid2 item size={2}>
+                        <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
+                            <Delete />
+                        </IconButton>
+                    </Grid2>
+                </Grid2>
+            </>
+        )
+    }
+
+    return (
+        <Grid2 container flexDirection={"column"} spacing={1}>
+            <Typography>Pretend To Sell</Typography>
+            {data.map(renderItem)}
+            <Grid2 container>
+                <Button startIcon={<Add />} onClick={onAdd} variant={"contained"}>Add IP Series</Button>
+            </Grid2>
+        </Grid2>
+    )
+}
+
+function PhoneNumberSection(props) {
+    const { data, addDataHtml: onAdd, updateDataHtml: onUpdate, deleteData: onDelete } = useFormDataLs();
+
+    const renderItem = (item, ind) => {
+
+        const { idx = "" } = item;
+
+        const onUpdateItem = (evt) => onUpdate(evt, idx);
+        const onDeleteItem = () => onDelete(idx);
+
+        return (
+            <>
+                <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
+                    <Grid2 item size={3} sx={{ display: "flex" }}>
+                        <BpBasicFormItem type={"text"} value={"Phone No"} readOnly={true} />
+                    </Grid2>
+                    <Grid2 item size={9} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <BpBasicFormItem
+                            type={"text"} placeholder={"Enter username / Profile URL"}
+                            name={"post_url"} value={item["post_url"]}
+                            onChange={onUpdateItem}
+                        />
+                        <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
+                            <Delete />
+                        </IconButton>
+                    </Grid2>
+                </Grid2>
+                <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
+                    <Grid2 item size={10} container spacing={1}>
+                        <BpBasicFormItem type={"text"} value={"Phone No"} readOnly={true} />
+                        <BpBasicFormItem
+                            type={"text"} placeholder={"Enter username / Profile URL"}
+                            name={"post_url"} value={item["post_url"]}
+                            onChange={onUpdateItem}
+                        />
+                    </Grid2>
+                    <Grid2 item size={2}>
+                        <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
+                            <Delete />
+                        </IconButton>
+                    </Grid2>
+                </Grid2>
+            </>
+        )
+    }
+
+    return (
+        <Grid2 container flexDirection={"column"} spacing={1}>
+            <Typography>Phone Numer</Typography>
+            {data.map(renderItem)}
+            <Grid2 container>
+                <Button startIcon={<Add />} onClick={onAdd} variant={"contained"}>Phone Number</Button>
+            </Grid2>
+        </Grid2>
+    )
+}
+
+function NickNameSection(props) {
+    const { data, addDataHtml: onAdd, updateDataHtml: onUpdate, deleteData: onDelete } = useFormDataLs();
+
+    const renderItem = (item, ind) => {
+
+        const { idx = "" } = item;
+
+        const onUpdateItem = (evt) => onUpdate(evt, idx);
+        const onDeleteItem = () => onDelete(idx);
+
+        return (
+            <>
+                <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
+                    <Grid2 item size={3} sx={{ display: "flex" }}>
+                        <BpBasicFormItem type={"text"} value={"Nickname"} readOnly={true} />
+                    </Grid2>
+                    <Grid2 item size={9} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <BpBasicFormItem
+                            type={"text"} placeholder={"Enter username / Profile URL"}
+                            name={"post_url"} value={item["post_url"]}
+                            onChange={onUpdateItem}
+                        />
+                        <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
+                            <Delete />
+                        </IconButton>
+                    </Grid2>
+                </Grid2>
+                <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
+                    <Grid2 item size={10} container spacing={1}>
+                        <BpBasicFormItem type={"text"} value={"Nickname"} readOnly={true} />
+                        <BpBasicFormItem
+                            type={"text"} placeholder={"Enter username / Profile URL"}
+                            name={"post_url"} value={item["post_url"]}
+                            onChange={onUpdateItem}
+                        />
+                    </Grid2>
+                    <Grid2 item size={2}>
+                        <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
+                            <Delete />
+                        </IconButton>
+                    </Grid2>
+                </Grid2>
+            </>
+        )
+    }
+
+    return (
+        <Grid2 container flexDirection={"column"} spacing={1}>
+            <Typography>Nickname</Typography>
+            {data.map(renderItem)}
+            <Grid2 container>
+                <Button startIcon={<Add />} onClick={onAdd} variant={"contained"}>Alias</Button>
+            </Grid2>
+        </Grid2>
+    )
+}
+
 function Index(props) {
 
     const { step, add, minus } = useStep();
@@ -232,8 +391,10 @@ function Index(props) {
                             <Typography>Name</Typography>
                             <BpBasicFormItem type={"text"} placeholder={"Name"} name={"name"} />
                         </Grid2>
+                        <NickNameSection />
                         <SocialMediaSection />
-                        <PaymentMethod />
+                        <PaymentMethodSection />
+                        <PhoneNumberSection />
                     </Grid2>
                 </Grid2>
 
@@ -250,13 +411,8 @@ function Index(props) {
                                 name={"pretend_to_be"}
                                 sx={style.txtInput} />
                         </Grid2>
-                        <Grid2 container flexDirection={"column"} spacing={1}>
-                            <Typography>Pretend to Sell</Typography>
-                            <BpBasicFormItem type={"text"}
-                                placeholder={"What did they pretend to sell?"}
-                                name={"pretend_to_sell"}
-                                sx={style.txtInput} />
-                        </Grid2>
+                        <PretendToSellSection />
+
                         <Grid2 container flexDirection={"column"} spacing={1}>
                             <Typography>Total Amount Scammed (RM)</Typography>
                             <BpBasicFormItem type={"decimal"}

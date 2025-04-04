@@ -13,7 +13,7 @@ const FormItem = (props = {}) => {
 
     const style = {
         txtLabel: {
-            width: { xs: "135px" },
+            width: { xs: "120px", sm: "135px" },
         }
     }
 
@@ -27,7 +27,7 @@ const FormItem = (props = {}) => {
     const placeholder = clsUtility.capitalize(name);
     const lbl = hasLabel ? "" : placeholder;
     return (
-        <Grid2 container size={_size} alignItems={"center"}>
+        <Grid2 size={_size} sx={{ display: "flex", alignItems: "center"}}>
             {hasLabel ? (<Typography sx={style.txtLabel}>{placeholder}{required ? "*" : ""}</Typography>) : (<></>)}
             <BasicFormItem label={lbl} placeholder={placeholder} {...props} />
         </Grid2>

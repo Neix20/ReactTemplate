@@ -11,8 +11,6 @@ import { useToggle } from "@hooks";
 
 import { BpLoading, BpJsonDataTable, BpImageGallery, BpHeader, BpTab } from "@components";
 
-import { fetchIncidentGet, fetchScammerGetAllAttr } from "@api";
-
 import { clsUtility } from "@utility";
 
 import BodyWrapper from "./components/BodyWrapper";

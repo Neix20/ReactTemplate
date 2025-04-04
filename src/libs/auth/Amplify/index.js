@@ -11,8 +11,9 @@ const handleSignIn = async (data) => {
 
     const { username = "", password = "" } = data;
     try {
-        const res = await signIn({ username, password });
-        return res; // Store token if needed
+        await signIn({ username, password });
+        const { userSub: userId } = await fetchAuthSession();
+        return userId; // Store token if needed
     } catch (error) {
         console.error("Error signing in:", error);
         throw error;
@@ -47,7 +48,7 @@ const handleConfirmSignUp = async (data) => {
 }
 
 const handleResendSignUpCode = async (data) => {
-    
+
     const { username = "" } = data;
     try {
         await resendSignUpCode({ username });

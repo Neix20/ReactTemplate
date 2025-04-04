@@ -2,7 +2,7 @@ import { CssBaseline, Box } from "@mui/material";
 import { styled } from '@mui/material/styles';
 
 import AppBar from "./components/AppBar.jsx";
-import Footer from "./components/Footer";
+import { Footer } from "./components/Footer";
 
 import { Outlet } from "react-router-dom";
 

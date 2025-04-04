@@ -28,6 +28,8 @@ import BpSessionChecker from "./ui/SessionChecker";
 
 import BpHeader from "./ui/Header";
 
+import BpSearchMenuList from "./ui/SearchMenuList";
+
 export {
     BpForm,
     BpFormItem,
@@ -50,6 +52,7 @@ export {
     BpLogo,
     BpGridMasonry,
     BpTab,
-    BpSessionChecker
+    BpSessionChecker,
+    BpSearchMenuList
 }
 

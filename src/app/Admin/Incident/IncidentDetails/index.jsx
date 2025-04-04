@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 
 import { Grid2, Typography, Button, Paper, IconButton, Modal, Tooltip, Box } from "@mui/material";
 
-import { BpLoading, BpForm, BpFormItem, BpHeader, BpImageGallery, BpImageUpload } from "@components";
+import { BpLoading, BpForm, BpFormItem, BpHeader, BpImageGallery, BpImageUpload, BpSearchMenuList } from "@components";
 import { useToggle, useForm, useCusMedia } from "@hooks";
 
 import { Add, Save, Cancel } from "@mui/icons-material";
@@ -11,9 +11,7 @@ import { GlobalStyles, Models, SampleData } from "@config";
 
 import { useNavigate, useParams } from "react-router-dom";
 
-import { fetchIncidentGet, fetchIncidentAdd, fetchIncidentUpdate, fetchIncidentUploadImg, fetchScammerGetAll, fetchIpSeriesGetAll } from "@api";
-
-import SearchMenuList from "./components/SearchMenuList";
+import { fetchIncidentGetAdmin, fetchIncidentAdd, fetchIncidentUpdate, fetchIncidentUploadImg, fetchScammerGetAll, fetchIpSeriesGetAll } from "@api";
 
 function useFilterData() {
     const [data, setData] = useState([]);
@@ -81,7 +79,7 @@ function Index(props) {
     // #region Action
     const getData = () => {
         setLoadingTrue();
-        fetchIncidentGet({
+        fetchIncidentGetAdmin({
             PK: IncidentId
         })
             .then(res => {
@@ -254,12 +252,13 @@ function Index(props) {
                 </Box>
 
                 {/* Multiple Scammer */}
-                <SearchMenuList searchField={"scammer"} selection={scammerSelection}
+                <BpSearchMenuList searchField={"scammer"} selection={scammerSelection}
                     data={scammer} handleAddData={handleAddScammer} handleRemoveData={handleRemoveScammer}
                 />
 
                 {/* Multiple Ip Series */}
-                <SearchMenuList searchField={"ip_series"} selection={ipSeriesSelection}
+                <BpSearchMenuList 
+                    searchField={"ip_series"} selection={ipSeriesSelection}
                     data={ipSeries} handleAddData={handleAddIpSeries} handleRemoveData={handleRemoveIpSeries}
                 />
 

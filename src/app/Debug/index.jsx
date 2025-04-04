@@ -102,6 +102,9 @@ function Index(props) {
             .then((res) => {
                 alert("User has signed in!");
                 setUserTrue();
+
+                // Store this Data inside Redux, with Last Session Date
+                setSession(_ => res);
             })
             .catch(err => {
                 alert(err);
@@ -141,11 +144,6 @@ function Index(props) {
         toggleResend();
     }
 
-    const onDebug = async () => {
-        const res = await fetchAuthSession();
-        console.log(res);
-    }
-
     return (
         <>
             <BpLoading loading={loading} />
@@ -163,7 +161,6 @@ function Index(props) {
                     <Grid2 container spacing={1} sx={{ mt: 2 }}>
                         <Button variant={"contained"} onClick={onLogin}>Login</Button>
                         <Button variant={"contained"} onClick={onLogOut}>Logout</Button>
-                        <Button variant={"contained"} onClick={onDebug}>Debug</Button>
                     </Grid2>
                 </Box>
                 <Box sx={{ mt: 2, ...GlobalStyles.bordered }}>
