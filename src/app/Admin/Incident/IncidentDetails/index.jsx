@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 
 import { Grid2, Typography, Button, Paper, IconButton, Modal, Tooltip, Box } from "@mui/material";
 
-import { BpLoading, BpForm, BpFormItem, BpHeader, BpImageGallery, BpImageUpload } from "@components";
+import { BpLoading, BpForm, BpFormItem, BpHeader, BpImageGallery, BpImageUpload, BpSearchMenuList } from "@components";
 import { useToggle, useForm, useCusMedia } from "@hooks";
 
 import { Add, Save, Cancel } from "@mui/icons-material";
@@ -11,9 +11,28 @@ import { GlobalStyles, Models, SampleData } from "@config";
 
 import { useNavigate, useParams } from "react-router-dom";
 
-import { fetchIncidentGet, fetchIncidentAdd, fetchIncidentUpdate, fetchIncidentUploadImg, fetchScammerGetAll } from "@api";
+import { fetchIncidentGetAdmin, fetchIncidentAdd, fetchIncidentUpdate, fetchIncidentUploadImg, fetchScammerGetAll, fetchIpSeriesGetAll } from "@api";
 
-import SearchMenuList from "./components/SearchMenuList";
+function useFilterData() {
+    const [data, setData] = useState([]);
+
+    const handleAddData = (_data) => {
+        setData((prevData) => {
+            if (!prevData.includes(_data)) {
+                return [...prevData, _data];
+            }
+            return prevData;
+        });
+    };
+
+    const handleRemoveData = (obj) => {
+        setData((prevData) => prevData.filter((s) => s !== obj));
+    };
+
+    return {
+        data, setData, handleAddData, handleRemoveData
+    }
+}
 
 function Index(props) {
 
@@ -23,7 +42,14 @@ function Index(props) {
     const { flag: refresh, toggle: toggleRefresh } = useToggle();
 
     const [imgAsset, setImgAsset] = useState([]);
-    const [scammer, setScammer] = useState([]);
+
+    const { data: scammer, setData: setScammer,
+        handleAddData: handleAddScammer, handleRemoveData: handleRemoveScammer } = useFilterData();
+    const [scammerSelection, setScammerSelection] = useState([]);
+
+    const { data: ipSeries, setData: setIpSeries,
+        handleAddData: handleAddIpSeries, handleRemoveData: handleRemoveIpSeries } = useFilterData();
+    const [ipSeriesSelection, setIpSeriesSelection] = useState([]);
 
     const {
         key: incKey,
@@ -39,21 +65,32 @@ function Index(props) {
     const navigate = useNavigate();
 
     const goBack = () => {
-        navigate(`/Admin/Incident`);
+        navigate(-1);
     }
+
+    useEffect(() => {
+        getAllIpSeries();
+        getAllScammer();
+        if (IncidentId != "0") {
+            getData();
+        }
+    }, [refresh]);
 
     // #region Action
     const getData = () => {
         setLoadingTrue();
-        fetchIncidentGet({
+        fetchIncidentGetAdmin({
             PK: IncidentId
         })
             .then(res => {
                 setLoadingFalse();
 
-                const { incident, incidentAsset } = res;
+                const { incident, incidentAsset, scammer, ipSeries } = res;
                 loadIncData(incident);
                 setImgAsset(_ => incidentAsset);
+                setScammer(_ => scammer);
+                setIpSeries(_ => ipSeries);
+
             })
             .catch(err => {
                 setLoadingFalse();
@@ -108,7 +145,27 @@ function Index(props) {
                     value: x.PK
                 }));
 
-                setScammer(_ => _arr);
+                setScammerSelection(_ => _arr);
+            })
+            .catch(() => {
+                setLoadingFalse();
+            })
+    }
+
+    const getAllIpSeries = () => {
+        setLoadingTrue();
+        fetchIpSeriesGetAll()
+            .then(res => {
+                setLoadingFalse();
+
+                const { data = [] } = res;
+
+                const _arr = data.map(x => ({
+                    name: x.name,
+                    value: x.PK
+                }));
+
+                setIpSeriesSelection(_ => _arr);
             })
             .catch(() => {
                 setLoadingFalse();
@@ -116,18 +173,13 @@ function Index(props) {
     }
     // #endregion
 
-    useEffect(() => {
-        getAllScammer();
-        if (IncidentId != "0") {
-            getData();
-        }
-    }, [refresh])
-
     const onSave = () => {
         const _data = {
             incident: incData,
-            incidentAsset: imgAsset
-        }
+            incidentAsset: imgAsset,
+            scammer,
+            ipSeries
+        };
 
         const _func = (IncidentId == "0") ? () => addData(_data) : () => updateData(_data);
         _func();
@@ -164,18 +216,6 @@ function Index(props) {
             })
     }
     // #endregion
-
-    const { value: bpFormObj } = useCusMedia({
-        xs: {
-            cols: 1,
-            spacing: 1
-        },
-        sm: {
-            cols: 2,
-            spacing: 2
-        }
-    });
-
     return (
         <>
             <BpLoading loading={loading} />
@@ -195,16 +235,14 @@ function Index(props) {
                 }
             />
             <Grid2 container spacing={1}>
-                <Box sx={{ ...GlobalStyles.bordered, borderColor: (theme) => theme.palette.grey[200] }}>
+            <Box sx={GlobalStyles.bordered}>
                     <BpForm
-                        numCols={bpFormObj?.cols}
-                        colSpacing={bpFormObj?.spacing}
                         hasLabel={true}
                         key={incKey} idx={incKey}
                         data={incData} field={incField}
                         onUpdate={updateIncData}>
                         <BpFormItem
-                            hasLabel={true} size={bpFormObj?.cols}
+                            hasLabel={true}
                             type={"dropdown"} placeholder={"Select Platform"}
                             name={"platform"} value={incData["platform"]}
                             selection={SampleData.Platform}
@@ -214,8 +252,17 @@ function Index(props) {
                 </Box>
 
                 {/* Multiple Scammer */}
-                <SearchMenuList selection={scammer.map(x => x.name)} />
+                <BpSearchMenuList searchField={"scammer"} selection={scammerSelection}
+                    data={scammer} handleAddData={handleAddScammer} handleRemoveData={handleRemoveScammer}
+                />
 
+                {/* Multiple Ip Series */}
+                <BpSearchMenuList 
+                    searchField={"ip_series"} selection={ipSeriesSelection}
+                    data={ipSeries} handleAddData={handleAddIpSeries} handleRemoveData={handleRemoveIpSeries}
+                />
+
+                {/* Image Asset */}
                 <Grid2 container spacing={2} flexDirection={"column"} sx={{ width: "100%" }}>
                     <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
                         <Typography variant="h4" sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>Image Asset</Typography>

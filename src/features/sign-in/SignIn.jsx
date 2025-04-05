@@ -211,6 +211,7 @@ export default function SignIn(props) {
                             variant="outlined"
                             onClick={() => alert('Sign in with Google')}
                             startIcon={<GoogleIcon />}
+                            sx={{ display: "none" }}
                         >
                             Sign in with Google
                         </Button>
@@ -219,6 +220,7 @@ export default function SignIn(props) {
                             variant="outlined"
                             onClick={() => alert('Sign in with Facebook')}
                             startIcon={<FacebookIcon />}
+                            sx={{ display: "none" }}
                         >
                             Sign in with Facebook
                         </Button>

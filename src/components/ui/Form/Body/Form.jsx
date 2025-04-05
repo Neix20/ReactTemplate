@@ -5,54 +5,52 @@ import { BpFormItem } from "@components";
 
 import { clsUtility } from "@utility";
 
-function Wrapper(props) {
-    const { children = (<></>) } = props;
-    const { colSpacing = 1, sx = {} } = props;
-
-    return (
-        <Grid2 container flexWrap={"wrap"} spacing={colSpacing} alignItems={"flex-start"}>
-            {children}
-        </Grid2>
-    )
-
-    return (
-        <Grid2 container spacing={2} flexDirection={"column"} sx={style.main}>
-            {hasTitle ? (<Typography variant={"h2"} sx={{ color: "text.primary" }}>{title}</Typography>) : (<></>)}
-            <Grid2 container flexWrap={"wrap"} spacing={spacing} alignItems={"flex-start"}>
-                {children}
-            </Grid2>
-        </Grid2>
-    )
-}
-
 function Index(props) {
 
-    const { idx: key = "", field = [], children = (<></>) } = props;
-    const { colSpacing = 1, sx = {} } = props;
+    const { idx: key = "", field = [] } = props;
+    const { children = (<></>), sx = {}, size = {} } = props;
 
-    const wrapperProps = {
-        colSpacing: colSpacing,
-        sx: sx
-    }
+    const { data = {}, onUpdate = () => { }, hasLabel = false } = props;
 
-    const { data = {}, onUpdate = () => { }, hasLabel = false, numCols = 2 } = props;
+    const _spacing= {
+        xs: 1, 
+        sm: 2,
+        ...size
+    };
 
     const renderItem = (obj) => {
         const { name = "" } = obj;
+
+        const idx = `${key}-${name}`;
+
+        const _xs = 12 / _spacing.xs;
+        const _sm = 12 / _spacing.sm;
+
+        const _size = {
+            xs: _xs,
+            sm: _sm,
+        }
+
         return (
-            <BpFormItem key={`${key}-${name}`} idx={`${key}-${name}`}
+            <BpFormItem key={idx} idx={idx}
                 value={data[name]} onChange={onUpdate}
-                hasLabel={hasLabel} size={numCols}
+                hasLabel={hasLabel} size={_size}
                 {...obj} />
         )
-    }
+    };
+
+    const style = {
+        main: {},
+        ...sx
+    };
 
     return (
-        <Wrapper {...wrapperProps}>
-            {field.filter(x => x.editable !== false).map(renderItem)}
+        <Grid2 container flexWrap={"wrap"} spacing={_spacing} 
+            alignItems={"flex-start"} sx={style.main}>
+            {field.filter(x => x.show !== false).map(renderItem)}
             {children}
-        </Wrapper>
-    )
+        </Grid2>
+    );
 }
 
 export default Index;

@@ -1,10 +1,8 @@
 
-import Amplify from "./Amplify";
-import Cognito from "./Cognito";
-import Simple from "./Simple";
+import * as Amplify from "./Amplify";
+import * as Simple from "./Simple";
 
 export {
     Amplify,
-    Cognito,
     Simple
 }

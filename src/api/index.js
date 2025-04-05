@@ -65,7 +65,8 @@ export {
 }
 
 import fetchIncidentGetAll from "./Incident/getAll";
-import fetchIncidentGet from "./Incident/get";
+import fetchIncidentGetAdmin from "./Incident/getAdmin";
+import fetchIncidentGetUser from "./Incident/getUser";
 import fetchIncidentActive from "./Incident/active";
 import fetchIncidentPending from "./Incident/pending";
 import fetchIncidentAdd from "./Incident/add";
@@ -75,7 +76,8 @@ import fetchIncidentUploadImg from "./Incident/uploadImg";
 
 export {
     fetchIncidentGetAll,
-    fetchIncidentGet,
+    fetchIncidentGetAdmin,
+    fetchIncidentGetUser,
     fetchIncidentActive,
     fetchIncidentPending,
     fetchIncidentAdd,

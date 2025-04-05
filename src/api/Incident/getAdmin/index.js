@@ -4,7 +4,7 @@ const Index = async (param = {}) => {
 
     const { PK = "" } = param;
 
-    const action = `incident/${PK}`;
+    const action = `incident/admin/${PK}`;
     const url = genServerUrl(action);
 
     // Static Data

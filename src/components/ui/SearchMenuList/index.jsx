@@ -5,34 +5,17 @@ import { Add, Close, Search, Cancel } from "@mui/icons-material";
 
 import { useToggle } from "@hooks";
 
-function useFilterData(val) {
-    const [data, setData] = useState([]);
-
-    const handleAddData = (scammer) => {
-        if (!data.includes(scammer)) {
-            setData([...data, scammer]);
-        }
-    };
-
-    const handleRemoveData = (obj) => {
-        setData(data.filter((s) => s !== obj));
-    };
-
-    return {
-        data, handleAddData, handleRemoveData
-    }
-}
+import { clsUtility } from "@utility";
 
 const Index = (props) => {
 
-    const { selection = [], sx = {} } = props;
-
-    const { data, handleAddData, handleRemoveData } = useFilterData();
+    const { searchField = "", selection = [], sx = {} } = props;
+    const { data = [], handleAddData = () => {}, handleRemoveData = () => {} } = props;
     const [searchTerm, setSearchTerm] = useState("");
 
     const { flag, open, close } = useToggle(false);
 
-    const filteredData = selection.filter((obj) => obj.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filteredData = selection.filter((obj) => obj.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
     const renderMenuItem = (obj, index) => {
         const addData = () => {
@@ -42,7 +25,7 @@ const Index = (props) => {
         };
         return (
             <MenuItem key={index} onClick={addData}>
-                {obj}
+                {obj.name}
             </MenuItem>
         )
     }
@@ -52,7 +35,7 @@ const Index = (props) => {
         return (
             <Chip
                 key={index}
-                label={obj}
+                label={obj.name}
                 onDelete={removeData}
                 deleteIcon={<Close />}
             />
@@ -70,12 +53,12 @@ const Index = (props) => {
         <Box sx={style.main}>
             <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
                 <Typography variant="h4" sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>
-                    Scammers
+                    {clsUtility.capitalize(searchField)}
                 </Typography>
-                <Button variant="contained" color="primary" startIcon={<Add />} onClick={open}>Scammer</Button>
+                <Button variant="contained" color="primary" startIcon={<Add />} onClick={open}>{clsUtility.capitalize(searchField)}</Button>
             </Grid2>
 
-            {/* Scammer Search Dropdown */}
+            {/* Search Dropdown */}
             <MenuList sx={(theme) => (
                 {
                     mt: 1,
@@ -88,7 +71,7 @@ const Index = (props) => {
                 <Grid2 container spacing={0}>
                     <TextField
                         variant="standard"
-                        placeholder="Search scammers..."
+                        placeholder={`Search ${searchField}...`}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         slotProps={{

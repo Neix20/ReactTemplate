@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 
-import { Grid2, Box, Tabs, Tab, Paper } from "@mui/material";
+import { Container, Grid2, Box, Tabs, Tab, Paper } from "@mui/material";
 
 import { GlobalStyles } from "@config";
 
@@ -40,7 +40,7 @@ function Index(props) {
     return (
         <>
             <HeadWrapper>
-                <Tabs value={tabIdx} onChange={handleChangeTab}>
+                <Tabs variant={"scrollable"} value={tabIdx} onChange={handleChangeTab}>
                     {tabPages.map(renderTab)}
                 </Tabs>
             </HeadWrapper>

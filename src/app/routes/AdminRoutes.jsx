@@ -7,10 +7,18 @@ import { Settings, PersonOff, Article, AssignmentTurnedIn, SmartToy } from "@mui
 
 import Incident from "@app/Admin/Incident";
 import IncidentDetails from "@app/Admin/Incident/IncidentDetails";
+
 import IpSeries from "@app/Admin/IpSeries";
+import IpSeriesDetails from "@app/Admin/IpSeries/IpSeriesDetails";
+
 import Approve from "@app/Admin/Approve";
+
 import Scammer from "@app/Admin/Scammer";
+import ScammerDetails from "@app/Admin/Scammer/ScammerDetails";
+import ScammerAttr from "@app/Admin/Scammer/ScammerAttr";
 // import ASample from "@app/Admin/Sample";
+
+import Error from "@app/Error";
 
 const menuItems = [
     {
@@ -19,12 +27,20 @@ const menuItems = [
         type: 'group',
         children: [
             {
+                id: "admin-error",
+                title: "error",
+                url: '/Admin/*',
+                show: false,
+                type: "item",
+                element: <Error />
+            },
+            {
                 id: 'basic',
                 title: 'Basic',
                 type: 'item',
                 show: false,
                 url: '/Admin',
-                element: <Incident />
+                element: <Scammer />
             },
             {
                 id: 'admin-scammer',
@@ -33,6 +49,18 @@ const menuItems = [
                 url: '/Admin/Scammer',
                 icon: PersonOff,
                 element: <Scammer />
+            },
+            {
+                id: 'admin-scammer-details',
+                show: false,
+                url: '/Admin/Scammer/:ScammerId',
+                element: <ScammerDetails />
+            },
+            {
+                id: 'admin-scammer-attribute',
+                show: false,
+                url: '/Admin/Scammer/:ScammerId/ScammerAttr/:ScammerAttrId',
+                element: <ScammerAttr />
             },
             {
                 id: 'admin-incident',
@@ -64,6 +92,12 @@ const menuItems = [
                 icon: SmartToy,
                 element: <IpSeries />
             },
+            {
+                id: 'admin-ip-series-details',
+                show: false,
+                url: '/Admin/IpSeries/:IpSeriesId',
+                element: <IpSeriesDetails />
+            }
         ]
     },
     // {

@@ -19,5 +19,12 @@
         "titleBar.inactiveBackground": "#ff77a899",
         "titleBar.inactiveForeground": "#15202b99"
     },
-    "peacock.color": "#FF77A8"
+    "peacock.color": "#FF77A8",
+    "files.associations": {
+        "*.xml": "xml",
+        "*.svg": "xml",
+    },
+    "workbench.editorAssociations": {
+        "*.svg": "default"
+    },
 }
