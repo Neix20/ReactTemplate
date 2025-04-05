@@ -408,8 +408,7 @@ function Index(props) {
                             <Typography>Pretend to Be</Typography>
                             <BpBasicFormItem type={"dropdown"}
                                 placeholder={"What did they pretend to be?"}
-                                name={"pretend_to_be"}
-                                sx={style.txtInput} />
+                                name={"pretend_to_be"} />
                         </Grid2>
                         <PretendToSellSection />
 
@@ -417,14 +416,19 @@ function Index(props) {
                             <Typography>Total Amount Scammed (RM)</Typography>
                             <BpBasicFormItem type={"decimal"}
                                 placeholder={"Enter Amount"}
-                                name={"total_amount"}
-                                sx={style.txtInput} />
+                                name={"total_amount"} />
                         </Grid2>
                         <Grid2 container flexDirection={"column"} spacing={1}>
                             <Typography>Transaction Date</Typography>
                             <BpBasicFormItem type={"date"}
-                                name={"transaction_date"}
-                                sx={style.txtInput} />
+                                name={"transaction_date"} />
+                        </Grid2>
+                        <Grid2 container flexDirection={"column"} spacing={1}>
+                            <Typography>(Optional) Have you ever posted this on your social media?</Typography>
+                            <Grid2 container>
+                                <BpFormItem size={{ sm: 3 }} type={"dropdown"} placeholder={"Select Platform"} name={"platform"} value={""} selection={SampleData.Platform} />
+                                <BpFormItem size={{ sm: 9 }} type={"text"} name={"Social Media Link"} placeholder={"https://www.facebook.com/username"} />
+                            </Grid2>
                         </Grid2>
                     </Grid2>
                 </Grid2>

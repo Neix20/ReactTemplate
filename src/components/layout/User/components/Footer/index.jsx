@@ -243,7 +243,15 @@ export const Footer = () => {
           textAlign: "left",
         }}
       >
-        <FooterLinks />
+        {/* <FooterLinks /> */}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            width: '100%',
+            justifyContent: 'space-between',
+          }}
+        ></Box>
         <FooterBody />
       </Container>
     </React.Fragment>
