@@ -1,10 +1,10 @@
 import React from "react";
-import Index from "./BasicFormItem";
+import Index from "./Input";
 
 import { SampleData } from "@config"; 
 
 export default {
-  title: "Components/Basic Form Item",
+  title: "Components/Input",
   component: Index,
   argTypes: {
     type: {

@@ -3,7 +3,7 @@ import { TextField, Typography, Grid2 } from "@mui/material";
 
 import { clsUtility } from "@utility";
 
-import BasicFormItem from "./BasicFormItem";
+import BasicFormItem from "./Input";
 
 const FormItem = (props = {}) => {
 

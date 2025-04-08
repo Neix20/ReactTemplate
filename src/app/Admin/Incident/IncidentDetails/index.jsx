@@ -238,7 +238,7 @@ function Index(props) {
             <Box sx={GlobalStyles.bordered}>
                     <BpForm
                         hasLabel={true}
-                        key={incKey} idx={incKey}
+                        key={incKey}
                         data={incData} field={incField}
                         onUpdate={updateIncData}>
                         <BpFormItem

@@ -3,13 +3,13 @@ import { Typography, FormControl, InputLabel, TextField, Select, MenuItem } from
 
 const FormDropdown = (props = {}) => {
 
-    const { idx: key = "", name = "", value = "", placeholder = "" } = props;
+    const { name = "", value = "", placeholder = "" } = props;
     const { selection = [], onChange = () => { } } = props;
 
-    const renderItem = ({ name = "", value = "" }) => (<MenuItem key={`${key}-${name}`} value={value}>{name}</MenuItem>);
+    const renderItem = ({ name = "", value = "" }) => (<MenuItem value={value}>{name}</MenuItem>);
 
     return (
-        <Select onChange={onChange} name={name} value={value}>
+        <Select displayEmpty onChange={onChange} name={name} value={value}>
             <MenuItem value="" disabled>
                 {placeholder}
             </MenuItem>

@@ -7,10 +7,10 @@ import { clsUtility } from "@utility";
 
 function Index(props) {
 
-    const { idx: key = "", field = [] } = props;
-    const { children = (<></>), sx = {}, size = {} } = props;
+    const { data = {}, field = [] } = props;
+    const { children = (<></>), size = {}, sx = {} } = props;
 
-    const { data = {}, onUpdate = () => { }, hasLabel = false } = props;
+    const { onUpdate = () => { }, hasLabel = false } = props;
 
     const _spacing= {
         xs: 1, 
@@ -19,9 +19,8 @@ function Index(props) {
     };
 
     const renderItem = (obj) => {
-        const { name = "" } = obj;
 
-        const idx = `${key}-${name}`;
+        const { name = "" } = obj;
 
         const _xs = 12 / _spacing.xs;
         const _sm = 12 / _spacing.sm;
@@ -32,7 +31,7 @@ function Index(props) {
         }
 
         return (
-            <BpFormItem key={idx} idx={idx}
+            <BpFormItem
                 value={data[name]} onChange={onUpdate}
                 hasLabel={hasLabel} size={_size}
                 {...obj} />

@@ -144,7 +144,7 @@ function Index(props) {
                 <Box sx={GlobalStyles.bordered}>
                     <BpForm
                         hasLabel={true}
-                        key={ipKey} idx={ipKey}
+                        key={ipKey}
                         data={ipData} field={ipField}
                         onUpdate={updateIpData}>
                         <BpFormItem

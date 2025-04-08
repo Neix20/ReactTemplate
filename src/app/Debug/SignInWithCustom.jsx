@@ -154,7 +154,7 @@ function Index(props) {
                 </Box>
                 <Box sx={{ mt: 2, ...GlobalStyles.bordered }}>
                     <BpForm
-                        key={lKey} idx={lKey}
+                        key={lKey}
                         data={lData} field={lField}
                         onUpdate={updateLData}
                         hasLabel={true} size={{ xs: 1, sm: 1 }} />
@@ -165,7 +165,7 @@ function Index(props) {
                 </Box>
                 <Box sx={{ mt: 2, ...GlobalStyles.bordered }}>
                     <BpForm
-                        key={sKey} idx={sKey}
+                        key={sKey}
                         data={sData} field={sField}
                         onUpdate={updateSData}
                         hasLabel={true} size={{ xs: 1, sm: 1 }} />
@@ -175,7 +175,7 @@ function Index(props) {
                 </Box>
                 <Box sx={{ mt: 2, ...GlobalStyles.bordered }}>
                     <BpForm
-                        key={oKey} idx={oKey}
+                        key={oKey}
                         data={oData} field={oField}
                         onUpdate={updateOData}
                         hasLabel={true} size={{ xs: 1, sm: 1 }} />

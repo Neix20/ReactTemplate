@@ -13,7 +13,7 @@ export {
 
 import BpForm from "./ui/Form/Body/Form.jsx";
 import BpFormItem from "./ui/Form/Item/FormItem.jsx";
-import BpBasicFormItem from "./ui/Form/Item/BasicFormItem.jsx";
+import BpInput from "./ui/Form/Item/Input.jsx";
 
 import BpDataTable from "./ui/DataTable";
 import BpJsonDataTable from "./ui/DataTable/json.jsx";
@@ -41,7 +41,7 @@ export {
 export {
     BpForm,
     BpFormItem,
-    BpBasicFormItem
+    BpInput
 }
 
 export {

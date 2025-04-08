@@ -5,7 +5,7 @@ import { GlobalStyles, SampleData } from "@config";
 
 import Stepper from "./components/Stepper";
 
-import { BpFormItem, BpBasicFormItem, BpImageGallery, BpImageUpload, BpSearchMenuList } from "@components";
+import { BpFormItem, BpInput, BpImageGallery, BpImageUpload, BpSearchMenuList } from "@components";
 import { useFormDataLs } from "@hooks";
 
 import { Delete, Add, FileUpload } from "@mui/icons-material";
@@ -40,7 +40,7 @@ function SocialMediaSection(props) {
             <>
                 <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Grid2 item size={3} sx={{ display: "flex" }}>
-                        <BpBasicFormItem
+                        <BpInput
                             type={"dropdown"} placeholder={"Select Platform"}
                             name={"platform"} value={item["platform"]}
                             selection={SampleData.Platform}
@@ -48,7 +48,7 @@ function SocialMediaSection(props) {
                         />
                     </Grid2>
                     <Grid2 item size={9} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <BpBasicFormItem
+                        <BpInput
                             type={"text"} placeholder={"Enter username / Profile URL"}
                             name={"post_url"} value={item["post_url"]}
                             onChange={onUpdateItem}
@@ -61,13 +61,13 @@ function SocialMediaSection(props) {
                 <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
 
                     <Grid2 item size={10} container spacing={1}>
-                        <BpBasicFormItem
+                        <BpInput
                             type={"dropdown"} placeholder={"Select Platform"}
                             name={"platform"} value={item["platform"]}
                             selection={SampleData.Platform}
                             onChange={onUpdateItem}
                         />
-                        <BpBasicFormItem
+                        <BpInput
                             type={"text"} placeholder={"Enter username / Profile URL"}
                             name={"post_url"} value={item["post_url"]}
                             onChange={onUpdateItem}
@@ -114,7 +114,7 @@ function PaymentMethodSection(props) {
             <>
                 <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Grid2 item size={3} sx={{ display: "flex" }}>
-                        <BpBasicFormItem
+                        <BpInput
                             type={"dropdown"} placeholder={"Select Platform"}
                             name={"platform"} value={item["platform"]}
                             selection={SampleData.Platform}
@@ -122,7 +122,7 @@ function PaymentMethodSection(props) {
                         />
                     </Grid2>
                     <Grid2 item size={9} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <BpBasicFormItem
+                        <BpInput
                             type={"text"} placeholder={"Enter username / Profile URL"}
                             name={"post_url"} value={item["post_url"]}
                             onChange={onUpdateItem}
@@ -135,13 +135,13 @@ function PaymentMethodSection(props) {
                 <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
 
                     <Grid2 item size={10} container spacing={1}>
-                        <BpBasicFormItem
+                        <BpInput
                             type={"dropdown"} placeholder={"Select Platform"}
                             name={"platform"} value={item["platform"]}
                             selection={SampleData.Platform}
                             onChange={onUpdateItem}
                         />
-                        <BpBasicFormItem
+                        <BpInput
                             type={"text"} placeholder={"Enter username / Profile URL"}
                             name={"post_url"} value={item["post_url"]}
                             onChange={onUpdateItem}
@@ -182,10 +182,10 @@ function PretendToSellSection(props) {
             <>
                 <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Grid2 item size={3} sx={{ display: "flex" }}>
-                        <BpBasicFormItem type={"text"} placeholder={"Title"} name={"title"} value={item["title"]} onChange={onUpdateItem} />
+                        <BpInput type={"text"} placeholder={"Title"} name={"title"} value={item["title"]} onChange={onUpdateItem} />
                     </Grid2>
                     <Grid2 item size={9} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <BpBasicFormItem type={"text"} placeholder={"Description"} name={"post_url"} value={item["post_url"]} onChange={onUpdateItem} />
+                        <BpInput type={"text"} placeholder={"Description"} name={"post_url"} value={item["post_url"]} onChange={onUpdateItem} />
                         <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
                             <Delete />
                         </IconButton>
@@ -194,8 +194,8 @@ function PretendToSellSection(props) {
                 <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
 
                     <Grid2 item size={10} container spacing={1}>
-                        <BpBasicFormItem type={"text"} placeholder={"Title"} name={"title"} value={item["title"]} onChange={onUpdateItem} />
-                        <BpBasicFormItem type={"text"} placeholder={"Description"} name={"post_url"} value={item["post_url"]} onChange={onUpdateItem} />
+                        <BpInput type={"text"} placeholder={"Title"} name={"title"} value={item["title"]} onChange={onUpdateItem} />
+                        <BpInput type={"text"} placeholder={"Description"} name={"post_url"} value={item["post_url"]} onChange={onUpdateItem} />
                     </Grid2>
                     <Grid2 item size={2}>
                         <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
@@ -232,10 +232,10 @@ function PhoneNumberSection(props) {
             <>
                 <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Grid2 item size={3} sx={{ display: "flex" }}>
-                        <BpBasicFormItem type={"text"} value={"Phone No"} readOnly={true} />
+                        <BpInput type={"text"} value={"Phone No"} readOnly={true} />
                     </Grid2>
                     <Grid2 item size={9} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <BpBasicFormItem
+                        <BpInput
                             type={"text"} placeholder={"Enter username / Profile URL"}
                             name={"post_url"} value={item["post_url"]}
                             onChange={onUpdateItem}
@@ -247,8 +247,8 @@ function PhoneNumberSection(props) {
                 </Grid2>
                 <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
                     <Grid2 item size={10} container spacing={1}>
-                        <BpBasicFormItem type={"text"} value={"Phone No"} readOnly={true} />
-                        <BpBasicFormItem
+                        <BpInput type={"text"} value={"Phone No"} readOnly={true} />
+                        <BpInput
                             type={"text"} placeholder={"Enter username / Profile URL"}
                             name={"post_url"} value={item["post_url"]}
                             onChange={onUpdateItem}
@@ -289,10 +289,10 @@ function NickNameSection(props) {
             <>
                 <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Grid2 item size={3} sx={{ display: "flex" }}>
-                        <BpBasicFormItem type={"text"} value={"Nickname"} readOnly={true} />
+                        <BpInput type={"text"} value={"Nickname"} readOnly={true} />
                     </Grid2>
                     <Grid2 item size={9} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <BpBasicFormItem
+                        <BpInput
                             type={"text"} placeholder={"Enter username / Profile URL"}
                             name={"post_url"} value={item["post_url"]}
                             onChange={onUpdateItem}
@@ -304,8 +304,8 @@ function NickNameSection(props) {
                 </Grid2>
                 <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
                     <Grid2 item size={10} container spacing={1}>
-                        <BpBasicFormItem type={"text"} value={"Nickname"} readOnly={true} />
-                        <BpBasicFormItem
+                        <BpInput type={"text"} value={"Nickname"} readOnly={true} />
+                        <BpInput
                             type={"text"} placeholder={"Enter username / Profile URL"}
                             name={"post_url"} value={item["post_url"]}
                             onChange={onUpdateItem}
@@ -389,7 +389,7 @@ function Index(props) {
                         </Grid2>
                         <Grid2 container flexDirection={"column"} spacing={1}>
                             <Typography>Name</Typography>
-                            <BpBasicFormItem type={"text"} placeholder={"Name"} name={"name"} />
+                            <BpInput type={"text"} placeholder={"Name"} name={"name"} />
                         </Grid2>
                         <NickNameSection />
                         <SocialMediaSection />
@@ -406,7 +406,7 @@ function Index(props) {
                         </Grid2>
                         <Grid2 container flexDirection={"column"} spacing={1}>
                             <Typography>Pretend to Be</Typography>
-                            <BpBasicFormItem type={"dropdown"}
+                            <BpInput type={"dropdown"}
                                 placeholder={"What did they pretend to be?"}
                                 name={"pretend_to_be"} />
                         </Grid2>
@@ -414,13 +414,13 @@ function Index(props) {
 
                         <Grid2 container flexDirection={"column"} spacing={1}>
                             <Typography>Total Amount Scammed (RM)</Typography>
-                            <BpBasicFormItem type={"decimal"}
+                            <BpInput type={"decimal"}
                                 placeholder={"Enter Amount"}
                                 name={"total_amount"} />
                         </Grid2>
                         <Grid2 container flexDirection={"column"} spacing={1}>
                             <Typography>Transaction Date</Typography>
-                            <BpBasicFormItem type={"date"}
+                            <BpInput type={"date"}
                                 name={"transaction_date"} />
                         </Grid2>
                         <Grid2 container flexDirection={"column"} spacing={1}>
@@ -441,7 +441,7 @@ function Index(props) {
                         </Grid2>
                         <Grid2 container flexDirection={"column"} spacing={1}>
                             <Typography>Comments</Typography>
-                            <BpBasicFormItem type={"textarea"}
+                            <BpInput type={"textarea"}
                                 placeholder={"Enter Amount Do you hve anything to comment about this incident?"}
                                 name={"total_amount"}
                             />

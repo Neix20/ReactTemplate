@@ -79,13 +79,13 @@ function Index(props) {
             SK: ScammerAttrId,
             ...data
         })
-        .then(res => {
-            setLoadingFalse();
-        })
-        .catch(err => {
-            setLoadingFalse();
-            alert(JSON.stringify(err));
-        })
+            .then(res => {
+                setLoadingFalse();
+            })
+            .catch(err => {
+                setLoadingFalse();
+                alert(JSON.stringify(err));
+            })
     }
 
     const onSave = () => {
@@ -114,14 +114,11 @@ function Index(props) {
                 }
             />
             <Box sx={GlobalStyles.bordered}>
-                    <BpForm
-                        hasLabel={true}
-                        key={key} idx={key}
-                        data={data} field={field}
-                        onUpdate={updateDataHtml}>
-                        
-                    </BpForm>
-                </Box>
+                <BpForm key={key} hasLabel={true}
+                    data={data} field={field}
+                    onUpdate={updateDataHtml}>
+                </BpForm>
+            </Box>
         </>
     )
 }
