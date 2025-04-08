@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 
 import { Container, Grid2, Typography, Button, Paper, IconButton, Box, Tooltip } from "@mui/material";
-import { GlobalStyles } from "@config";
-
-import { Amplify } from "@libs/auth";
-
-import { fetchAuthSession, getCurrentUser, fetchUserAttributes } from "@aws-amplify/auth";
 
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
@@ -32,37 +27,39 @@ const BpContainer = styled(Container)(({ theme }) => ({
     },
 }));
 
-function RedirectToFirstTimeLogin(props) {
-    return (
-        <Grid2>
-            <Typography>Redirecting to First Time Login...</Typography>
-        </Grid2>
-    )
-}
-
 import { ColorModeIconDropdown } from '@components';
 
-function Index(props) {
-
-    const onDebug = () => {
-        fetchUserAttributes()
-            .then((res) => {
-                console.log("session", res);
-            })
-            .catch((e) => {
-                console.log("error", e);
-            });
+const formFields = {
+    signUp: {
+        email: {
+            order: 1
+        },
+        name: {
+            order: 2
+        },
+        username: {
+            order: 3
+        },
+        password: {
+            order: 4
+        },
+        confirm_password: {
+            order: 5
+        }
     }
+}
+
+
+function Index(props) {
 
     return (
         <BpContainer maxWidth={"xl"}>
             <ColorModeIconDropdown sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
             <Authenticator
+                formFields={formFields}
                 socialProviders={['google']}
-                signUpAttributes={['email']}>
-                {({ signOut, user }) => (
-                    <RedirectToFirstTimeLogin />
-                )}
+                signUpAttributes={['email', 'name']}>
+                {({ signOut, user }) => (<></>)}
             </Authenticator>
         </BpContainer>
     )

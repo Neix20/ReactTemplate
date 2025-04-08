@@ -1,19 +1,14 @@
 
 
-
-import SignIn from "@features/sign-in/SignIn";
-import SignUp from "@features/sign-up/SignUp";
-
 import Debug from "@app/Debug";
 
+import Login from "@app/Login";
+
 const menuItems = [
+
     {
-        path: '/SignIn',
-        element: <SignIn />
-    },
-    {
-        path: '/SignUp',
-        element: <SignUp />
+        path: '/Login',
+        element: <Login />
     },
     {
         path: '/Debug',

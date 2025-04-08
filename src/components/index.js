@@ -30,6 +30,14 @@ import BpHeader from "./ui/Header";
 
 import BpSearchMenuList from "./ui/SearchMenuList";
 
+import UserLayout from "./layout/User";
+import AdminLayout from "./layout/Admin";
+
+export {
+    UserLayout,
+    AdminLayout
+}
+
 export {
     BpForm,
     BpFormItem,

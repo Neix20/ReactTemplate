@@ -246,6 +246,11 @@ function ChartSection() {
 // #endregion
 
 function Index(props) {
+
+    useEffect(() => {
+        console.log(window.location.href);
+    }, [window.location.href]);
+
     return (
         <Container maxWidth={"xl"} sx={{
             display: "flex",

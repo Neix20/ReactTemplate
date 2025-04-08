@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 
 import { NavLink } from 'react-router-dom';
 
-import { ColorModeIconDropdown, BpLogo } from '@components';
+import { ColorModeIconDropdown, BpLogo, BpLoading } from '@components';
 
 import { Context } from "@config";
 
@@ -30,11 +30,13 @@ import Profile from "./../../Admin/Header/HeaderContent/Profile";
 
 import { useToggle } from "@hooks";
 
+import { Amplify } from "@libs/auth";
+
 function Index(props) {
-    
+
     const { menuItems = [] } = useContext(Context.User);
 
-    const { flag: open, toggle: toggleDrawer} = useToggle(false);
+    const { flag: open, toggle: toggleDrawer } = useToggle(false);
 
     const renderItem = ({ url = "", title = "", type = "", children = [] }, ind) => {
         switch (type) {
@@ -66,57 +68,77 @@ function Index(props) {
         }
     }
 
-    const signIn = true;
+    const [signInFlag, setSignInFlag] = useState(false);
+    const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle(false);
+
+    const checkUserAuth = () => {
+        setLoadingTrue();
+        Amplify.isAuthenticated()
+            .then(res => {
+                setLoadingFalse();
+                setSignInFlag(_ => true);
+            })
+            .catch(err => {
+                setLoadingFalse();
+                setSignInFlag(_ => false);
+            })
+    }
+
+    useEffect(() => {
+        checkUserAuth();
+    }, [])
 
     return (
-        <AppBar position="sticky" enableColorOnDark sx={{ boxShadow: 0 }}>
-            <StyledToolbar variant="dense" disableGutters>
-                <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
-                    <BpLogo />
-                    <Box sx={{ display: { xs: 'none', md: 'flex', gap: 3 } }}>
-                        {menuItems?.map(renderItem)}
+        <>
+            <BpLoading loading={loading} />
+            <AppBar position="sticky" enableColorOnDark sx={{ boxShadow: 0 }}>
+                <StyledToolbar variant="dense" disableGutters>
+                    <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
+                        <BpLogo />
+                        <Box sx={{ display: { xs: 'none', md: 'flex', gap: 3 } }}>
+                            {menuItems?.map(renderItem)}
+                        </Box>
                     </Box>
-                </Box>
-                <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
-                    {
-                        (signIn) ? (
-                            <Profile />
-                        ) : (
-                            <Button color="primary" variant="contained" size="small" component={NavLink} to={"/SignIn"}>
-                        Login
-                    </Button>
-                        )
-                    }
-                    <ColorModeIconDropdown />
-                </Box>
-                <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
-                    <ColorModeIconDropdown size="medium" />
-                    <IconButton aria-label="Menu button" onClick={toggleDrawer}>
-                        <MenuIcon />
-                    </IconButton>
-                    <Drawer
-                        anchor="top"
-                        open={open}
-                        onClose={toggleDrawer}
-                    >
-                        <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <IconButton onClick={toggleDrawer}>
-                                    <CloseRoundedIcon />
-                                </IconButton>
-                            </Box>
-                            {menuItems?.map(renderMenuItem)}
-                            {/* <Divider sx={{ my: 3 }} />
+                    <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
+                        {
+                            (signInFlag) ? (
+                                <Profile />
+                            ) : (
+                                <Button color="primary" variant="contained"
+                                    size="small" component={NavLink} to={"/Login"}>Login</Button>
+                            )
+                        }
+                        <ColorModeIconDropdown />
+                    </Box>
+                    <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
+                        <ColorModeIconDropdown size="medium" />
+                        <IconButton aria-label="Menu button" onClick={toggleDrawer}>
+                            <MenuIcon />
+                        </IconButton>
+                        <Drawer
+                            anchor="top"
+                            open={open}
+                            onClose={toggleDrawer}
+                        >
+                            <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
+                                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                    <IconButton onClick={toggleDrawer}>
+                                        <CloseRoundedIcon />
+                                    </IconButton>
+                                </Box>
+                                {menuItems?.map(renderMenuItem)}
+                                {/* <Divider sx={{ my: 3 }} />
                             <MenuItem>
                                 <Button color="primary" variant="contained" fullWidth component={NavLink} to={"/SignIn"}>
                                     Login
                                 </Button>
                             </MenuItem> */}
-                        </Box>
-                    </Drawer>
-                </Box>
-            </StyledToolbar>
-        </AppBar>
+                            </Box>
+                        </Drawer>
+                    </Box>
+                </StyledToolbar>
+            </AppBar>
+        </>
     );
 }
 
