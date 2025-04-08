@@ -8,7 +8,7 @@ import { FileUploadOutlined, Clear } from "@mui/icons-material";
 
 function Index(props) {
 
-    const { label = "", name = "", value = "", onChange = () => { } } = props;
+    const { name = "", value = "", onChange = () => { } } = props;
 
     const [fileData, setFileData] = useState("");
 
@@ -84,7 +84,6 @@ function Index(props) {
                 <TextField type={"text"}
                     placeholder={"No File Uploaded"}
                     variant={"outlined"}
-                    label={label}
                     value={fileData}
                     slotProps={{
                         input: {

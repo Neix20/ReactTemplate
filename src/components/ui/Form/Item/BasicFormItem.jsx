@@ -1,34 +1,54 @@
 
 import { TextField, Typography, Grid2 } from "@mui/material";
 
+import { FormControl, FormLabel, FormHelperText } from "@mui/material";
+
 import { clsUtility } from "@utility";
 
-import BpFormDropdown from "./FormDropdown";
-import BpFormFileUpload from "./FormFileUpload";
-import BpFormImage from "./FormImage";
-import BpFormColor from "./FormColor";
-import BpFormSwitch from "./FormSwitch";
+import FormDropdown from "./components/FormDropdown";
+import FormColor from "./components/FormColor";
+import FormImage from "./components/FormImage";
+import FormFileUpload from "./components/FormFileUpload";
+
+const Wrapper = (props = {}) => {
+
+    const { children = (<></>) } = props;
+    const { fullWidth = true, required = false, label = "" } = props;
+
+    return (
+        <FormControl fullWidth={fullWidth} required={required}>
+            <FormLabel>{label}</FormLabel>
+            {children}
+        </FormControl>
+    )
+}
+
+
 
 const Index = (props = {}) => {
 
     const { idx: key = "", name = "", value = "", type = "text", onChange = () => { } } = props;
-    const { selection = [], rows = 3, required = false, readOnly = false, variant = "outlined" } = props;
-    const { label = "", placeholder = "", sx = {} } = props;
 
-    const style = {
-        txtInput: {
-            flexGrow: 1,
-            ...sx
-        }
-    };
+    const { selection = [], rows = 3, required = false, readOnly = false } = props;
 
-    const propsToPass = {
-        name, 
-        value, 
-        required, 
-        variant, 
+    const { hasLabel = false, sx = {} } = props;
+
+    // #region Custom Attributes
+    const placeholder = clsUtility.capitalize(name);
+    const label = hasLabel ? placeholder : "";
+    // #endregion
+
+    const wrapperProps = {
+        fullWidth: true,
+        required,
+        label,
+        sx
+    }
+
+    const inputProps = {
+        name,
+        value,
         placeholder,
-        sx: style.txtInput,
         slotProps: {
             input: {
                 readOnly: readOnly
@@ -37,16 +57,14 @@ const Index = (props = {}) => {
     }
 
     const onChangeNum = (evt) => {
-
         const { name = "", value = "" } = evt.target;
-
         onChange({
             target: {
                 name: name,
                 value: Number(value)
             }
         });
-    }
+    };
 
     const onChangeColor = (val) => {
         onChange({
@@ -57,66 +75,71 @@ const Index = (props = {}) => {
         });
     }
 
-    const onChangeSwitch = (evt) => {
-
-        const { name = "", checked = false } = evt.target;
-
-        onChange({
-            target: {
-                name: name,
-                value: checked
-            }
-        });
-    }
-
     // We Should Make This Flexible to be able to customize our own Form Item
     const elemDict = {
         "text": (
-            <TextField type={"text"} label={label} onChange={onChange} {...propsToPass} />
+            <Wrapper {...wrapperProps}>
+                <TextField type={"text"} onChange={onChange} {...inputProps} />
+            </Wrapper>
         ),
         "email": (
-            <TextField type={"text"} label={label} onChange={onChange} {...propsToPass} />
-        ),
-        "color": (
-            <BpFormColor onChange={onChangeColor} value={value} sx={style.txtInput} />
+            <Wrapper {...wrapperProps}>
+                <TextField type={"text"} onChange={onChange} {...inputProps} />
+            </Wrapper>
         ),
         "password": (
-            <TextField type={"password"} onChange={onChange} {...propsToPass} />
+            <Wrapper {...wrapperProps}>
+                <TextField type={"password"} onChange={onChange} {...inputProps} />
+            </Wrapper>
         ),
         "textarea": (
-            <TextField multiline rows={rows} onChange={onChange} label={label} {...propsToPass} />
+            <Wrapper {...wrapperProps}>
+                <TextField multiline rows={rows} onChange={onChange} {...inputProps} />
+            </Wrapper>
         ),
         "int": (
-            <TextField type={"number"} onChange={onChangeNum} label={label} {...propsToPass} />
+            <Wrapper {...wrapperProps}>
+                <TextField type={"number"} onChange={onChangeNum} {...inputProps} />
+            </Wrapper>
         ),
         "decimal": (
-            <TextField
-                type={"number"}
-                label={label}
-                slotProps={{
-                    input: {
-                        inputProps: {
-                            step: "0.01"
+            <Wrapper {...wrapperProps}>
+                <TextField type={"number"} onChange={onChangeNum} {...inputProps}
+                    slotProps={{
+                        input: {
+                            inputProps: {
+                                step: "0.01"
+                            },
+                            readOnly: readOnly
                         }
-                    }
-                }}
-                onChange={onChangeNum}
-                {...propsToPass} />
+                    }}
+                />
+            </Wrapper>
         ),
         "date": (
-            <TextField type={"date"} onChange={onChange} {...propsToPass} />
+            <Wrapper {...wrapperProps}>
+                <TextField type={"date"} onChange={onChange} {...inputProps} />
+            </Wrapper>
         ),
         "dropdown": (
-            <BpFormDropdown idx={key} selection={selection} onChange={onChange} {...propsToPass} />
+            <Wrapper {...wrapperProps}>
+                <FormDropdown idx={key} selection={selection} onChange={onChange} {...inputProps} />
+            </Wrapper>
+        ),
+        "color": (
+            <Wrapper {...wrapperProps}>
+                <FormColor onChange={onChangeColor} value={value} />
+            </Wrapper>
         ),
         "file": (
-            <BpFormFileUpload onChange={onChange} {...propsToPass} />
+            <Wrapper {...wrapperProps}>
+                <FormFileUpload onChange={onChange} {...inputProps} />
+            </Wrapper>
         ),
         "image": (
-            <BpFormImage onChange={onChange} {...propsToPass} />
-        ),
-        "switch": (
-            <BpFormSwitch onChange={onChangeSwitch} {...propsToPass} /> 
+            <Wrapper {...wrapperProps}>
+                <FormImage label={label} onChange={onChange} {...inputProps} />
+            </Wrapper>
         )
     }
 

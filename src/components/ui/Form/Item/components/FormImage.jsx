@@ -8,7 +8,7 @@ import { FileUpload, Clear, Cancel } from "@mui/icons-material";
 
 function ImagePreview(props) {
 
-    const { label = "", name = "", value = "" } = props;
+    const { name = "", value = "" } = props;
     const { onDelete = () => { } } = props;
 
     const style = {
@@ -41,25 +41,22 @@ function ImagePreview(props) {
             flexDirection={"column"}
             alignItems={"center"}
             sx={{ padding: 1 }}>
-            <Box>
-                <Box sx={style.btn}>
-                    <Box component={"img"}
-                        src={value} alt={name} sx={style.img} />
-                    <IconButton size="small" className="remove-btn"
-                        onClick={onDelete}
-                        sx={style.closeIcon}>
-                        <Cancel fontSize="small" />
-                    </IconButton>
+            <Box sx={style.btn}>
+                <Box component={"img"}
+                    src={value} alt={name} sx={style.img} />
+                <IconButton size="small" className="remove-btn"
+                    onClick={onDelete}
+                    sx={style.closeIcon}>
+                    <Cancel fontSize="small" />
+                </IconButton>
 
-                </Box>
-                <Typography>{label}</Typography>
             </Box>
         </Grid2>
     )
 }
 
 function EmptyPreview(props) {
-    const { onClick = () => {}} = props;
+    const { onClick = () => { } } = props;
     const style = {
         main: {
             cursor: "pointer",
@@ -79,7 +76,7 @@ function EmptyPreview(props) {
 
 function Index(props) {
 
-    const { label = "", name = "", value = "", onChange = () => { } } = props;
+    const { name = "", value = "", onChange = () => { } } = props;
 
     const fileUploadRef = useRef(null);
 
@@ -141,7 +138,7 @@ function Index(props) {
                         <EmptyPreview onClick={onAddImg} />
                     ) : (
 
-                        <ImagePreview label={label} name={name} value={value} onDelete={onDelete} />
+                        <ImagePreview name={name} value={value} onDelete={onDelete} />
                     )
                 }
             </Box>
