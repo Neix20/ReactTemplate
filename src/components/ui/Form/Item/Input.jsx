@@ -11,13 +11,14 @@ import FormImage from "./components/FormImage";
 import FormFileUpload from "./components/FormFileUpload";
 
 function Wrapper(props) {
-    const { label = "", children = (<></>) } = props;
-    const { fullWidth = true, required = false, sx = {} } = props;
+    const { label = "", sx={}, children = (<></>) } = props;
+    const { error, errorTxt } = props;
 
     return (
-        <FormControl fullWidth={fullWidth} required={required} sx={sx}>
+        <FormControl fullWidth sx={sx} error={error}>
             <FormLabel>{label}</FormLabel>
             {children}
+            <FormHelperText>{errorTxt}</FormHelperText>
         </FormControl>
     )
 }
@@ -25,7 +26,7 @@ function Wrapper(props) {
 const Index = (props = {}) => {
 
     const { name = "", value = "", type = "text", onChange = () => { } } = props;
-    const { selection = [], rows = 3, required = false, readOnly = false } = props;
+    const { selection = [], rows = 3, readOnly = false } = props;
     const { hasLabel = false, sx = {} } = props;
 
     // #region Custom Attributes
@@ -103,8 +104,6 @@ const Index = (props = {}) => {
     }
 
     const wrapperProps = {
-        fullWidth: true,
-        required,
         label,
         sx
     }
