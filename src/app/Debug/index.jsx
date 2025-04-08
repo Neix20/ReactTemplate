@@ -7,15 +7,25 @@ import { TextField, Button, Box } from "@mui/material";
 import { FormControl, FormLabel, FormHelperText } from "@mui/material";
 
 // 1. Zod schema for validation
-const UserSchema = z.object({
-    name: z.string().min(1, "Name is required"),
-    email: z.string().email("Invalid email address"),
-});
+const schema = z.object({
+    title: z.string(),
+    scammer_type: z.enum(["Seller", "Buyer"]),
+    subtitle: z.string(),
+    description: z.string(),
+    background: z.string(), // color as string (e.g., hex code)
+    post_date: z.string().date("Invalid date"), // If date string, keep as string
+    email: z.string().email("Invalid email"),
+    password: z.string().min(1, "Password is required"),
+    quantity: z.number().int(),
+    total_amount: z.number(),
+    profile: z.any(), // image upload (handle separately)
+    file: z.any(),    // file upload (handle separately)
+  });
 
 // 2. React component with Material UI + React Hook Form
 const Index = (props) => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(UserSchema) });
+    const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema) });
 
     console.log(register("name"))
 

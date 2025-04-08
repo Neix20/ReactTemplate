@@ -1,8 +1,6 @@
 
-import { SampleData } from "@config";
-
 const obj = {
-    key: "Incident",
+    key: "Sample",
     field: [
         {
             "name": "title",
