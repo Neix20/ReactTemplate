@@ -46,7 +46,7 @@ const Index = (props) => {
             </FormControl>
             <FormControl fullWidth error={!!errors.email}>
                 <FormLabel>Email</FormLabel>
-                <TextField {...register("email")} error={!!errors.email} />
+                <TextField {...register("email")} />
                 <FormHelperText>{errors.email?.message}</FormHelperText>
             </FormControl>
             <Button type="submit" variant="contained" color="primary" fullWidth>
@@ -58,6 +58,5 @@ const Index = (props) => {
 
 import OldForm from "./OldForm";
 
+// export default OldForm;
 export default Index;
-
-// export default Index;
