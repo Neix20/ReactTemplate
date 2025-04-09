@@ -12,7 +12,7 @@ import FormFileUpload from "./components/FormFileUpload";
 
 function Wrapper(props) {
     const { label = "", sx={}, children = (<></>) } = props;
-    const { error, errorTxt } = props;
+    const { error = null, errorTxt = "" } = props;
 
     return (
         <FormControl fullWidth sx={sx} error={error}>
