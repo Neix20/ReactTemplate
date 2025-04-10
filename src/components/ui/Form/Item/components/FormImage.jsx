@@ -49,7 +49,6 @@ function ImagePreview(props) {
                     sx={style.closeIcon}>
                     <Cancel fontSize="small" />
                 </IconButton>
-
             </Box>
         </Grid2>
     )
@@ -96,12 +95,7 @@ function Index(props) {
         reader.onload = (evt) => {
             const base64String = evt.target.result; // This contains the Base64 string
 
-            onChange({
-                target: {
-                    name: name,
-                    value: base64String
-                }
-            })
+            onChange(base64String)
         };
 
         // Read the file as a data URL (Base64)
@@ -119,12 +113,7 @@ function Index(props) {
     }
 
     const onDelete = () => {
-        onChange({
-            target: {
-                name: name,
-                value: ""
-            }
-        });
+        onChange("");
         fileUploadRef.current.value = "";
     }
 
