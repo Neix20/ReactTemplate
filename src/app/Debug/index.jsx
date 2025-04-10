@@ -5,7 +5,7 @@ import { ColorModeIconDropdown, BpForm, BpInput, BpDataTable } from "@components
 
 import { FormControl, Select, MenuItem } from "@mui/material";
 
-import { Models, SampleData } from "@config";
+import { GlobalStyles, Models, SampleData } from "@config";
 
 import { clsUtility } from "@utility";
 import { useFormDataLs } from "@hooks";
@@ -30,9 +30,9 @@ function ExampleFormDataLs(props) {
         return (
             <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                 <Grid2 item size={3} sx={{ display: "flex" }}>
-                    <BpInput name={`social_media.${ind}.platform`} type={"dropdown"}
-                        placeholder={"Platform"}
-                        selection={SampleData.Platform} {...itemProps} />
+                    <BpInput name={`social_media.${ind}.platform`} type={"dropdown"} 
+                        placeholder={"Platform"} selection={SampleData.Platform} 
+                        {...itemProps} />
                 </Grid2>
                 <Grid2 item size={9} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <BpInput name={`social_media.${ind}.post_url`} type={"text"} placeholder={"Enter username / Profile URL"} {...itemProps} />
@@ -80,10 +80,10 @@ function ExampleForm(props) {
     };
 
     return (
-        <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+        <Box component={"form"} onSubmit={handleSubmit(onSubmit)} sx={GlobalStyles.bordered}>
             <BpForm field={field} hasLabel={true} {...itemProps}>
             </BpForm>
-            <Grid2 container spacing={2}>
+            <Grid2 container spacing={2} sx={{ mt: 1 }}>
                 <Button type="submit" variant="contained" color="primary"
                     disabled={!isDirty}>
                     Submit New
@@ -94,8 +94,6 @@ function ExampleForm(props) {
     )
 };
 
-import BpExampleDataTable from "@components/ui/DataTable/example.jsx";
-
 const template = {
     basic: {
         key: "basic",
@@ -105,8 +103,8 @@ const template = {
                 type: "text"
             },
             {
-                name: "birthday",
-                type: "date"
+                name: "quantity",
+                type: "int"
             }
         ]
     }
@@ -118,28 +116,23 @@ function ExampleDataTable(props) {
 
     const { register, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm({});
 
-    const { fields: data, append, remove } = useFieldArray({ control, name: "basic" });
+    const { fields: data, append, update, remove } = useFieldArray({ control, name: "basic" });
 
-    const preAddUser = ({ table }) => {
-        table.setCreatingRow(true);
-    }
+    const itemProps = { register, control, errors };
 
-    const addUser = ({ values, table }) => {
+    const addUser = ({ table, row, values }) => {
         append(values);
         table.setCreatingRow(null);
     }
 
-    const updateUser = ({ row, table }) => {
-        table.setEditingRow(row);
+    const updateUser = ({ table, row, values }) => {
+        // update(row.index, values);
+        console.log(row);
+        // table.setEditingRow(null);
     }
 
-    const posUpdateUser = ({ values, table }) => {
-        reset(values);
-        table.setEditingRow(null);
-    }
-
-    const onDelete = ({ row }) => {
-        remove(row.original.idx);
+    const deleteUser = ({ row }) => {
+        remove(row.index);
     }
 
     const onDebug = () => {
@@ -148,16 +141,16 @@ function ExampleDataTable(props) {
 
     return (
         <Grid2 container flexDirection={"column"} spacing={1} sx={{ mt: 1 }}>
-            <BpDataTable
+            <BpDataTable idx={"basic"}
                 data={data}
                 field={field}
                 enableRowAction={true}
                 enableTopAction={true}
-                onPreAdd={preAddUser}
+                enableDefaultAdd={true}
+                enableDefaultUpdate={false}
                 onAdd={addUser}
                 onUpdate={updateUser}
-                onPosUpdate={posUpdateUser}
-                onDelete={onDelete} 
+                onDelete={deleteUser} 
             />
             <Button variant={"contained"} onClick={onDebug}>Debug</Button>
         </Grid2>
@@ -166,7 +159,7 @@ function ExampleDataTable(props) {
 
 function Index(props) {
     return (
-        <Grid2 sx={{ padding: 2 }}>
+        <Grid2 container flexDirection={"column"} spacing={1} sx={{ padding: 2 }}>
             <ColorModeIconDropdown />
             {/* <ExampleFormDataLs /> */}
             {/* <ExampleForm /> */}
