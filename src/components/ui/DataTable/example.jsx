@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import { Grid2 } from "@mui/material";
 
 import { useForm, useFormDataLs } from "@hooks";
-import { BpForm, BpSubForm, BpDataTable, UserLayout } from "@components";
+import { BpDataTable, UserLayout } from "@components";
 
-import Models from "@models";
+import { Models } from "@config";
 
 const tblOption = {
     createDisplayMode: "modal",
