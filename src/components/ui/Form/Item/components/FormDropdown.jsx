@@ -1,15 +1,15 @@
 
-import { Typography, FormControl, InputLabel, TextField, Select, MenuItem } from "@mui/material";
+import { InputLabel, Select, MenuItem } from "@mui/material";
 
 const FormDropdown = (props = {}) => {
 
-    const { name = "", value = "", placeholder = "" } = props;
-    const { selection = [], onChange = () => { } } = props;
+    const { placeholder = "", selection = [], value = "", ..._props } = props;
 
     const renderItem = ({ name = "", value = "" }) => (<MenuItem value={value}>{name}</MenuItem>);
 
     return (
-        <Select displayEmpty onChange={onChange} name={name} value={value}>
+        // <Select displayEmpty {..._props}>
+        <Select displayEmpty value={value} {..._props}>
             <MenuItem value="" disabled>
                 {placeholder}
             </MenuItem>

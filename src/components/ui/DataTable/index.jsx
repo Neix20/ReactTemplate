@@ -27,6 +27,10 @@ function generateColumns(field = [], style = {}) {
             accessorKey: name,
             header: clsUtility.capitalize(name),
         }),
+        "email": ({ name = "" }) => ({
+            accessorKey: name,
+            header: clsUtility.capitalize(name),
+        }),
         "password": ({ name = "" }) => ({
             accessorKey: name,
             header: clsUtility.capitalize(name),
@@ -91,10 +95,12 @@ function generateColumns(field = [], style = {}) {
 
         const { type = "" } = obj;
 
-        const factoryMethod = colDict[type];
-        const _obj = factoryMethod(obj);
+        if (type in colDict) {
+            const factoryMethod = colDict[type];
+            const _obj = factoryMethod(obj);
+            _arr.push(_obj);
+        }
 
-        _arr.push(_obj);
     }
 
     return _arr;
@@ -108,9 +114,9 @@ function AddItemBtn(props) {
     }
 
     return (
-        <Button variant={"outlined"} 
-            startIcon={<Add />}
-            onClick={_ => onPreAdd({ table })}>
+        <Button variant={"outlined"}
+            onClick={_ => onPreAdd({ table })} 
+            startIcon={<Add />} >
             New
         </Button>
     )
@@ -118,10 +124,11 @@ function AddItemBtn(props) {
 
 function Index(props) {
 
-    const { data = [], field = [], hideField = [], fieldOrder = [], } = props;
+    const { idx: key = "", data = [], field = [], hideField = [], fieldOrder = [], } = props;
     const { enableRowAction = false, enableTopAction = false } = props;
     const { onPreAdd = null, onPosUpdate = () => { } } = props;
     const { onAdd = () => { }, onUpdate = () => { }, onDelete = () => { } } = props;
+
     // const { sx = {} } = props;
 
     const style = {
@@ -129,14 +136,16 @@ function Index(props) {
             width: 40,
             height: 40
         },
-        dialog: { 
-            display: 'flex', 
-            flexDirection: 'column', 
-            gap: '1rem' 
+        dialog: {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem'
         }
     }
 
     const columns = generateColumns(field, style);
+
+    const name = clsUtility.capitalize(key);
 
     // #region Render Functions
     const renderRowActions = ({ row, table }) => (
@@ -153,22 +162,26 @@ function Index(props) {
             </Tooltip>
         </Box>
     );
+    // #endregion
 
-    const renderCreateModal = ({ table, row, internalEditComponents }) => (
-        <>
-            <DialogTitle variant="h3">Create New User</DialogTitle>
-            <DialogContent sx={style.dialog}>
-                {internalEditComponents}
-            </DialogContent>
-            <DialogActions>
-                <MRT_EditActionButtons variant="text" table={table} row={row} />
-            </DialogActions>
-        </>
-    )
+    // #region We Could Make Custom
+    const renderCreateModal = ({ table, row, internalEditComponents }) => {
+        return (
+            <>
+                <DialogTitle variant="h3">Create New {name}</DialogTitle>
+                <DialogContent sx={style.dialog}>
+                    {internalEditComponents}
+                </DialogContent>
+                <DialogActions>
+                    <MRT_EditActionButtons variant="text" table={table} row={row} />
+                </DialogActions>
+            </>
+        )
+    }
 
     const renderUpdateModal = ({ table, row, internalEditComponents }) => (
         <>
-            <DialogTitle variant="h3">Update User</DialogTitle>
+            <DialogTitle variant="h3">Update {name}</DialogTitle>
             <DialogContent sx={style.dialog}>
                 {internalEditComponents}
             </DialogContent>
@@ -203,11 +216,7 @@ function Index(props) {
         renderCreateRowDialogContent: renderCreateModal,
         renderEditRowDialogContent: renderUpdateModal,
         renderTopToolbarCustomActions: ({ table }) => (<AddItemBtn table={table} onPreAdd={onPreAdd} />),
-        // muiTablePaperProps: { sx: style.tblPaper },
-        // muiTopToolbarProps: { sx: style.tblTop },
-        // muiTableContainerProps: { sx: style.tblContainer },
-        // muiBottomToolbarProps: { sx: style.tblBottom },
-        initialState: { 
+        initialState: {
             columnOrder: fieldOrder, // Must Be Full, Otherwise Wont Work
             columnVisibility: hideField.reduce((res, item) => { res[item] = false; return res; }, {}),
             columnPinning: {

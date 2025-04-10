@@ -10,72 +10,68 @@ import FormColor from "./components/FormColor";
 import FormImage from "./components/FormImage";
 import FormFileUpload from "./components/FormFileUpload";
 
+import { Controller } from "react-hook-form";
+
 function Wrapper(props) {
-    const { label = "", sx={}, children = (<></>) } = props;
-    const { error = null, errorTxt = "" } = props;
+
+    const { label = "", sx = {}, children = (<></>) } = props;
+    const { errors = null } = props;
+
+    const errTxt = errors?.message;
 
     return (
-        <FormControl fullWidth sx={sx} error={error}>
+        <FormControl fullWidth errors={errors} sx={sx}>
             <FormLabel>{label}</FormLabel>
             {children}
-            <FormHelperText>{errorTxt}</FormHelperText>
+            <FormHelperText sx={{ color: "error.main" }}>{errTxt}</FormHelperText>
         </FormControl>
     )
 }
 
-const Index = (props = {}) => {
+// Add Form Validation with Error Msg
+function Index(props) {
 
-    const { name = "", value = "", type = "text", onChange = () => { } } = props;
-    const { selection = [], rows = 3, readOnly = false } = props;
-    const { hasLabel = false, sx = {} } = props;
+    const { name = "", type = "text", readOnly = false } = props;
 
-    // #region Custom Attributes
-    const placeholder = clsUtility.capitalize(name);
-    const label = hasLabel ? placeholder : "";
-    // #endregion
+    const { register = () => { }, control = null, errors = {} } = props;
 
-    // #region Actions
-    const onChangeNum = (evt) => {
-        const { name = "", value = "" } = evt.target;
-        onChange({
-            target: {
-                name: name,
-                value: Number(value)
-            }
-        });
-    };
-    // #endregion
+    const { selection = [], rows = 3, sx = {} } = props;
 
-    const inputProps = {
+    const { label = "", placeholder = "" } = props;
+
+    const _txtProps = {
         name,
-        value,
         placeholder,
         slotProps: {
             input: {
                 readOnly: readOnly
             }
-        }
-    }
+        },
+        ...register(name, {
+            valueAsNumber: ["int", "decimal"].includes(type),
+        }),
+        error: errors[name],
+    };
 
     // We Should Make This Flexible to be able to customize our own Form Item
     const elemDict = {
         "text": (
-            <TextField type={"text"} onChange={onChange} {...inputProps} />
+            <TextField type={"text"} {..._txtProps} />
         ),
         "email": (
-            <TextField type={"text"} onChange={onChange} {...inputProps} />
+            <TextField type={"text"} {..._txtProps} />
         ),
         "password": (
-            <TextField type={"password"} onChange={onChange} {...inputProps} />
+            <TextField type={"password"} {..._txtProps} />
         ),
         "textarea": (
-            <TextField multiline rows={rows} onChange={onChange} {...inputProps} />
+            <TextField multiline rows={rows} {..._txtProps} />
         ),
         "int": (
-            <TextField type={"number"} onChange={onChangeNum} {...inputProps} />
+            <TextField type={"number"} {..._txtProps} />
         ),
         "decimal": (
-            <TextField type={"number"} onChange={onChangeNum} {...inputProps}
+            <TextField type={"number"} {..._txtProps}
                 slotProps={{
                     input: {
                         inputProps: {
@@ -87,26 +83,46 @@ const Index = (props = {}) => {
             />
         ),
         "date": (
-            <TextField type={"date"} onChange={onChange} {...inputProps} />
+            <TextField type={"date"} {..._txtProps} />
         ),
         "dropdown": (
-            <FormDropdown selection={selection} onChange={onChange} {...inputProps} />
+            <Controller name={name}
+                control={control}
+                render={({ field }) => (
+                    <FormDropdown 
+                        placeholder={placeholder} selection={selection} 
+                        error={errors[name]} 
+                        {...field} />
+                )} />
         ),
         "color": (
-            <FormColor onChange={onChange} {...inputProps} />
+            <Controller
+                name={name}
+                control={control}
+                render={({ field }) => (<FormColor error={errors[name]} {...field} />)}
+            />
         ),
         "file": (
-            <FormFileUpload onChange={onChange} {...inputProps} />
+            <Controller
+                name={name}
+                control={control}
+                render={({ field }) => (<FormFileUpload error={errors[name]} {...field} />)}
+            />
         ),
         "image": (
-            <FormImage label={label} onChange={onChange} {...inputProps} />
+            <Controller
+                name={name}
+                control={control}
+                render={({ field }) => (<FormImage {...field} />)}
+            />
         )
     }
 
     const wrapperProps = {
         label,
+        errors: errors[name],
         sx
-    }
+    };
 
     return (
         <Wrapper {...wrapperProps}>

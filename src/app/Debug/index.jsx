@@ -1,62 +1,179 @@
 
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { Container, Grid2, Typography, Button, IconButton, Box, Tooltip, Paper, Card } from "@mui/material";
+
+import { ColorModeIconDropdown, BpForm, BpInput, BpDataTable } from "@components";
+
+import { FormControl, Select, MenuItem } from "@mui/material";
+
+import { Models, SampleData } from "@config";
+
+import { clsUtility } from "@utility";
+import { useFormDataLs } from "@hooks";
+
+import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { TextField, Button, Box } from "@mui/material";
-import { FormControl, FormLabel, FormHelperText } from "@mui/material";
+import { Delete, Add } from "@mui/icons-material";
 
-// 1. Zod schema for validation
-const schema = z.object({
-    title: z.string(),
-    scammer_type: z.enum(["Seller", "Buyer"]),
-    subtitle: z.string(),
-    description: z.string(),
-    background: z.string(), // color as string (e.g., hex code)
-    post_date: z.string().date("Invalid date"), // If date string, keep as string
-    email: z.string().email("Invalid email"),
-    password: z.string().min(1, "Password is required"),
-    quantity: z.number().int(),
-    total_amount: z.number(),
-    profile: z.any(), // image upload (handle separately)
-    file: z.any(),    // file upload (handle separately)
-  });
+function ExampleFormDataLs(props) {
 
-// 2. React component with Material UI + React Hook Form
-const Index = (props) => {
+    const { register, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm({});
 
-    const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema) });
+    const { fields: data, append, remove } = useFieldArray({ control, name: "social_media" });
 
-    console.log(register("name"))
+    const itemProps = { register, control, errors };
+
+    const renderItem = (item, ind) => {
+
+        const onDeleteItem = () => remove(ind);
+
+        return (
+            <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
+                <Grid2 item size={3} sx={{ display: "flex" }}>
+                    <BpInput name={`social_media.${ind}.platform`} type={"dropdown"}
+                        placeholder={"Platform"}
+                        selection={SampleData.Platform} {...itemProps} />
+                </Grid2>
+                <Grid2 item size={9} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <BpInput name={`social_media.${ind}.post_url`} type={"text"} placeholder={"Enter username / Profile URL"} {...itemProps} />
+                    <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
+                        <Delete />
+                    </IconButton>
+                </Grid2>
+            </Grid2>
+        )
+    }
 
     const onSubmit = (data) => {
-        console.log("Form data:", data);
+        console.log(data)
+    };
+
+    const onAdd = () => (append({}));
+
+    return (
+        <Grid2 container flexDirection={"column"} spacing={1}>
+            <Typography>Social Media</Typography>
+            <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+                {data.map(renderItem)}
+                <Button startIcon={<Add />} onClick={onAdd} variant={"contained"} sx={{ mt: 1 }}>Add Social Media</Button>
+                <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 1 }}>
+                    Submit Form Data
+                </Button>
+            </Box>
+        </Grid2>
+    )
+}
+
+function ExampleForm(props) {
+
+    const { field, schema } = Models.Sample;
+
+    const { register, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm({
+        mode: "onChange",
+        resolver: zodResolver(schema)
+    });
+
+    const itemProps = { register, control, errors };
+
+    const onSubmit = (data) => {
+        console.log(data)
     };
 
     return (
-        <Box
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-            sx={{ maxWidth: 400, mx: "auto", mt: 5 }}
-        >
-            <FormControl fullWidth error={!!errors.name}>
-                <FormLabel>Name</FormLabel>
-                <TextField {...register("name")} error={!!errors.name} />
-                <FormHelperText>{errors.name?.message}</FormHelperText>
-            </FormControl>
-            <FormControl fullWidth error={!!errors.email}>
-                <FormLabel>Email</FormLabel>
-                <TextField {...register("email")} />
-                <FormHelperText>{errors.email?.message}</FormHelperText>
-            </FormControl>
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-                Submit
-            </Button>
+        <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+            <BpForm field={field} hasLabel={true} {...itemProps}>
+            </BpForm>
+            <Grid2 container spacing={2}>
+                <Button type="submit" variant="contained" color="primary"
+                    disabled={!isDirty}>
+                    Submit New
+                </Button>
+                <Button onClick={() => reset()} variant={"contained"} color={"error"}>Reset</Button>
+            </Grid2>
         </Box>
-    );
+    )
 };
 
-import OldForm from "./OldForm";
+import BpExampleDataTable from "@components/ui/DataTable/example.jsx";
 
-// export default OldForm;
+const template = {
+    basic: {
+        key: "basic",
+        field: [
+            {
+                name: "name",
+                type: "text"
+            },
+            {
+                name: "birthday",
+                type: "date"
+            }
+        ]
+    }
+}
+
+function ExampleDataTable(props) {
+
+    const { field } = template.basic;
+
+    const { register, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm({});
+
+    const { fields: data, append, remove } = useFieldArray({ control, name: "basic" });
+
+    const preAddUser = ({ table }) => {
+        table.setCreatingRow(true);
+    }
+
+    const addUser = ({ values, table }) => {
+        append(values);
+        table.setCreatingRow(null);
+    }
+
+    const updateUser = ({ row, table }) => {
+        table.setEditingRow(row);
+    }
+
+    const posUpdateUser = ({ values, table }) => {
+        reset(values);
+        table.setEditingRow(null);
+    }
+
+    const onDelete = ({ row }) => {
+        remove(row.original.idx);
+    }
+
+    const onDebug = () => {
+        console.log(data);
+    }
+
+    return (
+        <Grid2 container flexDirection={"column"} spacing={1} sx={{ mt: 1 }}>
+            <BpDataTable
+                data={data}
+                field={field}
+                enableRowAction={true}
+                enableTopAction={true}
+                onPreAdd={preAddUser}
+                onAdd={addUser}
+                onUpdate={updateUser}
+                onPosUpdate={posUpdateUser}
+                onDelete={onDelete} 
+            />
+            <Button variant={"contained"} onClick={onDebug}>Debug</Button>
+        </Grid2>
+    )
+}
+
+function Index(props) {
+    return (
+        <Grid2 sx={{ padding: 2 }}>
+            <ColorModeIconDropdown />
+            {/* <ExampleFormDataLs /> */}
+            {/* <ExampleForm /> */}
+            <ExampleDataTable />
+        </Grid2>
+    )
+}
+
 export default Index;
+

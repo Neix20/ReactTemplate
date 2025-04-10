@@ -1,4 +1,23 @@
 
+import { z } from "zod";
+
+const schema = z.object({
+    title: z.string(),
+    scammer_type: z.enum(["Seller", "Buyer"]),
+    subtitle: z.string(),
+    description: z.string(),
+    post_date: z.string().date("Invalid date"), // If date string, keep as string
+    email: z.string().email("Invalid email"),
+    password: z.string().min(1, "Password is required"),
+    quantity: z.number().int(),
+    total_amount: z.number(),
+    background: z.string(), // color as string (e.g., hex code)
+    profile: z.any().refine((file) => file?.size <= 100, `Max image size is 5MB.`), // image upload (handle separately)
+    file: z.any().refine((file) => file?.size <= 100, `Max image size is 5MB.`), // file upload (handle separately)
+    // profile: z.any(),
+    // file: z.any()
+});
+
 const obj = {
     key: "Sample",
     field: [
@@ -29,10 +48,6 @@ const obj = {
             "type": "textarea"
         },
         {
-            "name": "background",
-            "type": "color"
-        },
-        {
             "name": "post_date",
             "type": "date"
         },
@@ -53,14 +68,19 @@ const obj = {
             "type": "decimal"
         },
         {
+            "name": "background",
+            "type": "color",
+        },
+        {
             "name": "profile",
             "type": "image"
         },
         {
             "name": "file",
-            "type": "file"
+            "type": "file",
         },
-    ]
-}
+    ],
+    schema
+};
 
 export default obj;

@@ -3,6 +3,8 @@ function capitalize(value = "") {
     if (typeof value !== "string" || !value.trim()) return ""; // Validate input
 
     return value
+        .split(".")
+        .at(-1)
         .split("_")
         .map((word) =>
             word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
