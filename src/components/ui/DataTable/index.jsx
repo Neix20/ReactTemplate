@@ -125,7 +125,6 @@ function Index(props) {
 
     const { idx: key = "", data = [], field = [], hideField = [], fieldOrder = [], } = props;
     const { enableRowAction = false, enableTopAction = false } = props;
-
     const { enableDefaultAdd = false, enableDefaultUpdate = false } = props;
     const { onAdd = () => { }, onUpdate = () => { }, onDelete = () => { } } = props; 
 

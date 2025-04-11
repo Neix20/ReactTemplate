@@ -43,8 +43,7 @@ function Index(props) {
 
     const [imgAsset, setImgAsset] = useState([]);
 
-    const { data: scammer, setData: setScammer,
-        handleAddData: handleAddScammer, handleRemoveData: handleRemoveScammer } = useFilterData();
+    const { data: scammer, setData: setScammer, handleAddData: handleAddScammer, handleRemoveData: handleRemoveScammer } = useFilterData();
     const [scammerSelection, setScammerSelection] = useState([]);
 
     const { data: ipSeries, setData: setIpSeries,
@@ -236,7 +235,7 @@ function Index(props) {
             />
             <Grid2 container spacing={1}>
             <Box sx={GlobalStyles.bordered}>
-                    <BpForm
+                    {/* <BpForm
                         hasLabel={true}
                         key={incKey}
                         data={incData} field={incField}
@@ -248,12 +247,13 @@ function Index(props) {
                             selection={SampleData.Platform}
                             onChange={updateIncData}
                         />
-                    </BpForm>
+                    </BpForm> */}
                 </Box>
 
                 {/* Multiple Scammer */}
-                <BpSearchMenuList searchField={"scammer"} selection={scammerSelection}
-                    data={scammer} handleAddData={handleAddScammer} handleRemoveData={handleRemoveScammer}
+                <BpSearchMenuList 
+                    data={scammer} searchField={"scammer"} selection={scammerSelection}
+                    handleAddData={handleAddScammer} handleRemoveData={handleRemoveScammer}
                 />
 
                 {/* Multiple Ip Series */}

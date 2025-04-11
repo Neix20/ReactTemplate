@@ -36,48 +36,63 @@ const tblOption = {
     renderRowActions: ({ row, table }) => (<></>)
 }
 
+const template = {
+    basic: {
+        key: "basic",
+        field: [
+            {
+                name: "name",
+                type: "text"
+            },
+            {
+                name: "quantity",
+                type: "int"
+            }
+        ]
+    }
+}
+
 function Index(props) {
 
-    const { key, data, field, addData, updateData, deleteData } = useFormDataLs(Models.Product);
+    const { field } = template.basic;
 
-    useEffect(() => {
-        console.log(data);
-    }, [data.length])
+    const { register, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm({});
 
-    const preAddUser = ({ table }) => {
-        table.setCreatingRow(true);
-    }
+    const { fields: data, append, update, remove } = useFieldArray({ control, name: "basic" });
 
-    const addUser = ({ values, table }) => {
-        addData(values);
+    const addUser = ({ table, row, values }) => {
+        append(values);
         table.setCreatingRow(null);
     }
 
-    const updateUser = ({ row, table }) => {
-        table.setEditingRow(row);
-    }
-
-    const posUpdateUser = ({ values, table }) => {
-        updateData(values);
+    const updateUser = ({ table, row, values }) => {
+        update(row.index, values);
         table.setEditingRow(null);
     }
 
-    const onDelete = ({ row }) => {
-        deleteData(row.original.idx);
+    const deleteUser = ({ row }) => {
+        remove(row.index);
+    }
+
+    const onDebug = () => {
+        console.log(data);
     }
 
     return (
-        <UserLayout>
-            <Grid2 container flexDirection={"column"} spacing={2} sx={{ margin: 2 }}>
-                <BpDataTable key={key} data={data} field={field} 
-                    enableRowAction={true} enableTopAction={true}
-                    onPreAdd={preAddUser}
-                    onAdd={addUser}
-                    onUpdate={updateUser}
-                    onPosUpdate={posUpdateUser}
-                    onDelete={onDelete} />
-            </Grid2>
-        </UserLayout>
+        <Grid2 container flexDirection={"column"} spacing={1} sx={{ mt: 1 }}>
+            <BpDataTable idx={"basic"}
+                data={data}
+                field={field}
+                enableRowAction={true}
+                enableTopAction={true}
+                enableDefaultAdd={true}
+                enableDefaultUpdate={true}
+                onAdd={addUser}
+                onUpdate={updateUser}
+                onDelete={deleteUser} 
+            />
+            <Button variant={"contained"} onClick={onDebug}>Debug</Button>
+        </Grid2>
     )
 }
 
