@@ -6,6 +6,9 @@ import Home from "@app/User/Home";
 import Incident from "@app/User/Incident";
 import IncidentDetails from "@app/User/Incident/IncidentDetails";
 
+import PrivacyPolicy from "@app/User/LegalDocuments";
+import TermsAndConditions from "@app/User/LegalDocuments";
+
 import Report from "@app/User/Report";
 
 import Error from "@app/Error";
@@ -48,6 +51,22 @@ const menuItems = [
         url: '/Report',
         type: "item",
         element: <Report />
+    },
+    {
+        id: "user-privacy-policy",
+        title: "privacy_policy",
+        show: false,
+        url: '/privacy-policy',
+        type: "item",
+        element: <PrivacyPolicy />
+    },
+    {
+        id: "user-terms-and-conditions",
+        title: "terms-and-conditions",
+        show: false,
+        url: '/terms-and-conditions',
+        type: "item",
+        element: <TermsAndConditions />
     },
     {
         id: "user-error",
