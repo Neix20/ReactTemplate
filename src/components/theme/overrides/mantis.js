@@ -96,7 +96,6 @@ const mantis = {
             },
         },
     },
-
     MuiTableCell: {
         styleOverrides: {
             root: ({ theme }) => ({
@@ -111,7 +110,6 @@ const mantis = {
             },
         },
     },
-
     MuiTabs: {
         styleOverrides: {
             vertical: {

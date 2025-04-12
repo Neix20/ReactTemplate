@@ -17,7 +17,7 @@ const COGNITO_CONFIG = {
                 oauth: {
                     domain: import.meta.env.VITE_AWS_COGNITO_DOMAINAME,
                     scopes: ['email', 'openid', 'phone', 'profile', 'aws.cognito.signin.user.admin'],
-                    redirectSignIn: ['http://localhost:5173/'],
+                    redirectSignIn: ['http://localhost:5173/Login'],
                     redirectSignOut: ['http://localhost:5173/'],
                     responseType: 'code',
                 }
