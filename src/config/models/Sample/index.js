@@ -14,8 +14,6 @@ const schema = z.object({
     background: z.string(), // color as string (e.g., hex code)
     profile: z.any().refine((file) => file?.size <= 100, `Max image size is 5MB.`), // image upload (handle separately)
     file: z.any().refine((file) => file?.size <= 100, `Max image size is 5MB.`), // file upload (handle separately)
-    // profile: z.any(),
-    // file: z.any()
 });
 
 const obj = {

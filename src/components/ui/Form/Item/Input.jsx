@@ -67,13 +67,14 @@ function Index(props) {
             />
         ),
         "int": ({ field, error }) => (
-            <TextField type={"number"} error={error} {...field} {...inputProps} />
+            <TextField type={"number"} error={error} {...field} onChange={(evt) => field.onChange(Number(evt.target.value))} {...inputProps} />
         ),
         "date": ({ field, error }) => (
             <TextField type={"date"} error={error} {...field} {...inputProps} />
         ),
         "decimal": ({ field, error }) => (
             <TextField type={"number"} error={error} {...field} {...inputProps}
+                onChange={(evt) => field.onChange(Number(evt.target.value))}
                 slotProps={{
                     input: {
                         inputProps: {
