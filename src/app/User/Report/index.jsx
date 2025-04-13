@@ -8,7 +8,7 @@ import Stepper from "./components/Stepper";
 import { BpFormItem, BpInput, BpImageGallery, BpImageUpload, BpSearchMenuList } from "@components";
 import { useFormDataLs } from "@hooks";
 
-import { Delete, Add, FileUpload } from "@mui/icons-material";
+import { Delete, Add } from "@mui/icons-material";
 
 function useStep() {
     const [step, setStep] = useState(0);
@@ -25,15 +25,42 @@ import Page1 from "./img/page_1.jpeg";
 import Page2 from "./img/page_2.jpeg";
 import Page3 from "./img/page_3.jpeg";
 
+import { z } from "zod";
+
+const template = {
+    social_media: {
+        key: "social_media",
+        field: [
+            {
+                "name": "platform",
+                "type": "dropdown"
+            },
+            {
+                "name": "post_url",
+                "type": "text"
+            }
+        ],
+        initial: {
+            platform: "",
+            post_url: ""
+        },
+        schema: z.object({
+            social_media: z.array(z.object({
+                platform: z.string().email("Invalid email"),
+                post_url: z.string().min(1, "Post URL is required"),
+            }))
+        })
+    }
+}
+
 function SocialMediaSection(props) {
 
-    const { data, addDataHtml: onAdd, updateDataHtml: onUpdate, deleteData: onDelete } = useFormDataLs();
+    const { control, handleSubmit, isDirty, data, append: onAdd, update: onUpdate, remove: onDelete } = useFormDataLs(template.social_media);
 
     const renderItem = (item, ind) => {
 
         const { idx = "" } = item;
 
-        const onUpdateItem = (evt) => onUpdate(evt, idx);
         const onDeleteItem = () => onDelete(idx);
 
         return (
@@ -41,37 +68,30 @@ function SocialMediaSection(props) {
                 <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Grid2 item size={3} sx={{ display: "flex" }}>
                         <BpInput
-                            type={"dropdown"} placeholder={"Select Platform"}
-                            name={"platform"} value={item["platform"]}
-                            selection={SampleData.Platform}
-                            onChange={onUpdateItem}
-                        />
+                            name={`social_media.${ind}.platform`} type={"dropdown"}
+                            placeholder={"Platform"} selection={SampleData.Platform}
+                            control={control} />
                     </Grid2>
                     <Grid2 item size={9} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                         <BpInput
-                            type={"text"} placeholder={"Enter username / Profile URL"}
-                            name={"post_url"} value={item["post_url"]}
-                            onChange={onUpdateItem}
-                        />
+                            name={`social_media.${ind}.post_url`} type={"text"}
+                            placeholder={"Enter username / Profile URL"}
+                            control={control} />
                         <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
                             <Delete />
                         </IconButton>
                     </Grid2>
                 </Grid2>
                 <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
-
                     <Grid2 item size={10} container spacing={1}>
                         <BpInput
-                            type={"dropdown"} placeholder={"Select Platform"}
-                            name={"platform"} value={item["platform"]}
-                            selection={SampleData.Platform}
-                            onChange={onUpdateItem}
-                        />
+                            name={`social_media.${ind}.platform`} type={"dropdown"}
+                            placeholder={"Platform"} selection={SampleData.Platform}
+                            control={control} />
                         <BpInput
-                            type={"text"} placeholder={"Enter username / Profile URL"}
-                            name={"post_url"} value={item["post_url"]}
-                            onChange={onUpdateItem}
-                        />
+                            name={`social_media.${ind}.post_url`} type={"text"}
+                            placeholder={"Enter username / Profile URL"}
+                            control={control} />
                     </Grid2>
                     <Grid2 item size={2}>
                         <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
@@ -83,12 +103,14 @@ function SocialMediaSection(props) {
         )
     }
 
+    const _onAdd = _ => onAdd({});
+
     return (
         <Grid2 container flexDirection={"column"} spacing={1}>
             <Typography>Social Media</Typography>
             {data.map(renderItem)}
             <Grid2 container>
-                <Button startIcon={<Add />} onClick={onAdd} variant={"contained"}>Add Social Media</Button>
+                <Button startIcon={<Add />} onClick={_onAdd} variant={"contained"}>Add Social Media</Button>
             </Grid2>
         </Grid2>
     )
@@ -96,12 +118,7 @@ function SocialMediaSection(props) {
 
 function PaymentMethodSection(props) {
 
-    const {
-        data,
-        addDataHtml: onAdd,
-        updateDataHtml: onUpdate,
-        deleteData: onDelete
-    } = useFormDataLs();
+    const { data, addDataHtml: onAdd, updateDataHtml: onUpdate, deleteData: onDelete } = useFormDataLs();
 
     const renderItem = (item, ind) => {
 

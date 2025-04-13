@@ -10,10 +10,8 @@ import { FormControl, Select, MenuItem } from "@mui/material";
 import { GlobalStyles, Models, SampleData } from "@config";
 
 import { clsUtility } from "@utility";
-import { useForm } from "@hooks";
 
-import { useFieldArray } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, useFormDataLs } from "@hooks";
 
 import { Delete, Add } from "@mui/icons-material";
 
@@ -70,8 +68,7 @@ const template = {
 
 function ExampleFormDataLs(props) {
 
-    const { key, control, handleSubmit, isDirty } = useForm(template.social_media);
-    const { fields: data, append, remove } = useFieldArray({ control, name: key });
+    const { control, handleSubmit, isDirty, data, append, remove } = useFormDataLs(template.social_media);
 
     const renderItem = (item, ind) => {
 
@@ -141,9 +138,7 @@ function ExampleForm(props) {
 
 function ExampleDataTable(props) {
 
-    const { key, field, control } = useForm(template.basic);
-
-    const { fields: data, append, update, remove } = useFieldArray({ control, name: key });
+    const { data, append, update, remove } = useFormDataLs(template.basic);
 
     const addUser = ({ table, row, values }) => {
         append(values);
@@ -251,8 +246,6 @@ function Index(props) {
         </Grid2>
     )
 }
-
-import SignInWithCustom from "./SignInWithCustom";
 
 export default Index;
 
