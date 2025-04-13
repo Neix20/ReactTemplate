@@ -20,13 +20,6 @@ import { Delete, Add } from "@mui/icons-material";
 import { z } from "zod";
 
 const socialMediaSchema = z.object({
-    socialMedia: z.array(z.object({
-        platform: z.string().email("Invalid email"),
-        post_url: z.string().min(1, "Post URL is required"),
-    })).min(1, "Social Media is required")
-})
-
-const validationSchema = z.object({
     social_media: z.array(z.object({ 
         platform: z.string().email("Invalid email"),
         post_url: z.string().min(1, "Post URL is required"),
@@ -35,12 +28,11 @@ const validationSchema = z.object({
 
 function ExampleFormDataLs(props) {
 
-    const { register, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm({
-        resolver: zodResolver(validationSchema)
+    const { control, handleSubmit, reset, formState: { isDirty } } = useForm({
+        resolver: zodResolver(socialMediaSchema)
     });
 
     const { fields: data, append, remove } = useFieldArray({ control, name: "social_media" });
-    const itemProps = { register, control, errors };
 
     const renderItem = (item, ind) => {
 
@@ -50,14 +42,14 @@ function ExampleFormDataLs(props) {
             <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                 <Grid2 item size={3} sx={{ display: "flex" }}>
                     <BpInput
-                        name={`social_media.${ind}.platform`} type={"email"}
-                        // placeholder={"Platform"} selection={SampleData.Platform}
-                        {...itemProps} />
+                        name={`social_media.${ind}.platform`} type={"dropdown"}
+                        placeholder={"Platform"} selection={SampleData.Platform}
+                        control={control} />
                 </Grid2>
-                <Grid2 item size={9} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Grid2 item size={9} sx={{ display: "flex", gap: 1 }}>
                     <BpInput name={`social_media.${ind}.post_url`} type={"text"} 
                         placeholder={"Enter username / Profile URL"} 
-                        {...itemProps} />
+                        control={control} />
                     <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
                         <Delete />
                     </IconButton>
@@ -77,8 +69,8 @@ function ExampleFormDataLs(props) {
             <Typography>Social Media</Typography>
             <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
                 {data.map(renderItem)}
-                <Grid2 container spacing={2} sx={{ mt: 1 }}>
-                    <Button type={"submit"} variant={"contained"} sx={{ mt: 1 }}> Submit Form Data List </Button>
+                <Grid2 container spacing={1} sx={{ mt: 1 }}>
+                    <Button type={"submit"} variant={"contained"} disabled={!isDirty} sx={{ mt: 1 }}> Submit Form Data List </Button>
                     <Button type={"button"} variant={"contained"} startIcon={<Add />} onClick={onAdd} sx={{ mt: 1 }}>Add Social Media</Button>
                 </Grid2>
             </Box>
@@ -90,9 +82,9 @@ function ExampleForm(props) {
 
     const { field, schema } = Models.Sample;
 
-    const { register, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm({ resolver: zodResolver(schema) });
-
-    const itemProps = { register, control, errors };
+    const { control, handleSubmit, reset, formState: { isDirty } } = useForm({ 
+        resolver: zodResolver(schema) 
+    });
 
     const onSubmit = (data) => {
         console.log(data)
@@ -101,10 +93,9 @@ function ExampleForm(props) {
     return (
         <Box component={"form"} onSubmit={handleSubmit(onSubmit)}
             sx={GlobalStyles.bordered}>
-            <BpForm field={field} hasLabel={true} {...itemProps} />
+            <BpForm field={field} control={control} hasLabel={true} />
             <Grid2 container spacing={2} sx={{ mt: 1 }}>
-                <Button type="submit" variant="contained" color="primary"
-                    disabled={!isDirty}>
+                <Button type="submit" variant="contained" color="primary" disabled={!isDirty}> 
                     Submit New
                 </Button>
                 <Button onClick={() => reset()} variant={"contained"} color={"error"}>Reset</Button>
@@ -133,7 +124,7 @@ function ExampleDataTable(props) {
 
     const { field } = template.basic;
 
-    const { register, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm({});
+    const { control, formState: { errors, isDirty } } = useForm({});
 
     const { fields: data, append, update, remove } = useFieldArray({ control, name: "basic" });
 
@@ -196,26 +187,26 @@ function useFilterData() {
     }
 }
 
-const scammerSelection = [
-    {
-        "name": "Tan Xuan Qing",
-        "value": "SCAMMER-0c3535ad-b583-4fa4-b6a8-e7b243f64777"
-    },
-    {
-        "name": "Tan Xi En",
-        "value": "SCAMMER-5fd8eb8f-a9ce-4f26-bf3b-452001133295"
-    },
-    {
-        "name": "Pang Siang Cheng",
-        "value": "SCAMMER-7db83672-c528-4baf-97d9-bd67d5c55ecf"
-    },
-    {
-        "name": "Captain America",
-        "value": "SCAMMER-fba6f1b4-8535-444d-93b5-0f2a99b4c187"
-    }
-
-]
 function ExampleItemSelect(props) {
+
+    const scammerSelection = [
+        {
+            "name": "Tan Xuan Qing",
+            "value": "SCAMMER-0c3535ad-b583-4fa4-b6a8-e7b243f64777"
+        },
+        {
+            "name": "Tan Xi En",
+            "value": "SCAMMER-5fd8eb8f-a9ce-4f26-bf3b-452001133295"
+        },
+        {
+            "name": "Pang Siang Cheng",
+            "value": "SCAMMER-7db83672-c528-4baf-97d9-bd67d5c55ecf"
+        },
+        {
+            "name": "Captain America",
+            "value": "SCAMMER-fba6f1b4-8535-444d-93b5-0f2a99b4c187"
+        }
+    ];
 
     const {
         data: scammer,
@@ -236,8 +227,8 @@ function Index(props) {
     return (
         <Grid2 container flexDirection={"column"} spacing={1} sx={{ padding: 2 }}>
             <ColorModeIconDropdown />
-            <ExampleFormDataLs />
-            {/* <ExampleForm /> */}
+            {/* <ExampleFormDataLs /> */}
+            <ExampleForm />
             {/* <ExampleDataTable /> */}
             {/* <ExampleItemSelect /> */}
         </Grid2>

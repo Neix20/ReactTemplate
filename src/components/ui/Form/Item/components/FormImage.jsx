@@ -75,7 +75,7 @@ function EmptyPreview(props) {
 
 function Index(props) {
 
-    const { name = "", value = "", onChange = () => { } } = props;
+    const { name = "", value = "", onChange = () => { }, error = null } = props;
 
     const fileUploadRef = useRef(null);
 
@@ -107,7 +107,7 @@ function Index(props) {
             flex: 1,
             width: "100%",
             border: "2px dashed",
-            borderColor: "grey.400",
+            borderColor: error ? "red" : "grey.400",
             borderRadius: 2
         }
     }

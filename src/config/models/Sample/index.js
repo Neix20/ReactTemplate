@@ -7,7 +7,7 @@ const schema = z.object({
     subtitle: z.string(),
     description: z.string(),
     post_date: z.string().date("Invalid date"), // If date string, keep as string
-    email: z.string().email("Invalid email"),
+    email: z.string().email({ message: "Invalid email address" }),
     password: z.string().min(1, "Password is required"),
     quantity: z.number().int(),
     total_amount: z.number(),

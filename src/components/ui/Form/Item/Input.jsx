@@ -21,13 +21,15 @@ function Wrapper(props) {
         <Controller
             name={name}
             control={control}
-            render={({ field, fieldState }) => (
-                <FormControl fullWidth errors={fieldState.error} sx={sx}>
-                    <FormLabel>{label}</FormLabel>
-                    {callBack({ field, fieldState })}
-                    <FormHelperText sx={{ color: "error.main" }}>{fieldState.error?.message}</FormHelperText>
-                </FormControl>
-            )}
+            render={({ field, fieldState: { error } }) => {
+                return (
+                    <FormControl fullWidth errors={error} sx={sx}>
+                        <FormLabel>{label}</FormLabel>
+                        {callBack({ field, error })}
+                        <FormHelperText sx={{ color: "error.main" }}>{error?.message}</FormHelperText>
+                    </FormControl>
+                )
+            }}
         />
     )
 }
@@ -35,11 +37,9 @@ function Wrapper(props) {
 // Add Form Validation with Error Msg
 function Index(props) {
 
-    const { name = "", type = "text", readOnly = false } = props;
-
-    const { selection = [], rows = 3, control = null, sx = {} } = props;
-
-    const { label = "", placeholder = "" } = props;
+    const { name = "", type = "text", readOnly = false, required = false } = props;
+    const { control = null, sx = {} } = props;
+    const { label = "", placeholder = "", selection = [], rows = 3 } = props;
 
     const inputProps = {
         placeholder,
@@ -52,25 +52,27 @@ function Index(props) {
 
     // We Should Make This Flexible to be able to customize our own Form Item
     const elemDict = {
-        "text": ({ field, fieldState: { error } }) => (
+        "text": ({ field, error }) => (
             <TextField type={"text"} error={error} {...field} {...inputProps} />
         ),
-        "email": ({ field, fieldState: { error } }) => (
+        "email": ({ field, error }) => (
             <TextField type={"text"} error={error} {...field} {...inputProps} />
         ),
-        "password": ({ field, fieldState: { error } }) => (
+        "password": ({ field, error }) => (
             <TextField type={"password"} error={error} {...field} {...inputProps} />
         ),
-        "textarea": ({ field, fieldState: { error } }) => (
-            <TextField type={"text"} error={error} multiline rows={rows} {...field} {...inputProps} />
+        "textarea": ({ field, error }) => (
+            <TextField type={"text"} error={error} {...field} {...inputProps}
+                multiline rows={rows}
+            />
         ),
-        "int": ({ field, fieldState: { error } }) => (
+        "int": ({ field, error }) => (
             <TextField type={"number"} error={error} {...field} {...inputProps} />
         ),
-        "date": ({ field, fieldState: { error } }) => (
+        "date": ({ field, error }) => (
             <TextField type={"date"} error={error} {...field} {...inputProps} />
         ),
-        "decimal": ({ field, fieldState: { error } }) => (
+        "decimal": ({ field, error }) => (
             <TextField type={"number"} error={error} {...field} {...inputProps}
                 slotProps={{
                     input: {
@@ -82,24 +84,25 @@ function Index(props) {
                 }}
             />
         ),
-        "dropdown": ({ field, fieldState: { error } }) => (
+        "dropdown": ({ field, error }) => (
             <FormDropdown selection={selection} error={error} {...field} {...inputProps} />
         ),
-        "color": ({ field, fieldState: { error } }) => (
+        "color": ({ field, error }) => (
             <FormColor error={error} {...field} {...inputProps} />
         ),
-        "file": ({ field, fieldState: { error } }) => (
+        "file": ({ field, error }) => (
             <FormFileUpload error={error} {...field} {...inputProps} />
         ),
-        "image": ({ field, fieldState }) => (
-            <FormImage {...field} {...inputProps} />
+        "image": ({ field, error }) => (
+            <FormImage error={error} {...field} {...inputProps} />
         )
     }
 
     const wrapperProps = {
         name,
-        control,
         label,
+        control,
+        required,
         sx
     };
 

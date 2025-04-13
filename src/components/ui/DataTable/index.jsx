@@ -139,6 +139,7 @@ function Index(props) {
         }
 
         const _update = enableDefaultUpdate ? _ => onSelectUpdate({ table, row, values }) : _ => onUpdate({ table, row, values });
+        const _delete = _ => onDelete({ row, table });
 
         return (
             <Box sx={{ display: 'flex', gap: '1rem' }}>
@@ -148,7 +149,7 @@ function Index(props) {
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={"Delete"}>
-                    <IconButton onClick={_ => onDelete({ row, table })}>
+                    <IconButton onClick={_delete}>
                         <Delete />
                     </IconButton>
                 </Tooltip>
