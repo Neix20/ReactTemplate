@@ -17,15 +17,12 @@ function TitleSection() {
     );
 }
 
-import { useToggle } from "@hooks";
+import { useToggle, useForm } from "@hooks";
 import { BpLoading, BpInput } from "@components";
 
 import { fetchScammerAttrQuery } from "@api";
 import { Search } from "@mui/icons-material";
 
-import { useForm } from "react-hook-form";
-
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const template = {
@@ -58,9 +55,7 @@ function SearchSection(props) {
 
     // const { key, data, field, updateDataHtml, resetData } = useForm(template.Scammer);
 
-    const { field, schema, initial = {} } = template.Scammer;
-    const { control, handleSubmit, reset: loadData, formState: { isDirty: isChanged } } = useForm({ resolver: zodResolver(schema) });
-    const resetData = _ => loadData(initial);
+    const { control, handleSubmit, loadData, resetData } = useForm(template.Scammer);
 
     const [inc, setInc] = useState({});
 
@@ -107,7 +102,7 @@ function SearchSection(props) {
         txtInput: {
             flex: .8,
             flexGrow: 1,
-            borderRadius: 0,
+            borderRadius: 0
         }
     }
 
@@ -147,14 +142,6 @@ function SearchSection(props) {
                 }}>
 
                 <Box component={"form"} onSubmit={handleSubmit(onSearch)} sx={style.search}>
-                    {/* <TextField
-                        placeholder={"Social Media Ids, Bank Account..."}
-                        type={"text"}
-                        name={"query"}
-                        value={data["query"]}
-                        onChange={updateDataHtml}
-                        sx={style.txtInput}
-                    /> */}
                     <BpInput
                         name={"query"} type={"text"}
                         placeholder={"Social Media Ids, Bank Account..."}
@@ -167,7 +154,6 @@ function SearchSection(props) {
                         endIcon={<Search />}
                         sx={{ flex: .2, maxWidth: "100px", minWidth: "100px" }}>Search</Button>
                 </Box>
-
             </Grid2>
             <Collapse in={flag} sx={{ display: flag ? "block" : "none" }}>
                 <SearchResult />

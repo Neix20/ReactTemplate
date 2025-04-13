@@ -1,23 +1,17 @@
 import { useState, useEffect } from "react";
 
-import { Container, Grid2, Typography, Button, Paper, IconButton, Box, Tooltip, alertTitleClasses } from "@mui/material";
-
-import { BpLoading, BpDataTable, BpTab, BpForm } from "@components";
-
-import { useToggle } from "@hooks";
-
-import { fetchScammerGetAllAttr, fetchScammerAdd, fetchScammerUpdate, fetchScammerAttrDelete } from "@api";
+import { Container, Grid2, Typography, Button, Paper, IconButton, Box, Tooltip } from "@mui/material";
+import { Add, Save, ArrowBack } from "@mui/icons-material";
 
 import { useNavigate, Link, useParams } from "react-router-dom";
 
+import { BpLoading, BpDataTable, BpTab, BpForm } from "@components";
+import { useToggle, useForm } from "@hooks";
+
+import { fetchScammerGetAllAttr, fetchScammerAdd, fetchScammerUpdate, fetchScammerAttrDelete } from "@api";
+
 import { GlobalStyles, Models } from "@config";
-
 import { clsUtility } from "@utility";
-
-import { Add, Save, ArrowBack } from "@mui/icons-material";
-
-import { useForm, useFieldArray } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 function Index(props) {
 
@@ -28,9 +22,14 @@ function Index(props) {
     const { flag: refresh, toggle: toggleRefresh } = useToggle(false);
     const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle(false);
 
-    const { field: scammerField, schema, initial = {} } = Models.Scammer;
-    const { control, handleSubmit, reset: loadScammer, formState: { isDirty: isScamChanged } } = useForm({ resolver: zodResolver(schema) });
-    const resetScammer = _ => loadScammer(initial);
+    const {
+        field: scammerField,
+        control: scammerControl,
+        handleSubmit: handleScammerSubmit,
+        loadData: loadScammer,
+        resetData: resetScammer,
+        isDirty: isScamDirty
+    } = useForm(Models.Scammer);
 
     const [scammerAttrData, setScammerAttrData] = useState([]);
 
@@ -131,15 +130,15 @@ function Index(props) {
         {
             title: "Details",
             element: (
-                <Box component={"form"} onSubmit={handleSubmit(onSaveScammer)}>
+                <Box component={"form"} onSubmit={handleScammerSubmit(onSaveScammer)}>
                     <Grid2 container
                         spacing={1}
                         alignItems={"center"}
                         justifyContent={"flex-end"}>
                         <Button type={"button"} variant={"outlined"} startIcon={<Add />} onClick={resetScammer}>Reset</Button>
-                        <Button type={"submit"} variant={"outlined"} startIcon={<Save />} disabled={!isScamChanged}>Save</Button>
+                        <Button type={"submit"} variant={"outlined"} startIcon={<Save />} disabled={!isScamDirty}>Save</Button>
                     </Grid2>
-                    <BpForm hasLabel={true} field={scammerField} control={control} />
+                    <BpForm hasLabel={true} field={scammerField} control={scammerControl} />
                 </Box>
             )
         },

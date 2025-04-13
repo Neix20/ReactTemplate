@@ -6,7 +6,7 @@ import { Snackbar, Alert } from "@mui/material";
 import { GlobalStyles } from "@config";
 
 import { BpForm, BpLoading } from "@components";
-import { useToggle } from "@hooks";
+import { useToggle, useForm } from "@hooks";
 
 import { Amplify } from "@libs/auth";
 
@@ -14,8 +14,6 @@ import { fetchAuthSession, getCurrentUser } from "@aws-amplify/auth";
 
 const { handleSignIn, handleSignUp, handleConfirmSignUp, handleSignOut, handleResetPassword, handleConfirmResetPassword, isAuthenticated, handleResendSignUpCode } = Amplify;
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const template = {
@@ -111,14 +109,10 @@ function TxtButton(props) {
 
 function Index(props) {
 
-    const { field: lField, schema: lSchema } = template.login;
-    const { control: lControl } = useForm({ resolver: zodResolver(lSchema) });
 
-    const { field: sField, schema: sSchema } = template.signUp;
-    const { control: sControl } = useForm({ resolver: zodResolver(sSchema) });
-
-    const { field: oField, schema: oSchema } = template.otpCode;
-    const { control: oControl } = useForm({ resolver: zodResolver(oSchema) });
+    const { field: lField, control: lControl } = useForm(template.login);
+    const { field: sField, control: sControl } = useForm(template.signUp);
+    const { field: oField, control: oControl } = useForm(template.otpCode);
 
     const { flag: resendFlag, toggle: toggleResend } = useToggle(false);
     const { flag: userFlag, open: setUserTrue, close: setUserFalse, toggle: toggleUser } = useToggle(false);

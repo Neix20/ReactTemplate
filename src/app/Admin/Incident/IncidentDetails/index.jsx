@@ -1,19 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 
 import { Grid2, Typography, Button, Paper, IconButton, Modal, Tooltip, Box } from "@mui/material";
-
-import { BpLoading, BpForm, BpFormItem, BpHeader, BpImageGallery, BpImageUpload, BpSearchMenuList } from "@components";
-import { useToggle } from "@hooks";
-
 import { Add, Save, Cancel } from "@mui/icons-material";
-
-import { GlobalStyles, Models, SampleData } from "@config";
 
 import { useNavigate, useParams } from "react-router-dom";
 
-import { fetchIncidentGetAdmin, fetchIncidentAdd, fetchIncidentUpdate, fetchIncidentUploadImg, fetchScammerGetAll, fetchIpSeriesGetAll } from "@api";
+import { BpLoading, BpForm, BpFormItem, BpHeader, BpImageGallery, BpImageUpload, BpSearchMenuList } from "@components";
+import { useToggle, useForm } from "@hooks";
 
-import { useForm } from "react-hook-form";
+import { GlobalStyles, Models, SampleData } from "@config";
+
+import { fetchIncidentGetAdmin, fetchIncidentAdd, fetchIncidentUpdate, fetchIncidentUploadImg, fetchScammerGetAll, fetchIpSeriesGetAll } from "@api";
 
 function useFilterData() {
     const [data, setData] = useState([]);
@@ -36,8 +33,6 @@ function useFilterData() {
     }
 }
 
-import { zodResolver } from "@hookform/resolvers/zod";
-
 function Index(props) {
 
     const { IncidentId = "0" } = useParams();
@@ -50,13 +45,17 @@ function Index(props) {
     const { data: scammer, setData: setScammer, handleAddData: handleAddScammer, handleRemoveData: handleRemoveScammer } = useFilterData();
     const [scammerSelection, setScammerSelection] = useState([]);
 
-    const { data: ipSeries, setData: setIpSeries,
-        handleAddData: handleAddIpSeries, handleRemoveData: handleRemoveIpSeries } = useFilterData();
+    const { data: ipSeries, setData: setIpSeries, handleAddData: handleAddIpSeries, handleRemoveData: handleRemoveIpSeries } = useFilterData();
     const [ipSeriesSelection, setIpSeriesSelection] = useState([]);
 
-    const { field: incField, schema, initial = {} } = Models.Incident;
-    const { control, handleSubmit, reset: loadIncData, formState: { isDirty: isIncChanged } } = useForm({ resolver: zodResolver(schema) });
-    const resetIncData = _ => loadIncData(initial);
+    const {
+        field: incField,
+        control: incControl,
+        handleSubmit: handleIncSubmit,
+        loadData: loadIncData,
+        resetData: resetIncData,
+        isDirty: isIncDirty
+    } = useForm(Models.Incident);
 
     const navigate = useNavigate();
 
@@ -78,20 +77,20 @@ function Index(props) {
         fetchIncidentGetAdmin({
             PK: IncidentId
         })
-            .then(res => {
-                setLoadingFalse();
+        .then(res => {
+            setLoadingFalse();
 
-                const { incident, incidentAsset, scammer, ipSeries } = res;
-                loadIncData(incident);
-                setImgAsset(_ => incidentAsset);
-                setScammer(_ => scammer);
-                setIpSeries(_ => ipSeries);
+            const { incident, incidentAsset, scammer, ipSeries } = res;
+            loadIncData(incident);
+            setImgAsset(_ => incidentAsset);
+            setScammer(_ => scammer);
+            setIpSeries(_ => ipSeries);
 
-            })
-            .catch(err => {
-                setLoadingFalse();
-                console.error(err);
-            })
+        })
+        .catch(err => {
+            setLoadingFalse();
+            console.error(err);
+        });
     }
 
     const addData = (data) => {
@@ -104,7 +103,7 @@ function Index(props) {
             .catch(err => {
                 setLoadingFalse();
                 console.error(err);
-            })
+            });
     }
 
     const updateData = (data) => {
@@ -211,7 +210,7 @@ function Index(props) {
     return (
         <>
             <BpLoading loading={loading} />
-            <Box component={"form"} onSubmit={handleSubmit(onSave)}>
+            <Box component={"form"} onSubmit={handleIncSubmit(onSave)}>
                 <BpHeader
                     start={<Typography variant={"h2"} sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>{Models.Incident.key}</Typography>}
                     end={
@@ -224,7 +223,7 @@ function Index(props) {
                             <Button
                                 type={"submit"}
                                 variant={"contained"}
-                                disabled={!isIncChanged}
+                                disabled={!isIncDirty}
                                 startIcon={<Save />}>Save</Button>
                         </Grid2>
                     }
@@ -234,13 +233,13 @@ function Index(props) {
                         <BpForm
                             hasLabel={true}
                             field={incField}
-                            control={control}
+                            control={incControl}
                         >
                             <BpFormItem
                                 hasLabel={true}
                                 name={"platform"}
                                 type={"dropdown"}
-                                control={control}
+                                control={incControl}
                                 selection={SampleData.Platform}
 
                             />

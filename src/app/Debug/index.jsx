@@ -10,9 +10,9 @@ import { FormControl, Select, MenuItem } from "@mui/material";
 import { GlobalStyles, Models, SampleData } from "@config";
 
 import { clsUtility } from "@utility";
-import { useFormDataLs } from "@hooks";
+import { useForm } from "@hooks";
 
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Delete, Add } from "@mui/icons-material";
@@ -26,13 +26,52 @@ const socialMediaSchema = z.object({
     }))
 });
 
+const template = {
+    social_media: {
+        key: "social_media",
+        field: [
+            {
+                "name": "platform",
+                "type": "dropdown"
+            },
+            {
+                "name": "post_url",
+                "type": "text"
+            }
+        ],
+        initial: {
+            platform: "",
+            post_url: ""
+        },
+        schema: socialMediaSchema
+    },
+    basic: {
+        key: "basic",
+        field: [
+            {
+                name: "name",
+                type: "text"
+            },
+            {
+                name: "quantity",
+                type: "int"
+            }
+        ],
+        initial: {
+            name: "",
+            quantity: 0
+        },
+        schema: z.object({
+            name: z.string().min(1, "Name is required"),
+            quantity: z.number().min(1, "Quantity is required")
+        })
+    }
+}
+
 function ExampleFormDataLs(props) {
 
-    const { control, handleSubmit, reset, formState: { isDirty } } = useForm({
-        resolver: zodResolver(socialMediaSchema)
-    });
-
-    const { fields: data, append, remove } = useFieldArray({ control, name: "social_media" });
+    const { key, control, handleSubmit, isDirty } = useForm(template.social_media);
+    const { fields: data, append, remove } = useFieldArray({ control, name: key });
 
     const renderItem = (item, ind) => {
 
@@ -80,16 +119,11 @@ function ExampleFormDataLs(props) {
 
 function ExampleForm(props) {
 
-    const { field, schema, initial = {} } = Models.Sample;
-    const { control, handleSubmit, reset, formState: { isDirty } } = useForm({ resolver: zodResolver(schema) });
+    const { field, control, handleSubmit, resetData, loadData, isDirty } = useForm(Models.Sample);
 
     const onSubmit = (data) => {
         console.log(data)
     };
-
-    const onReset = () => {
-        reset(initial);
-    }
 
     return (
         <Box component={"form"} onSubmit={handleSubmit(onSubmit)}
@@ -99,35 +133,17 @@ function ExampleForm(props) {
                 <Button type="submit" variant="contained" color="primary" disabled={!isDirty}>
                     Submit New
                 </Button>
-                <Button onClick={onReset} variant={"contained"} color={"error"}>Reset</Button>
+                <Button onClick={resetData} variant={"contained"} color={"error"}>Reset</Button>
             </Grid2>
         </Box>
     )
 };
 
-const template = {
-    basic: {
-        key: "basic",
-        field: [
-            {
-                name: "name",
-                type: "text"
-            },
-            {
-                name: "quantity",
-                type: "int"
-            }
-        ]
-    }
-}
-
 function ExampleDataTable(props) {
 
-    const { field } = template.basic;
+    const { key, field, control } = useForm(template.basic);
 
-    const { control, formState: { errors, isDirty } } = useForm({});
-
-    const { fields: data, append, update, remove } = useFieldArray({ control, name: "basic" });
+    const { fields: data, append, update, remove } = useFieldArray({ control, name: key });
 
     const addUser = ({ table, row, values }) => {
         append(values);
@@ -228,8 +244,8 @@ function Index(props) {
     return (
         <Grid2 container flexDirection={"column"} spacing={1} sx={{ padding: 2 }}>
             <ColorModeIconDropdown />
-            {/* <ExampleFormDataLs /> */}
-            <ExampleForm />
+            <ExampleFormDataLs />
+            {/* <ExampleForm /> */}
             {/* <ExampleDataTable /> */}
             {/* <ExampleItemSelect /> */}
         </Grid2>
@@ -238,5 +254,5 @@ function Index(props) {
 
 import SignInWithCustom from "./SignInWithCustom";
 
-export default SignInWithCustom;
+export default Index;
 

@@ -5,7 +5,11 @@ import { Grid2 } from "@mui/material";
 import { BpDataTable } from "@components";
 import { Models } from "@config";
 
-import { useForm, useFieldArray } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
+
+import { useForm } from "@hooks";
+
+import { z } from "zod";
 
 const tblOption = {
     createDisplayMode: "modal",
@@ -48,17 +52,22 @@ const template = {
                 name: "quantity",
                 type: "int"
             }
-        ]
+        ],
+        initial: {
+            name: "",
+            quantity: 0
+        },
+        schema: z.object({
+            name: z.string().min(1, "Name is required"),
+            quantity: z.number().min(1, "Quantity is required")
+        })
     }
-}
+};
 
 function Index(props) {
 
-    const { field } = template.basic;
-
-    const { control, formState: { errors, isDirty } } = useForm({});
-
-    const { fields: data, append, update, remove } = useFieldArray({ control, name: "basic" });
+    const { key, field, control } = useForm(template.basic);
+    const { fields: data, append, update, remove } = useFieldArray({ control, name: key });
 
     const addUser = ({ table, row, values }) => {
         append(values);

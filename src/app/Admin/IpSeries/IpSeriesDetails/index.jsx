@@ -1,22 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 
 import { Grid2, Typography, Button, Paper, IconButton, Modal, Tooltip, Box } from "@mui/material";
+import { Add, Save, Cancel } from "@mui/icons-material";
+
+import { useNavigate, useParams } from "react-router-dom";
 
 import { BpHeader, BpLoading, BpForm, BpFormItem } from "@components";
 import { useToggle } from "@hooks";
 
-import { Add, Save, Cancel } from "@mui/icons-material";
-
 import { GlobalStyles, Models, SampleData } from "@config";
-
-import { useNavigate, useParams } from "react-router-dom";
 
 import { fetchIpSeriesGetAll, fetchIpSeriesGet, fetchIpSeriesAdd, fetchIpSeriesUpdate } from "@api";
 
 import { clsUtility } from "@utility";
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 function Index(props) {
 
@@ -27,9 +23,14 @@ function Index(props) {
 
     const [ipAsset, setIpAsset] = useState([]);
 
-    const { field: ipField, schema: ipSchema, initial: ipInitial = {} } = Models.IpSeries;
-    const { control, handleSubmit, reset: loadIpData, formState: { isDirty: isIpChanged } } = useForm({ resolver: zodResolver(ipSchema) });
-    const resetIpData = _ => loadIpData(ipInitial);
+    const {
+        field: ipField,
+        control: ipControl,
+        handleSubmit: handleIpSubmit,
+        loadData: loadIpData,
+        resetData: resetIpData,
+        isDirty: isIpDirty
+    } = useForm(Models.IpSeries);
 
     const navigate = useNavigate();
 
@@ -121,7 +122,7 @@ function Index(props) {
     return (
         <>
             <BpLoading loading={loading} />
-            <Box component={"form"} onSubmit={handleSubmit(onSave)}>
+            <Box component={"form"} onSubmit={handleIpSubmit(onSave)}>
                 <BpHeader
                     start={<Typography variant={"h2"} sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>{clsUtility.capitalize(Models.IpSeries.key)}</Typography>}
                     end={
@@ -134,7 +135,7 @@ function Index(props) {
                             <Button
                                 type={"submit"}
                                 variant={"contained"}
-                                disabled={!isIpChanged}
+                                disabled={!isIpDirty}
                                 startIcon={<Save />}>Save</Button>
                         </Grid2>
                     }
@@ -144,13 +145,13 @@ function Index(props) {
                         <BpForm
                             hasLabel={true}
                             field={ipField}
-                            control={control}>
+                            control={ipControl}>
                             <BpFormItem
                                 hasLabel={true}
                                 name={"parent"}
                                 type={"dropdown"}
                                 selection={ipAsset}
-                                control={control}
+                                control={ipControl}
                             />
                         </BpForm>
                     </Box>

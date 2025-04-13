@@ -1,22 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 
 import { Grid2, Typography, Button, Paper, IconButton, Modal, Tooltip, Box } from "@mui/material";
-
-import { BpLoading, BpForm, BpHeader } from "@components";
-import { useToggle } from "@hooks";
-
 import { Add, Save, Cancel } from "@mui/icons-material";
 
-import { GlobalStyles, Models, SampleData } from "@config";
-
 import { useNavigate, useParams } from "react-router-dom";
+
+import { BpLoading, BpForm, BpHeader } from "@components";
+import { useToggle, useForm } from "@hooks";
+
+import { GlobalStyles, Models, SampleData } from "@config";
 
 import { fetchScammerAttrGet, fetchScammerAttrAdd, fetchScammerAttrUpdate } from "@api";
 
 import { clsUtility } from "@utility";
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 function Index(props) {
 
@@ -27,9 +23,14 @@ function Index(props) {
 
     const navigate = useNavigate();
 
-    const { field, schema, initial = {} } = Models.ScammerAttr;
-    const { control, handleSubmit, reset: loadData, formState: { isDirty: isChanged } } = useForm({ resolver: zodResolver(schema) });
-    const resetData = _ => loadData(initial);
+    const {
+        field,
+        control,
+        handleSubmit,
+        loadData,
+        resetData,
+        isDirty
+    } = useForm(Models.ScammerAttr);
 
     const goBack = () => {
         navigate(-1);
@@ -116,7 +117,7 @@ function Index(props) {
                             <Button
                                 type={"submit"}
                                 variant={"contained"}
-                                disabled={!isChanged}
+                                disabled={!isDirty}
                                 onClick={false}
                                 startIcon={<Save />}>Save</Button>
                         </Grid2>
