@@ -49,18 +49,15 @@ const formFields = {
     }
 }
 
+import GoogleSignIn from "./GoogleSignIn";
+
 
 function Index(props) {
 
     return (
         <BpContainer maxWidth={"xl"}>
             <ColorModeIconDropdown sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
-            <Authenticator
-                formFields={formFields}
-                socialProviders={['google']}
-                signUpAttributes={['email', 'name']}>
-                {({ signOut, user }) => (<></>)}
-            </Authenticator>
+            <GoogleSignIn />
         </BpContainer>
     )
 }
