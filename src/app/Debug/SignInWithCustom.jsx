@@ -6,13 +6,17 @@ import { Snackbar, Alert } from "@mui/material";
 import { GlobalStyles } from "@config";
 
 import { BpForm, BpLoading } from "@components";
-import { useForm, useToggle } from "@hooks";
+import { useToggle } from "@hooks";
 
 import { Amplify } from "@libs/auth";
 
-
 import { fetchAuthSession, getCurrentUser } from "@aws-amplify/auth";
+
 const { handleSignIn, handleSignUp, handleConfirmSignUp, handleSignOut, handleResetPassword, handleConfirmResetPassword, isAuthenticated, handleResendSignUpCode } = Amplify;
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 const template = {
     login: {
@@ -26,7 +30,15 @@ const template = {
                 "name": "password",
                 "type": "password"
             }
-        ]
+        ],
+        initial: {
+            username: "",
+            password: ""
+        },
+        schema: z.object({
+            username: z.string().email("Invalid email"),
+            password: z.string().min(1, "Password is required")
+        })
     },
     signUp: {
         key: "sign_up",
@@ -43,7 +55,17 @@ const template = {
                 "name": "confirm_password",
                 "type": "password"
             }
-        ]
+        ],
+        initial: {
+            username: "",
+            password: "",
+            confirm_password: ""
+        },
+        schema: z.object({
+            username: z.string().email("Invalid email"),
+            password: z.string().min(1, "Password is required"),
+            confirm_password: z.string().min(1, "Password is required")
+        })
     },
     otpCode: {
         key: "otp_code",
@@ -56,7 +78,15 @@ const template = {
                 "name": "code",
                 "type": "text"
             }
-        ]
+        ],
+        initial: {
+            username: "",
+            code: ""
+        },
+        schema: z.object({
+            username: z.string().email("Invalid email"),
+            code: z.string().min(1, "Code is required")
+        })
     }
 }
 
@@ -81,9 +111,14 @@ function TxtButton(props) {
 
 function Index(props) {
 
-    const { key: lKey, data: lData, field: lField, updateDataHtml: updateLData, resetData: resetLData } = useForm(template.login);
-    const { key: sKey, data: sData, field: sField, updateDataHtml: updateSData, resetData: resetSData } = useForm(template.signUp);
-    const { key: oKey, data: oData, field: oField, updateDataHtml: updateOData, resetData: resetOData } = useForm(template.otpCode);
+    const { field: lField, schema: lSchema } = template.login;
+    const { control: lControl } = useForm({ resolver: zodResolver(lSchema) });
+
+    const { field: sField, schema: sSchema } = template.signUp;
+    const { control: sControl } = useForm({ resolver: zodResolver(sSchema) });
+
+    const { field: oField, schema: oSchema } = template.otpCode;
+    const { control: oControl } = useForm({ resolver: zodResolver(oSchema) });
 
     const { flag: resendFlag, toggle: toggleResend } = useToggle(false);
     const { flag: userFlag, open: setUserTrue, close: setUserFalse, toggle: toggleUser } = useToggle(false);
@@ -97,6 +132,7 @@ function Index(props) {
         console.log(session);
     }, [session])
 
+    // #region Actions
     const onLogin = () => {
         handleSignIn(lData)
             .then((res) => {
@@ -143,6 +179,7 @@ function Index(props) {
     const onResendSignUpCode = () => {
         toggleResend();
     }
+    // #endregion
 
     return (
         <>
@@ -153,11 +190,10 @@ function Index(props) {
                     <Typography variant={"h2"}>Amplify Cognito</Typography>
                 </Box>
                 <Box sx={{ mt: 2, ...GlobalStyles.bordered }}>
-                    <BpForm
-                        key={lKey}
-                        data={lData} field={lField}
-                        onUpdate={updateLData}
-                        hasLabel={true} size={{ xs: 1, sm: 1 }} />
+                    <BpForm hasLabel={true} 
+                        field={lField}
+                        control={lControl}
+                        size={{ xs: 12, sm: 12 }} />
                     <Grid2 container spacing={1} sx={{ mt: 2 }}>
                         <Button variant={"contained"} onClick={onLogin}>Login</Button>
                         <Button variant={"contained"} onClick={onLogOut}>Logout</Button>
@@ -165,20 +201,19 @@ function Index(props) {
                 </Box>
                 <Box sx={{ mt: 2, ...GlobalStyles.bordered }}>
                     <BpForm
-                        key={sKey}
-                        data={sData} field={sField}
-                        onUpdate={updateSData}
-                        hasLabel={true} size={{ xs: 1, sm: 1 }} />
+                        hasLabel={true} 
+                        field={sField}
+                        control={sControl}
+                        size={{ xs: 12, sm: 12 }} />
                     <Box sx={{ mt: 2 }}>
                         <Button variant={"contained"} onClick={onSignUp}>Sign Up</Button>
                     </Box>
                 </Box>
                 <Box sx={{ mt: 2, ...GlobalStyles.bordered }}>
-                    <BpForm
-                        key={oKey}
-                        data={oData} field={oField}
-                        onUpdate={updateOData}
-                        hasLabel={true} size={{ xs: 1, sm: 1 }} />
+                    <BpForm hasLabel={true} 
+                        field={oField}
+                        control={oControl}
+                        size={{ xs: 12, sm: 12 }} />
                     <Box sx={{ mt: 1 }}>
                         <TxtButton onClick={onResendSignUpCode}>Resend Code</TxtButton>
                     </Box>

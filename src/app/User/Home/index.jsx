@@ -77,7 +77,7 @@ function SearchSection(props) {
 
                 if (Object.keys(scammer).length > 0) {
                     setScammerTrue();
-                    setInc(_ => incident);
+                    setInc(_ => incident.at(0));
                 } else {
                     setScammerFalse();
                 }
@@ -128,7 +128,7 @@ function SearchSection(props) {
                 justifyContent={"center"} sx={style.error}>
                 <Typography variant={"h2"} sx={{ fontSize: { xs: "1rem", sm: "2.25rem" } }}>Danger! This person is a scammer</Typography>
                 <MuLink href={`/Incident/${inc.PK}`} underline={"hover"} sx={{ color: "inherit" }}>
-                    <Typography variant={"h3"} sx={{ fontSize: { xs: "0.75rem", sm: "1.75rem" } }}>{inc.scammer}</Typography>
+                    <Typography variant={"h3"} sx={{ fontSize: { xs: "0.75rem", sm: "1.75rem" } }}>{inc.title}</Typography>
                 </MuLink>
             </Grid2>
         )

@@ -80,13 +80,8 @@ function ExampleFormDataLs(props) {
 
 function ExampleForm(props) {
 
-    const { key, field, schema, initial = {}, sample = {} } = Models.Sample;
-
-    const { control, handleSubmit, reset, formState: { isDirty } } = useForm({});
-
-    useEffect(() => {
-        reset(sample);
-    }, []);
+    const { field, schema, initial = {} } = Models.Sample;
+    const { control, handleSubmit, reset, formState: { isDirty } } = useForm({ resolver: zodResolver(schema) });
 
     const onSubmit = (data) => {
         console.log(data)
@@ -241,5 +236,7 @@ function Index(props) {
     )
 }
 
-export default Index;
+import SignInWithCustom from "./SignInWithCustom";
+
+export default SignInWithCustom;
 

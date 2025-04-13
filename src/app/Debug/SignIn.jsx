@@ -5,7 +5,7 @@ import { GlobalStyles } from "@config";
 
 import { Amplify } from "@libs/auth";
 
-import { fetchAuthSession, getCurrentUser, fetchUserAttributes } from "@aws-amplify/auth";
+import { fetchUserAttributes } from "@aws-amplify/auth";
 
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
