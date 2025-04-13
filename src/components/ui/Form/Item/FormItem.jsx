@@ -3,7 +3,7 @@ import { TextField, Typography, Grid2 } from "@mui/material";
 
 import { clsUtility } from "@utility";
 
-import BasicFormItem from "./Input";
+import Input from "./Input";
 
 const FormItem = (props = {}) => {
 
@@ -20,7 +20,7 @@ const FormItem = (props = {}) => {
 
     return (
         <Grid2 item size={_size} sx={{ display: "flex", alignItems: "center"}}>
-            <BasicFormItem label={label} placeholder={placeholder} {...props} />
+            <Input label={label} placeholder={placeholder} {...props} />
         </Grid2>
     );
 }

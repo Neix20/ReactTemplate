@@ -14,17 +14,21 @@ import { Controller } from "react-hook-form";
 
 function Wrapper(props) {
 
-    const { label = "", sx = {}, children = (<></>) } = props;
-    const { errors = null } = props;
-
-    const errTxt = errors?.message;
+    const { name = "", label = "", control = null } = props;
+    const { callBack = () => (<></>), sx = {} } = props;
 
     return (
-        <FormControl fullWidth errors={errors} sx={sx}>
-            <FormLabel>{label}</FormLabel>
-            {children}
-            <FormHelperText sx={{ color: "error.main" }}>{errTxt}</FormHelperText>
-        </FormControl>
+        <Controller
+            name={name}
+            control={control}
+            render={({ field, fieldState }) => (
+                <FormControl fullWidth errors={fieldState.error} sx={sx}>
+                    <FormLabel>{label}</FormLabel>
+                    {callBack({ field, fieldState })}
+                    <FormHelperText sx={{ color: "error.main" }}>{fieldState.error?.message}</FormHelperText>
+                </FormControl>
+            )}
+        />
     )
 }
 
@@ -33,45 +37,41 @@ function Index(props) {
 
     const { name = "", type = "text", readOnly = false } = props;
 
-    const { register = () => { }, control = null, errors = {} } = props;
-
-    const { selection = [], rows = 3, sx = {} } = props;
+    const { selection = [], rows = 3, control = null, sx = {} } = props;
 
     const { label = "", placeholder = "" } = props;
 
-    const _txtProps = {
-        name,
+    const inputProps = {
         placeholder,
         slotProps: {
             input: {
                 readOnly: readOnly
             }
-        },
-        ...register(name, {
-            valueAsNumber: ["int", "decimal"].includes(type),
-        }),
-        error: errors[name],
+        }
     };
 
     // We Should Make This Flexible to be able to customize our own Form Item
     const elemDict = {
-        "text": (
-            <TextField type={"text"} {..._txtProps} />
+        "text": ({ field, fieldState: { error } }) => (
+            <TextField type={"text"} error={error} {...field} {...inputProps} />
         ),
-        "email": (
-            <TextField type={"text"} {..._txtProps} />
+        "email": ({ field, fieldState: { error } }) => (
+            <TextField type={"text"} error={error} {...field} {...inputProps} />
         ),
-        "password": (
-            <TextField type={"password"} {..._txtProps} />
+        "password": ({ field, fieldState: { error } }) => (
+            <TextField type={"password"} error={error} {...field} {...inputProps} />
         ),
-        "textarea": (
-            <TextField multiline rows={rows} {..._txtProps} />
+        "textarea": ({ field, fieldState: { error } }) => (
+            <TextField type={"text"} error={error} multiline rows={rows} {...field} {...inputProps} />
         ),
-        "int": (
-            <TextField type={"number"} {..._txtProps} />
+        "int": ({ field, fieldState: { error } }) => (
+            <TextField type={"number"} error={error} {...field} {...inputProps} />
         ),
-        "decimal": (
-            <TextField type={"number"} {..._txtProps}
+        "date": ({ field, fieldState: { error } }) => (
+            <TextField type={"date"} error={error} {...field} {...inputProps} />
+        ),
+        "decimal": ({ field, fieldState: { error } }) => (
+            <TextField type={"number"} error={error} {...field} {...inputProps}
                 slotProps={{
                     input: {
                         inputProps: {
@@ -82,53 +82,28 @@ function Index(props) {
                 }}
             />
         ),
-        "date": (
-            <TextField type={"date"} {..._txtProps} />
+        "dropdown": ({ field, fieldState: { error } }) => (
+            <FormDropdown selection={selection} error={error} {...field} {...inputProps} />
         ),
-        "dropdown": (
-            <Controller name={name}
-                control={control}
-                render={({ field }) => (
-                    <FormDropdown 
-                        placeholder={placeholder} selection={selection} 
-                        error={errors[name]} 
-                        {...field} />
-                )} />
+        "color": ({ field, fieldState: { error } }) => (
+            <FormColor error={error} {...field} {...inputProps} />
         ),
-        "color": (
-            <Controller
-                name={name}
-                control={control}
-                render={({ field }) => (<FormColor error={errors[name]} {...field} />)}
-            />
+        "file": ({ field, fieldState: { error } }) => (
+            <FormFileUpload error={error} {...field} {...inputProps} />
         ),
-        "file": (
-            <Controller
-                name={name}
-                control={control}
-                render={({ field }) => (<FormFileUpload error={errors[name]} {...field} />)}
-            />
-        ),
-        "image": (
-            <Controller
-                name={name}
-                control={control}
-                render={({ field }) => (<FormImage {...field} />)}
-            />
+        "image": ({ field, fieldState }) => (
+            <FormImage {...field} {...inputProps} />
         )
     }
 
     const wrapperProps = {
+        name,
+        control,
         label,
-        errors: errors[name],
         sx
     };
 
-    return (
-        <Wrapper {...wrapperProps}>
-            {elemDict[type]}
-        </Wrapper>
-    );
+    return (<Wrapper callBack={elemDict[type]} {...wrapperProps} />)
 }
 
 export default Index;

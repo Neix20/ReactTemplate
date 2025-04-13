@@ -7,7 +7,7 @@ import { clsUtility } from "@utility";
 
 function Index(props) {
 
-    const { field = [], preName = "", size = {}  } = props;
+    const { field = [], size = {}  } = props;
     const { children = (<></>), sx = {}, ...itemProps } = props;
 
     // Props For Item
