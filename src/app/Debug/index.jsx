@@ -17,9 +17,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Delete, Add } from "@mui/icons-material";
 
+import { z } from "zod";
+
 function ExampleFormDataLs(props) {
 
-    const { register, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm({});
+    const { register, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm({
+        resolver: zodResolver(z.object({
+            platform: z.string().min(1, "Platform is required"),
+            post_url: z.string().min(1, "Post URL is required")
+        }))
+    });
 
     const { fields: data, append, remove } = useFieldArray({ control, name: "social_media" });
 
@@ -219,7 +226,7 @@ function Index(props) {
     return (
         <Grid2 container flexDirection={"column"} spacing={1} sx={{ padding: 2 }}>
             <ColorModeIconDropdown />
-            {/* <ExampleFormDataLs /> */}
+            <ExampleFormDataLs />
             {/* <ExampleForm /> */}
             {/* <ExampleDataTable /> */}
             <ExampleItemSelect />
