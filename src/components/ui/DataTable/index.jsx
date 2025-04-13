@@ -104,17 +104,17 @@ function generateColumns(field = []) {
 }
 
 function AddItemBtn(props) {
-    const { table, enableDefaultAdd = false } = props;
+    const { table, enableDefaultAdd = false, onClick = null } = props;
 
     if (!enableDefaultAdd) {
         return (<Box />)
     }
 
-    const onClick = () => (table.setCreatingRow(true));
+    const _onClick = onClick == null ? () => (table.setCreatingRow(true)) : onClick;
 
     return (
         <Button variant={"outlined"}
-            onClick={onClick} 
+            onClick={_onClick} 
             startIcon={<Add />} >
             New
         </Button>
@@ -126,7 +126,7 @@ function Index(props) {
     const { idx: key = "", data = [], field = [], hideField = [], fieldOrder = [], } = props;
     const { enableRowAction = false, enableTopAction = false } = props;
     const { enableDefaultAdd = false, enableDefaultUpdate = false } = props;
-    const { onAdd = () => { }, onUpdate = () => { }, onDelete = () => { } } = props; 
+    const { onBtnAdd = null, onAdd = () => { }, onUpdate = () => { }, onDelete = () => { } } = props; 
 
     const columns = generateColumns(field);
     const name = clsUtility.capitalize(key);
@@ -209,7 +209,7 @@ function Index(props) {
         onEditingRowSave: ({ table, row, values }) => onUpdate({ table, row, values }),
         renderCreateRowDialogContent: renderCreateModal,
         renderEditRowDialogContent: renderUpdateModal,
-        renderTopToolbarCustomActions: ({ table }) => (<AddItemBtn table={table} enableDefaultAdd={enableDefaultAdd} />),
+        renderTopToolbarCustomActions: ({ table }) => (<AddItemBtn table={table} enableDefaultAdd={enableDefaultAdd} onClick={onBtnAdd} />),
         initialState: {
             columnOrder: fieldOrder, // Must Be Full, Otherwise Wont Work
             columnVisibility: hideField.reduce((res, item) => { res[item] = false; return res; }, {}),

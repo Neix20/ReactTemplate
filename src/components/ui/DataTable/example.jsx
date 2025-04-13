@@ -2,10 +2,10 @@
 import { useState, useEffect } from "react";
 import { Grid2 } from "@mui/material";
 
-import { useForm, useFormDataLs } from "@hooks";
-import { BpDataTable, UserLayout } from "@components";
-
+import { BpDataTable } from "@components";
 import { Models } from "@config";
+
+import { useForm, useFieldArray } from "react-hook-form";
 
 const tblOption = {
     createDisplayMode: "modal",
@@ -56,7 +56,7 @@ function Index(props) {
 
     const { field } = template.basic;
 
-    const { register, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm({});
+    const { control, formState: { errors, isDirty } } = useForm({});
 
     const { fields: data, append, update, remove } = useFieldArray({ control, name: "basic" });
 
@@ -87,9 +87,9 @@ function Index(props) {
                 enableTopAction={true}
                 enableDefaultAdd={true}
                 enableDefaultUpdate={true}
-                onAdd={addUser}
+                onBtnAdd={addUser}
                 onUpdate={updateUser}
-                onDelete={deleteUser} 
+                onDelete={deleteUser}
             />
             <Button variant={"contained"} onClick={onDebug}>Debug</Button>
         </Grid2>

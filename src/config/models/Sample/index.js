@@ -11,7 +11,7 @@ const schema = z.object({
     password: z.string().min(1, "Password is required"),
     quantity: z.number().int(),
     total_amount: z.number(),
-    background: z.string(), // color as string (e.g., hex code)
+    background: z.string(), // color as string (e.g., hex code),
     profile: z.any().refine((file) => file?.size <= 100, `Max image size is 5MB.`), // image upload (handle separately)
     file: z.any().refine((file) => file?.size <= 100, `Max image size is 5MB.`), // file upload (handle separately)
 });
@@ -75,9 +75,35 @@ const obj = {
         },
         {
             "name": "file",
-            "type": "file",
-        },
+            "type": "file"
+        }
     ],
+    initial: {
+        "title": "",
+        "scammer_type": "",
+        "subtitle": "",
+        "description": "",
+        "post_date": "",
+        "email": "",
+        "password": "",
+        "quantity": "",
+        "total_amount": "",
+        "background": "",
+        "profile": "",
+        "file": ""
+    },
+    sample: {
+        "title": "asdf",
+        "scammer_type": "Buyer",
+        "subtitle": "asdf",
+        "description": "asdf",
+        "post_date": "2025-04-17",
+        "email": "txen2000@gmail.com",
+        "password": "asdf",
+        "quantity": 123,
+        "total_amount": 123,
+        "background": "#833434"
+    },
     schema
 };
 

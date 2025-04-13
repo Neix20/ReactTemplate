@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 
 import { Grid2, Typography, Button, Paper, IconButton, Modal, Tooltip, Box } from "@mui/material";
 
-import { BpLoading, BpForm, BpFormItem, BpHeader, BpImageGallery, BpImageUpload } from "@components";
-import { useToggle, useForm, useCusMedia } from "@hooks";
+import { BpHeader, BpLoading, BpForm, BpFormItem } from "@components";
+import { useToggle } from "@hooks";
 
 import { Add, Save, Cancel } from "@mui/icons-material";
 
@@ -15,6 +15,9 @@ import { fetchIpSeriesGetAll, fetchIpSeriesGet, fetchIpSeriesAdd, fetchIpSeriesU
 
 import { clsUtility } from "@utility";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 function Index(props) {
 
     const { IpSeriesId = "0" } = useParams();
@@ -24,16 +27,9 @@ function Index(props) {
 
     const [ipAsset, setIpAsset] = useState([]);
 
-    const {
-        key: ipKey,
-        data: ipData,
-        field: ipField,
-        updateData: updateIpJson,
-        updateDataHtml: updateIpData,
-        resetData: resetIpData,
-        isChanged: isIpChanged,
-        loadData: loadIpData
-    } = useForm(Models.IpSeries);
+    const { field: ipField, schema: ipSchema, initial: ipInitial = {} } = Models.IpSeries;
+    const { control, handleSubmit, reset: loadIpData, formState: { isDirty: isIpChanged } } = useForm({ resolver: zodResolver(ipSchema) });
+    const resetIpData = _ => loadIpData(ipInitial);
 
     const navigate = useNavigate();
 
@@ -62,6 +58,7 @@ function Index(props) {
                     value: x.PK
                 }));
                 setIpAsset(_ => _arr);
+
             })
             .catch(err => {
                 setLoadingFalse();
@@ -86,9 +83,9 @@ function Index(props) {
             })
     }
 
-    const addData = () => {
+    const addData = (data) => {
         setLoadingTrue();
-        fetchIpSeriesAdd(ipData)
+        fetchIpSeriesAdd(data)
             .then(_ => {
                 setLoadingFalse();
                 goBack();
@@ -99,11 +96,11 @@ function Index(props) {
             })
     }
 
-    const updateData = () => {
+    const updateData = (data) => {
         setLoadingTrue();
         fetchIpSeriesUpdate({
             PK: IpSeriesId,
-            ...ipData
+            ...data
         })
             .then(res => {
                 setLoadingFalse();
@@ -115,8 +112,8 @@ function Index(props) {
             })
     }
 
-    const onSave = () => {
-        const _func = (IpSeriesId == "0") ? () => addData() : () => updateData();
+    const onSave = (data) => {
+        const _func = (IpSeriesId == "0") ? () => addData(data) : () => updateData(data);
         _func();
     };
     // #endregion
@@ -124,39 +121,41 @@ function Index(props) {
     return (
         <>
             <BpLoading loading={loading} />
-            <BpHeader
-                start={<Typography variant={"h2"} sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>{clsUtility.capitalize(Models.IpSeries.key)}</Typography>}
-                end={
-                    <Grid2 container spacing={1}>
-                        <Button
-                            variant={"contained"}
-                            onClick={resetIpData}
-                            startIcon={<Add />}>New</Button>
-                        <Button
-                            variant={"contained"}
-                            onClick={onSave}
-                            disabled={isIpChanged}
-                            startIcon={<Save />}>Save</Button>
-                    </Grid2>
-                }
-            />
-            <Grid2 container>
-                <Box sx={GlobalStyles.bordered}>
-                    <BpForm
-                        hasLabel={true}
-                        key={ipKey}
-                        data={ipData} field={ipField}
-                        onUpdate={updateIpData}>
-                        <BpFormItem
+            <Box component={"form"} onSubmit={handleSubmit(onSave)}>
+                <BpHeader
+                    start={<Typography variant={"h2"} sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>{clsUtility.capitalize(Models.IpSeries.key)}</Typography>}
+                    end={
+                        <Grid2 container spacing={1}>
+                            <Button
+                                type={"button"}
+                                variant={"contained"}
+                                onClick={resetIpData}
+                                startIcon={<Add />}>New</Button>
+                            <Button
+                                type={"submit"}
+                                variant={"contained"}
+                                disabled={!isIpChanged}
+                                startIcon={<Save />}>Save</Button>
+                        </Grid2>
+                    }
+                />
+                <Grid2 container>
+                    <Box sx={GlobalStyles.bordered}>
+                        <BpForm
                             hasLabel={true}
-                            type={"dropdown"} placeholder={"Select Parent"}
-                            name={"parent"} value={ipData["parent"]}
-                            selection={ipAsset}
-                            onChange={updateIpData}
-                        />
-                    </BpForm>
-                </Box>
-            </Grid2>
+                            field={ipField}
+                            control={control}>
+                            <BpFormItem
+                                hasLabel={true}
+                                name={"parent"}
+                                type={"dropdown"}
+                                selection={ipAsset}
+                                control={control}
+                            />
+                        </BpForm>
+                    </Box>
+                </Grid2>
+            </Box>
         </>
     )
 }

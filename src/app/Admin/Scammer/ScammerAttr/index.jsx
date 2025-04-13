@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 
 import { Grid2, Typography, Button, Paper, IconButton, Modal, Tooltip, Box } from "@mui/material";
 
-import { BpLoading, BpForm, BpFormItem, BpHeader, BpImageGallery, BpImageUpload } from "@components";
-import { useToggle, useForm, useCusMedia } from "@hooks";
+import { BpLoading, BpForm, BpHeader } from "@components";
+import { useToggle } from "@hooks";
 
 import { Add, Save, Cancel } from "@mui/icons-material";
 
@@ -15,6 +15,9 @@ import { fetchScammerAttrGet, fetchScammerAttrAdd, fetchScammerAttrUpdate } from
 
 import { clsUtility } from "@utility";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 function Index(props) {
 
     const { ScammerId = "", ScammerAttrId = "0" } = useParams();
@@ -22,9 +25,11 @@ function Index(props) {
     const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
     const { flag: refresh, toggle: toggleRefresh } = useToggle();
 
-    const { key, data, field, updateDataHtml, resetData, isChanged, loadData } = useForm(Models.ScammerAttr);
-
     const navigate = useNavigate();
+
+    const { field, schema, initial = {} } = Models.ScammerAttr;
+    const { control, handleSubmit, reset: loadData, formState: { isDirty: isChanged } } = useForm({ resolver: zodResolver(schema) });
+    const resetData = _ => loadData(initial);
 
     const goBack = () => {
         navigate(-1);
@@ -47,7 +52,6 @@ function Index(props) {
                 setLoadingFalse();
 
                 const { data } = res;
-
                 loadData(data);
             })
             .catch(err => {
@@ -56,7 +60,7 @@ function Index(props) {
             })
     }
 
-    const addData = () => {
+    const addData = (data) => {
         setLoadingTrue();
         fetchScammerAttrAdd({
             PK: ScammerId,
@@ -65,6 +69,7 @@ function Index(props) {
             .then(res => {
                 setLoadingFalse();
                 toggleRefresh();
+                goBack();
             })
             .catch(err => {
                 setLoadingFalse();
@@ -72,7 +77,7 @@ function Index(props) {
             })
     }
 
-    const updateData = () => {
+    const updateData = (data) => {
         setLoadingTrue();
         fetchScammerAttrUpdate({
             PK: ScammerId,
@@ -81,6 +86,7 @@ function Index(props) {
         })
             .then(res => {
                 setLoadingFalse();
+                goBack();
             })
             .catch(err => {
                 setLoadingFalse();
@@ -88,8 +94,8 @@ function Index(props) {
             })
     }
 
-    const onSave = () => {
-        const _func = (ScammerAttrId == "0") ? () => addData() : () => updateData();
+    const onSave = (data) => {
+        const _func = (ScammerAttrId == "0") ? () => addData(data) : () => updateData(data);
         _func();
     };
     // #endregion
@@ -97,27 +103,32 @@ function Index(props) {
     return (
         <>
             <BpLoading loading={loading} />
-            <BpHeader
-                start={<Typography variant={"h2"} sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>{clsUtility.capitalize(Models.ScammerAttr.key)}</Typography>}
-                end={
-                    <Grid2 container spacing={1}>
-                        <Button
-                            variant={"contained"}
-                            onClick={resetData}
-                            startIcon={<Add />}>New</Button>
-                        <Button
-                            variant={"contained"}
-                            disabled={isChanged}
-                            onClick={false}
-                            startIcon={<Save />}>Save</Button>
-                    </Grid2>
-                }
-            />
-            <Box sx={GlobalStyles.bordered}>
-                <BpForm key={key} hasLabel={true}
-                    data={data} field={field}
-                    onUpdate={updateDataHtml}>
-                </BpForm>
+            <Box component={"form"} onSubmit={handleSubmit(onSave)}>
+                <BpHeader
+                    start={<Typography variant={"h2"} sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>{clsUtility.capitalize(Models.ScammerAttr.key)}</Typography>}
+                    end={
+                        <Grid2 container spacing={1}>
+                            <Button
+                                type={"button"}
+                                variant={"contained"}
+                                onClick={resetData}
+                                startIcon={<Add />}>New</Button>
+                            <Button
+                                type={"submit"}
+                                variant={"contained"}
+                                disabled={!isChanged}
+                                onClick={false}
+                                startIcon={<Save />}>Save</Button>
+                        </Grid2>
+                    }
+                />
+                <Box sx={GlobalStyles.bordered}>
+                    <BpForm
+                        field={field}
+                        control={control}
+                        hasLabel={true}>
+                    </BpForm>
+                </Box>
             </Box>
         </>
     )

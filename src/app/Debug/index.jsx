@@ -20,11 +20,11 @@ import { Delete, Add } from "@mui/icons-material";
 import { z } from "zod";
 
 const socialMediaSchema = z.object({
-    social_media: z.array(z.object({ 
+    social_media: z.array(z.object({
         platform: z.string().email("Invalid email"),
         post_url: z.string().min(1, "Post URL is required"),
     }))
-  });
+});
 
 function ExampleFormDataLs(props) {
 
@@ -47,8 +47,8 @@ function ExampleFormDataLs(props) {
                         control={control} />
                 </Grid2>
                 <Grid2 item size={9} sx={{ display: "flex", gap: 1 }}>
-                    <BpInput name={`social_media.${ind}.post_url`} type={"text"} 
-                        placeholder={"Enter username / Profile URL"} 
+                    <BpInput name={`social_media.${ind}.post_url`} type={"text"}
+                        placeholder={"Enter username / Profile URL"}
                         control={control} />
                     <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
                         <Delete />
@@ -80,25 +80,31 @@ function ExampleFormDataLs(props) {
 
 function ExampleForm(props) {
 
-    const { field, schema } = Models.Sample;
+    const { key, field, schema, initial = {}, sample = {} } = Models.Sample;
 
-    const { control, handleSubmit, reset, formState: { isDirty } } = useForm({ 
-        resolver: zodResolver(schema) 
-    });
+    const { control, handleSubmit, reset, formState: { isDirty } } = useForm({});
+
+    useEffect(() => {
+        reset(sample);
+    }, []);
 
     const onSubmit = (data) => {
         console.log(data)
     };
+
+    const onReset = () => {
+        reset(initial);
+    }
 
     return (
         <Box component={"form"} onSubmit={handleSubmit(onSubmit)}
             sx={GlobalStyles.bordered}>
             <BpForm field={field} control={control} hasLabel={true} />
             <Grid2 container spacing={2} sx={{ mt: 1 }}>
-                <Button type="submit" variant="contained" color="primary" disabled={!isDirty}> 
+                <Button type="submit" variant="contained" color="primary" disabled={!isDirty}>
                     Submit New
                 </Button>
-                <Button onClick={() => reset()} variant={"contained"} color={"error"}>Reset</Button>
+                <Button onClick={onReset} variant={"contained"} color={"error"}>Reset</Button>
             </Grid2>
         </Box>
     )
@@ -155,7 +161,7 @@ function ExampleDataTable(props) {
                 enableTopAction={true}
                 enableDefaultAdd={true}
                 enableDefaultUpdate={true}
-                onAdd={addUser}
+                onBtnAdd={addUser}
                 onUpdate={updateUser}
                 onDelete={deleteUser}
             />

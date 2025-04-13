@@ -17,11 +17,16 @@ function TitleSection() {
     );
 }
 
-import { useForm, useToggle } from "@hooks";
-import { BpLoading } from "@components";
+import { useToggle } from "@hooks";
+import { BpLoading, BpInput } from "@components";
 
 import { fetchScammerAttrQuery } from "@api";
 import { Search } from "@mui/icons-material";
+
+import { useForm } from "react-hook-form";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 const template = {
     Scammer: {
@@ -31,25 +36,35 @@ const template = {
                 "name": "query",
                 "type": "text"
             }
-        ]
+        ],
+        initial: {
+            query: ""
+        },
+        schema: z.object({
+            query: z.string().min(1, "Query is required")
+        })
     }
 }
 
 function SearchSection(props) {
-    
+
     const { flag: loadingFlag, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
-    
+
     const { flag, open, close } = useToggle();
     const { flag: isScammer, open: setScammerTrue, close: setScammerFalse } = useToggle();
 
     // const flag = true;
     // const isScammer = true;
 
-    const { key, data, field, updateDataHtml, resetData } = useForm(template.Scammer);
+    // const { key, data, field, updateDataHtml, resetData } = useForm(template.Scammer);
+
+    const { field, schema, initial = {} } = template.Scammer;
+    const { control, handleSubmit, reset: loadData, formState: { isDirty: isChanged } } = useForm({ resolver: zodResolver(schema) });
+    const resetData = _ => loadData(initial);
 
     const [inc, setInc] = useState({});
 
-    const onSearch = () => {
+    const onSearch = (data) => {
         setLoadingTrue();
         close();
 
@@ -85,6 +100,8 @@ function SearchSection(props) {
             p: 2
         },
         search: {
+            display: "flex",
+            gap: 1,
             width: { xs: "100%", sm: "80%", md: "60%" },
         },
         txtInput: {
@@ -110,7 +127,7 @@ function SearchSection(props) {
                 alignItems={"center"}
                 justifyContent={"center"} sx={style.error}>
                 <Typography variant={"h2"} sx={{ fontSize: { xs: "1rem", sm: "2.25rem" } }}>Danger! This person is a scammer</Typography>
-                <MuLink href={`/Incident/${inc.PK}`} underline={"hover"} sx={{ color: "inherit"}}>
+                <MuLink href={`/Incident/${inc.PK}`} underline={"hover"} sx={{ color: "inherit" }}>
                     <Typography variant={"h3"} sx={{ fontSize: { xs: "0.75rem", sm: "1.75rem" } }}>{inc.scammer}</Typography>
                 </MuLink>
             </Grid2>
@@ -128,24 +145,31 @@ function SearchSection(props) {
                     borderColor: 'divider',
                     pt: { xs: 4, sm: 4 }
                 }}>
-                <Grid2 container spacing={1} sx={style.search}>
-                    <TextField
+
+                <Box component={"form"} onSubmit={handleSubmit(onSearch)} sx={style.search}>
+                    {/* <TextField
                         placeholder={"Social Media Ids, Bank Account..."}
                         type={"text"}
                         name={"query"}
                         value={data["query"]}
                         onChange={updateDataHtml}
                         sx={style.txtInput}
-                    />
+                    /> */}
+                    <BpInput
+                        name={"query"} type={"text"}
+                        placeholder={"Social Media Ids, Bank Account..."}
+                        control={control}
+                        sx={style.txtInput} />
                     <Button
+                        type={"submit"}
                         variant={"contained"}
                         color={"warning"}
-                        onClick={onSearch}
                         endIcon={<Search />}
                         sx={{ flex: .2, maxWidth: "100px", minWidth: "100px" }}>Search</Button>
-                </Grid2>
+                </Box>
+
             </Grid2>
-            <Collapse in={flag} sx={{ display: flag ? "block": "none" }}>
+            <Collapse in={flag} sx={{ display: flag ? "block" : "none" }}>
                 <SearchResult />
             </Collapse>
         </>
