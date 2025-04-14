@@ -22,7 +22,6 @@ function Wrapper(props) {
             name={name}
             control={control}
             render={({ field, fieldState: { error } }) => {
-                // console.log(field, error);
                 return (
                     <FormControl fullWidth errors={error} sx={sx}>
                         <FormLabel>{label}</FormLabel>
@@ -38,65 +37,55 @@ function Wrapper(props) {
 // Add Form Validation with Error Msg
 function Index(props) {
 
-    const { name = "", type = "text", readOnly = false, required = false } = props;
-    const { control = null, sx = {} } = props;
-    const { label = "", placeholder = "", selection = [], rows = 3 } = props;
-
-    const inputProps = {
-        placeholder,
-        slotProps: {
-            input: {
-                readOnly: readOnly
-            }
-        }
-    };
+    const { name = "", type = "text", control = null } = props;
+    const { selection = [], rows = 3, sx = {} } = props;
+    const { label = "", placeholder = "" } = props;
 
     // We Should Make This Flexible to be able to customize our own Form Item
     const elemDict = {
-        "text": ({ field, error }) => (
-            <TextField type={"text"} error={error} {...field} {...inputProps} />
+        "text": ({ field = {}, error = null }) => (
+            <TextField type={"text"} placeholder={placeholder} error={error} {...field} />
         ),
-        "email": ({ field, error }) => (
-            <TextField type={"text"} error={error} {...field} {...inputProps} />
+        "email": ({ field = {}, error = null }) => (
+            <TextField type={"text"} placeholder={placeholder} error={error} {...field} />
         ),
-        "password": ({ field, error }) => (
-            <TextField type={"password"} error={error} {...field} {...inputProps} />
+        "password": ({ field = {}, error = null }) => (
+            <TextField type={"password"} placeholder={placeholder} error={error} {...field} />
         ),
-        "textarea": ({ field, error }) => (
-            <TextField type={"text"} error={error} {...field} {...inputProps}
+        "textarea": ({ field = {}, error = null }) => (
+            <TextField type={"text"} placeholder={placeholder} error={error} {...field}
                 multiline rows={rows}
             />
         ),
-        "int": ({ field, error }) => (
-            <TextField type={"number"} error={error} {...field} onChange={(evt) => field.onChange(Number(evt.target.value))} {...inputProps} />
+        "int": ({ field = {}, error = null }) => (
+            <TextField type={"number"} placeholder={placeholder} error={error} {...field} onChange={(evt) => field.onChange(Number(evt.target.value))} />
         ),
-        "date": ({ field, error }) => (
-            <TextField type={"date"} error={error} {...field} {...inputProps} />
+        "date": ({ field = {}, error = null }) => (
+            <TextField type={"date"} placeholder={placeholder} error={error} {...field} />
         ),
-        "decimal": ({ field, error }) => (
-            <TextField type={"number"} error={error} {...field} {...inputProps}
+        "decimal": ({ field = {}, error = null }) => (
+            <TextField type={"number"} placeholder={placeholder} error={error} {...field}
                 onChange={(evt) => field.onChange(Number(evt.target.value))}
                 slotProps={{
                     input: {
                         inputProps: {
                             step: "0.01"
-                        },
-                        readOnly: readOnly
+                        }
                     }
                 }}
             />
         ),
-        "dropdown": ({ field, error }) => (
-            <FormDropdown selection={selection} error={error} {...field} {...inputProps} />
+        "dropdown": ({ field = {}, error = null }) => (
+            <FormDropdown selection={selection} placeholder={placeholder} error={error} {...field} />
         ),
-        "color": ({ field, error }) => (
-            <FormColor error={error} {...field} {...inputProps} />
+        "color": ({ field = {}, error = null }) => (
+            <FormColor placeholder={placeholder} error={error} {...field} />
         ),
-        "file": ({ field, error }) => (
-            <FormFileUpload error={error} {...field} {...inputProps} />
+        "file": ({ field = {}, error = null }) => (
+            <FormFileUpload placeholder={placeholder} error={error} {...field} />
         ),
-        "image": ({ field, error }) => (
-            <FormImage error={error} {...field} {...inputProps} />
+        "image": ({ field = {}, error = null }) => (
+            <FormImage placeholder={placeholder} error={error} {...field} />
         )
     }
 
@@ -104,7 +93,6 @@ function Index(props) {
         name,
         label,
         control,
-        required,
         sx
     };
 

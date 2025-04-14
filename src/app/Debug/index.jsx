@@ -68,7 +68,8 @@ const template = {
 
 function ExampleFormDataLs(props) {
 
-    const { control, handleSubmit, isDirty, data, append, remove } = useFormDataLs(template.social_media);
+    const { key, control, handleSubmit, isDirty } = useForm(template.social_media);
+    const { data, append, remove } = useFormDataLs({ key, control });
 
     const renderItem = (item, ind) => {
 

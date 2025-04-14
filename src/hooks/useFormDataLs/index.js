@@ -1,43 +1,20 @@
 
 import { useState, useEffect } from "react";
 
-import { useForm, useFieldArray } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useFieldArray } from "react-hook-form";
 
 function useFormDataLs(props) {
     
-    const { key = "", field = [], schema = {}, initial = {} } = props;
-
-    const {
-        register,
-        control, 
-        handleSubmit, 
-        reset: loadData, 
-        formState: {
-            errors,
-            isDirty
-        } 
-    } = useForm({ 
-        mode: "onChange",
-        resolver: zodResolver(schema)
-    });
+    const { key = "", control = null } = props;
 
     const { fields: data, append, update, remove } = useFieldArray({ control, name: key });
-
-    const resetData = _ => loadData(initial);
  
     return {
         key,
         data,
-        field,
-        control,
-        handleSubmit,
-        loadData,
-        resetData,
         append,
         update,
         remove,
-        isDirty
     }
 }
 
