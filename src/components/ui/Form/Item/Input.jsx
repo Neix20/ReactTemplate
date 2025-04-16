@@ -46,9 +46,6 @@ function Index(props) {
         "text": ({ field = {}, error = null }) => (
             <TextField type={"text"} placeholder={placeholder} error={error} {...field} />
         ),
-        "email": ({ field = {}, error = null }) => (
-            <TextField type={"text"} placeholder={placeholder} error={error} {...field} />
-        ),
         "password": ({ field = {}, error = null }) => (
             <TextField type={"password"} placeholder={placeholder} error={error} {...field} />
         ),

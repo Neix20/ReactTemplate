@@ -24,10 +24,6 @@ function generateColumns(field = []) {
             accessorKey: name,
             header: clsUtility.capitalize(name),
         }),
-        "email": ({ name = "" }) => ({
-            accessorKey: name,
-            header: clsUtility.capitalize(name),
-        }),
         "password": ({ name = "" }) => ({
             accessorKey: name,
             header: clsUtility.capitalize(name),

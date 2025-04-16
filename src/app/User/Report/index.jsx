@@ -32,7 +32,7 @@ const template = {
     report: {
         key: "report",
         schema: z.object({
-            name: z.string().min(1, "Name is required"),
+            name: z.string(),
             social_media: z.array(z.object({
                 platform: z.string().min(1, "Platform is required"),
                 post_url: z.string().min(1, "Post URL is required"),
@@ -55,8 +55,8 @@ const template = {
             total_amount: z.number(),
             transaction_date: z.string().date("Invalid date"),
             post: z.object({
-                platform: z.string().min(1, "Platform is required"),
-                post_url: z.string().min(1, "Post URL is required"),
+                platform: z.string().optional(),
+                post_url: z.string().optional(),
             })
         }),
         initial: {
@@ -416,7 +416,7 @@ function Index(props) {
     const { control, handleSubmit, isDirty } = useForm(template.report);
 
     const onSubmit = (data) => {
-        alert("Error");
+        alert("Success!");
         console.log(data);
     }
 
@@ -453,12 +453,50 @@ function Index(props) {
                         </Grid2>
                     </Grid2>
 
+                    {/* Second Page */}
+                    <Grid2 hidden={step !== 1} sx={style.reportBody}>
+                        <Grid2 container flexDirection={"column"} spacing={2}>
+                            <Grid2 container justifyContent={"center"}>
+                                <Box component={"img"} src={Page2} sx={style.img} />
+                            </Grid2>
+                            <BpInput name={"pretend_to_be"} type={"text"} control={control} placeholder={"What did they pretend to be?"} label={"Pretend To Be"} hasLabel={true} />
+                            <PretendToSellSection term={"pretend_to_sell"} control={control} />
 
+                            <BpInput name={"total_amount"} type={"decimal"} control={control} placeholder={"Enter Amount"} label={"Total Amount Scammed (RM)"} hasLabel={true} />
+                            <BpInput name={"transaction_date"} type={"date"} control={control} placeholder={"Enter Date"} label={"Transaction Date"} hasLabel={true} />
+                            <Grid2 container flexDirection={"column"} spacing={1}>
+                                <Typography>(Optional) Have you ever posted this on your social media?</Typography>
+                                <Grid2 container>
+                                    <Grid2 item size={3}>
+                                        <BpInput name={"post.platform"} type={"dropdown"} control={control} placeholder={"Select Platform"} selection={SampleData.Platform} />
+                                    </Grid2>
+                                    <Grid2 item size={9}>
+                                        <BpInput name={"post.post_url"} type={"text"} control={control} placeholder={"https://www.facebook.com/username"} />
+                                    </Grid2>
+                                </Grid2>
+                            </Grid2>
+                        </Grid2>
+                    </Grid2>
+
+                    {/* Third Page */}
+                    <Grid2 hidden={step !== 2} sx={style.reportBody}>
+                        <Grid2 container flexDirection={"column"} spacing={2}>
+                            <Grid2 container justifyContent={"center"}>
+                                <Box component={"img"} src={Page3} sx={style.img} />
+                            </Grid2>
+                            <BpInput name={"comments"} type={"textarea"} control={control} placeholder={"Do you have anything to comment about this incident?"} label={"Comments"} hasLabel={true} />
+                            <Grid2 container flexDirection={"column"} spacing={1}>
+                                <Typography>Upload Screenshots</Typography>
+                                <BpImageUpload onAddImage={addImgAsset} />
+                                <BpImageGallery images={imgAsset} onDelete={deleteImgAsset} />
+                            </Grid2>
+                        </Grid2>
+                    </Grid2>
 
                     {/* Button */}
                     <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
                         <Button type={"button"} variant={"outlined"} onClick={minus} sx={{ visibility: step < 1 ? "hidden" : "visible" }}>Previous</Button>
-                        <Button type={"submit"} variant={"outlined"} disabled={!isDirty && false} sx={{ display: step == 2 || true ? "block" : "none" }}>Submit</Button>
+                        <Button type={"submit"} variant={"outlined"} disabled={!isDirty} sx={{ display: step == 2 ? "block" : "none" }}>Submit</Button>
                         <Button type={"button"} variant={"contained"} onClick={add} sx={{ display: step < 2 ? "block" : "none" }}>Next</Button>
                     </Grid2>
                 </Box>

@@ -1,13 +1,19 @@
 import { useState, useEffect } from "react";
 
-import { Container, Grid2, Typography, Button, Paper, IconButton, Box, Tooltip, Modal } from "@mui/material";
-import { Authenticator } from '@aws-amplify/ui-react';
+import { Container, Grid2, Typography, Button, Paper, IconButton, Box, Tooltip, Modal, Card as MuiCard } from "@mui/material";
 
-import { Card as MuiCard, FormControl, FormLabel, TextField } from "@mui/material";
+import { Authenticator } from '@aws-amplify/ui-react';
+import { fetchAuthSession } from "@aws-amplify/auth";
 
 import '@aws-amplify/ui-react/styles.css';
 
 import { styled } from "@mui/material";
+
+import { ColorModeIconDropdown, BpInput } from "@components";
+import { useForm } from "@hooks";
+import { Images } from "@config";
+
+import { Controller } from "react-hook-form";
 
 const BpContainer = styled(Container)(({ theme }) => ({
     height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
@@ -28,8 +34,6 @@ const BpContainer = styled(Container)(({ theme }) => ({
         }),
     },
 }));
-
-import { ColorModeIconDropdown } from '@components';
 
 const formFields = {
     signUp: {
@@ -73,6 +77,9 @@ const Card = styled(MuiCard)(({ theme }) => ({
 import ProfilePhoto from "./components/ProfilePhoto";
 
 function ProfilePhotoPage(props) {
+
+    const { name = "", control = null, images = [] } = props;
+
     return (
         <>
             <Box sx={{ mb: 2 }}>
@@ -83,12 +90,19 @@ function ProfilePhotoPage(props) {
                     Add a profile photo so that your friend know it's you!
                 </Typography>
             </Box>
-            <ProfilePhoto {...props} />
+            <Controller
+                name={name}
+                control={control}
+                render={({ field }) => (
+                    <ProfilePhoto images={images} {...field} />
+                )}
+            />
         </>
     )
 };
 
 function NamePage(props) {
+    const { control = null } = props;
     return (
         <>
             <Box sx={{ mb: 2 }}>
@@ -99,10 +113,12 @@ function NamePage(props) {
                     Tell us your name so that we can personalize your experience.
                 </Typography>
             </Box>
-            <FormControl>
-                <FormLabel>Name</FormLabel>
-                <TextField type={"text"} placeholder="Enter your name" />
-            </FormControl>
+            <BpInput
+                name={"name"} type={"text"}
+                hasLabel={true} label={"Name"}
+                control={control}
+                placeholder={"Enter Your Name"} 
+            />
         </>
     )
 }
@@ -151,7 +167,27 @@ function useStep() {
     }
 }
 
-import { fetchAuthSession } from "@aws-amplify/auth";
+import { z } from "zod";
+
+const template = {
+    login: {
+        key: "login",
+        field: [
+            {
+                "name": "name",
+                "type": "text"
+            }
+        ],
+        initial: {
+            name: "",
+            profile: ""
+        },
+        schema: z.object({
+            name: z.string(),
+            profile: z.any().optional()
+        })
+    }
+}
 
 function Main(props) {
 
@@ -159,17 +195,45 @@ function Main(props) {
 
     const { userId = "" } = user;
 
-    const [profilePic, setProfilePic] = useState({});
-
     const { step, add, minus } = useStep();
 
     const navigate = useNavigate();
 
-    const { value: seconds, setValue: setSeconds } = useTimer(() => { navigate("/"); });
+    const onTimerDone = () => {
+        navigate("/");
+    }
+    const { value: seconds, setValue: setSeconds } = useTimer(onTimerDone);
+
+    const { control, handleSubmit } = useForm(template.login);
 
     // Not New Login
-    const user_arr = [
-        "a4b8d468-b051-7090-8a28-95797c783991"
+    const user_arr = [];
+
+    // const user_arr = [
+    //     "a4b8d468-b051-7090-8a28-95797c783991"
+    // ];
+
+    const images = [
+        {
+            "imgName": "bgStock01",
+            "imgData": Images.bgStock01
+        },
+        {
+            "imgName": "bgStock02",
+            "imgData": Images.bgStock02
+        },
+        {
+            "imgName": "bgStock03",
+            "imgData": Images.bgStock03
+        },
+        {
+            "imgName": "bgStock04",
+            "imgData": Images.bgStock04
+        },
+        {
+            "imgName": "bgStock05",
+            "imgData": Images.bgStock05
+        }
     ]
 
     useEffect(() => {
@@ -178,9 +242,21 @@ function Main(props) {
         }
     }, [userId]);
 
-    const onSubmit = () => {
-        add();
-        setSeconds(_ => 3);
+    const onSubmit = (data) => {
+        alert("Success!");
+
+        const { name, profile: { imgData } } = data;
+        
+        const _data = {
+            id: userId,
+            name,
+            // Update This to Base64 or S3 URL
+            profile: imgData
+        };
+
+        console.log(_data);
+        // add();
+        // setSeconds(_ => 3);
     }
 
     if (user_arr.includes(userId)) {
@@ -189,21 +265,24 @@ function Main(props) {
 
     return (
         <Card sx={{ padding: 2 }}>
-            <Box hidden={step !== 0}>
-                <ProfilePhotoPage data={profilePic} onChange={setProfilePic} />
+            <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+                <Box hidden={step !== 0}>
+                    <ProfilePhotoPage images={images}
+                        name={"profile"} control={control} />
+                </Box>
+                <Box hidden={step !== 1}>
+                    <NamePage control={control} />
+                </Box>
+                <Box hidden={step !== 2}>
+                    <CompletePage seconds={seconds} />
+                </Box>
+                <Grid2 container alignItems={"center"} justifyContent={"space-between"}
+                    sx={{ display: step < 2 ? "flex" : "none", mt: 1 }}>
+                    <Button type={"button"} variant={"outlined"} onClick={minus} sx={{ visibility: step < 1 ? "hidden" : "visible" }}>Previous</Button>
+                    <Button type={"submit"} variant={"contained"} sx={{ display: step == 1 ? "block" : "none" }}>Submit</Button>
+                    <Button type={"button"} variant={"contained"} onClick={add} sx={{ display: step < 1 ? "block" : "none" }}>Next</Button>
+                </Grid2>
             </Box>
-            <Box hidden={step !== 1}>
-                <NamePage />
-            </Box>
-            <Box hidden={step !== 2}>
-                <CompletePage seconds={seconds} />
-            </Box>
-            <Grid2 container alignItems={"center"} justifyContent={"space-between"}
-                sx={{ display: step < 2 ? "flex" : "none" }}>
-                <Button variant={"outlined"} onClick={minus} sx={{ visibility: step < 1 ? "hidden" : "visible" }}>Previous</Button>
-                <Button variant={"contained"} onClick={onSubmit} sx={{ display: step == 1 ? "block" : "none" }}>Submit</Button>
-                <Button variant={"contained"} onClick={add} sx={{ display: step < 1 ? "block" : "none" }}>Next</Button>
-            </Grid2>
         </Card>
     )
 }
