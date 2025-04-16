@@ -183,6 +183,10 @@ function Main(props) {
         setSeconds(_ => 3);
     }
 
+    if (user_arr.includes(userId)) {
+        return (<></>)
+    }
+
     return (
         <Card sx={{ padding: 2 }}>
             <Box hidden={step !== 0}>
@@ -213,7 +217,7 @@ function Index(props) {
                 formFields={formFields}
                 socialProviders={['google']}
                 signUpAttributes={['email', 'name']}>
-                {({ signOut, user }) => (
+                {({ user }) => (
                     <Main user={user} />
                 )}
             </Authenticator>

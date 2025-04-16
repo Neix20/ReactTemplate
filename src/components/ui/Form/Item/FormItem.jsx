@@ -7,7 +7,7 @@ import Input from "./Input";
 
 const FormItem = (props = {}) => {
 
-    const { hasLabel = false, name = "", size = {} } = props;
+    const { hasLabel = false, name = "", size = {}, ..._props } = props;
 
     const placeholder = clsUtility.capitalize(name);
     const label = hasLabel ? placeholder : "";
@@ -20,7 +20,10 @@ const FormItem = (props = {}) => {
 
     return (
         <Grid2 item size={_size} sx={{ display: "flex", alignItems: "center"}}>
-            <Input label={label} placeholder={placeholder} {...props} />
+            <Input 
+                hasLabel={hasLabel} label={label} 
+                name={name} placeholder={placeholder} 
+                {..._props} />
         </Grid2>
     );
 }

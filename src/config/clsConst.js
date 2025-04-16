@@ -17,15 +17,17 @@ const COGNITO_CONFIG = {
                 oauth: {
                     domain: import.meta.env.VITE_AWS_COGNITO_DOMAINAME,
                     scopes: ['email', 'openid', 'phone', 'profile', 'aws.cognito.signin.user.admin'],
-                    redirectSignIn: ['http://localhost:5173/Login'],
-                    redirectSignOut: ['http://localhost:5173/'],
+                    redirectSignIn: [import.meta.env.VITE_HOST_URL + '/Login'],
+                    redirectSignOut: [import.meta.env.VITE_HOST_URL + '/'],
                     responseType: 'code',
                 }
             }
         }
-
     }
 }
+
+// const logoutUrl = `https://${process.env.VUE_APP_COGNITO_USER_POOL_DOMAIN}/logout?client_id=${process.env.VUE_APP_COGNITO_CLIENT_ID}&logout_uri=${window.location.origin}`;
+const LOG_OUT_URL = `https://${import.meta.env.VITE_AWS_COGNITO_DOMAINAME}/logout?client_id=${import.meta.env.VITE_AWS_WEB_CLIENT_ID}&logout_uri=${import.meta.env.VITE_HOST_URL}/`;
 
 const TIME_FOR_AUTH = 60 * 60 * 1000;
 
@@ -40,7 +42,8 @@ const data = {
     COGNITO_CONFIG,
     TIME_FOR_AUTH,
     DRAWER_WIDTH,
-    MINI_DRAWER_WIDTH
+    MINI_DRAWER_WIDTH,
+    LOG_OUT_URL
 }
 
 export default data;

@@ -31,6 +31,8 @@ function Index(props) {
         handleSubmit,
         loadData,
         resetData,
+        register,
+        errors,
         isDirty
     }
 }

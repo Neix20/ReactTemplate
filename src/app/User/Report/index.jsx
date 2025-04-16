@@ -338,6 +338,48 @@ function PretendToSellSection(props) {
     )
 }
 
+function Term(props) {
+    return (
+        <>
+            {/* Second Page */}
+            <Grid2 hidden={step !== 1} sx={style.reportBody}>
+                <Grid2 container flexDirection={"column"} spacing={2}>
+                    <Grid2 container justifyContent={"center"}>
+                        <Box component={"img"} src={Page2} sx={style.img} />
+                    </Grid2>
+                    <BpInput name={"pretend_to_be"} type={"dropdown"} control={control} placeholder={"What did they pretend to be?"} label={"Pretend To Be"} hasLabel={true} />
+                    <PretendToSellSection term={"pretend_to_sell"} control={control} />
+
+                    <BpInput name={"total_amount"} type={"decimal"} control={control} placeholder={"Enter Amount"} label={"Total Amount Scammed (RM)"} hasLabel={true} />
+                    <BpInput name={"transaction_date"} type={"date"} control={control} placeholder={"Enter Date"} label={"Transaction Date"} hasLabel={true} />
+                    <Grid2 container flexDirection={"column"} spacing={1}>
+                        <Typography>(Optional) Have you ever posted this on your social media?</Typography>
+                        <Grid2 container>
+                            <BpInput name={"post.platform"} type={"dropdown"} placeholder={"Select Platform"} selection={SampleData.Platform} />
+                            <BpInput name={"post.post_url"} type={"text"} placeholder={"https://www.facebook.com/username"} />
+                        </Grid2>
+                    </Grid2>
+                </Grid2>
+            </Grid2>
+
+            {/* Third Page */}
+            <Grid2 hidden={step !== 2} sx={style.reportBody}>
+                <Grid2 container flexDirection={"column"} spacing={2}>
+                    <Grid2 container justifyContent={"center"}>
+                        <Box component={"img"} src={Page3} sx={style.img} />
+                    </Grid2>
+                    <BpInput name={"comments"} type={"textarea"} control={control} placeholder={"Do you have anything to comment about this incident?"} label={"Comments"} hasLabel={true} />
+                    <Grid2 container flexDirection={"column"} spacing={1}>
+                        <Typography>Upload Screenshots</Typography>
+                        <BpImageUpload onAddImage={addImgAsset} />
+                        <BpImageGallery images={imgAsset} onDelete={deleteImgAsset} />
+                    </Grid2>
+                </Grid2>
+            </Grid2>
+        </>
+    )
+}
+
 function Index(props) {
 
     const { step, add, minus } = useStep();
@@ -411,46 +453,12 @@ function Index(props) {
                         </Grid2>
                     </Grid2>
 
-                    {/* Second Page */}
-                    <Grid2 hidden={step !== 1} sx={style.reportBody}>
-                        <Grid2 container flexDirection={"column"} spacing={2}>
-                            <Grid2 container justifyContent={"center"}>
-                                <Box component={"img"} src={Page2} sx={style.img} />
-                            </Grid2>
-                            <BpInput name={"pretend_to_be"} type={"dropdown"} control={control} placeholder={"What did they pretend to be?"} label={"Pretend To Be"} hasLabel={true} />
-                            <PretendToSellSection term={"pretend_to_sell"} control={control} />
 
-                            <BpInput name={"total_amount"} type={"decimal"} control={control} placeholder={"Enter Amount"} label={"Total Amount Scammed (RM)"} hasLabel={true} />
-                            <BpInput name={"transaction_date"} type={"date"} control={control} placeholder={"Enter Date"} label={"Transaction Date"} hasLabel={true} />
-                            <Grid2 container flexDirection={"column"} spacing={1}>
-                                <Typography>(Optional) Have you ever posted this on your social media?</Typography>
-                                <Grid2 container>
-                                    <BpInput name={"post.platform"} type={"dropdown"} placeholder={"Select Platform"} selection={SampleData.Platform} />
-                                    <BpInput name={"post.post_url"} type={"text"} placeholder={"https://www.facebook.com/username"} />
-                                </Grid2>
-                            </Grid2>
-                        </Grid2>
-                    </Grid2>
-
-                    {/* Third Page */}
-                    <Grid2 hidden={step !== 2} sx={style.reportBody}>
-                        <Grid2 container flexDirection={"column"} spacing={2}>
-                            <Grid2 container justifyContent={"center"}>
-                                <Box component={"img"} src={Page3} sx={style.img} />
-                            </Grid2>
-                            <BpInput name={"comments"} type={"textarea"} control={control} placeholder={"Do you have anything to comment about this incident?"} label={"Comments"} hasLabel={true} />
-                            <Grid2 container flexDirection={"column"} spacing={1}>
-                                <Typography>Upload Screenshots</Typography>
-                                <BpImageUpload onAddImage={addImgAsset} />
-                                <BpImageGallery images={imgAsset} onDelete={deleteImgAsset} />
-                            </Grid2>
-                        </Grid2>
-                    </Grid2>
 
                     {/* Button */}
                     <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
                         <Button type={"button"} variant={"outlined"} onClick={minus} sx={{ visibility: step < 1 ? "hidden" : "visible" }}>Previous</Button>
-                        <Button type={"submit"} variant={"outlined"} disabled={!isDirty && false } sx={{ display: step == 2 || true ? "block" : "none" }}>Submit</Button>
+                        <Button type={"submit"} variant={"outlined"} disabled={!isDirty && false} sx={{ display: step == 2 || true ? "block" : "none" }}>Submit</Button>
                         <Button type={"button"} variant={"contained"} onClick={add} sx={{ display: step < 2 ? "block" : "none" }}>Next</Button>
                     </Grid2>
                 </Box>
