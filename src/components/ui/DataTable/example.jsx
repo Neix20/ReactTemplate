@@ -2,10 +2,14 @@
 import { useState, useEffect } from "react";
 import { Grid2 } from "@mui/material";
 
-import { useForm, useFormDataLs } from "@hooks";
-import { BpForm, BpSubForm, BpDataTable, UserLayout } from "@components";
+import { BpDataTable } from "@components";
+import { Models } from "@config";
 
-import Models from "@models";
+import { useFieldArray } from "react-hook-form";
+
+import { useForm } from "@hooks";
+
+import { z } from "zod";
 
 const tblOption = {
     createDisplayMode: "modal",
@@ -36,48 +40,68 @@ const tblOption = {
     renderRowActions: ({ row, table }) => (<></>)
 }
 
+const template = {
+    basic: {
+        key: "basic",
+        field: [
+            {
+                name: "name",
+                type: "text"
+            },
+            {
+                name: "quantity",
+                type: "int"
+            }
+        ],
+        initial: {
+            name: "",
+            quantity: 0
+        },
+        schema: z.object({
+            name: z.string().min(1, "Name is required"),
+            quantity: z.number().min(1, "Quantity is required")
+        })
+    }
+};
+
 function Index(props) {
 
-    const { key, data, field, addData, updateData, deleteData } = useFormDataLs(Models.Product);
+    const { key, field, control } = useForm(template.basic);
+    const { fields: data, append, update, remove } = useFieldArray({ control, name: key });
 
-    useEffect(() => {
-        console.log(data);
-    }, [data.length])
-
-    const preAddUser = ({ table }) => {
-        table.setCreatingRow(true);
-    }
-
-    const addUser = ({ values, table }) => {
-        addData(values);
+    const addUser = ({ table, row, values }) => {
+        append(values);
         table.setCreatingRow(null);
     }
 
-    const updateUser = ({ row, table }) => {
-        table.setEditingRow(row);
-    }
-
-    const posUpdateUser = ({ values, table }) => {
-        updateData(values);
+    const updateUser = ({ table, row, values }) => {
+        update(row.index, values);
         table.setEditingRow(null);
     }
 
-    const onDelete = ({ row }) => {
-        deleteData(row.original.idx);
+    const deleteUser = ({ row }) => {
+        remove(row.index);
+    }
+
+    const onDebug = () => {
+        console.log(data);
     }
 
     return (
-        <UserLayout>
-            <Grid2 container flexDirection={"column"} spacing={2} sx={{ margin: 2 }}>
-                <BpDataTable key={key} data={data} field={field} 
-                    enableRowAction={true} enableTopAction={true}
-                    onPreAdd={preAddUser}
-                    onAdd={addUser}
-                    onUpdate={updateUser}
-                    onPosUpdate={posUpdateUser}
-                    onDelete={onDelete} />
-            </Grid2>
-        </UserLayout>
+        <Grid2 container flexDirection={"column"} spacing={1} sx={{ mt: 1 }}>
+            <BpDataTable idx={"basic"}
+                data={data}
+                field={field}
+                enableRowAction={true}
+                enableTopAction={true}
+                enableDefaultAdd={true}
+                enableDefaultUpdate={true}
+                onBtnAdd={addUser}
+                onUpdate={updateUser}
+                onDelete={deleteUser}
+            />
+            <Button variant={"contained"} onClick={onDebug}>Debug</Button>
+        </Grid2>
     )
 }
 

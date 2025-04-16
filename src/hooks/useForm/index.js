@@ -1,62 +1,38 @@
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
-import { clsUtility } from "@utility";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const useForm = (props = {}) => {
+function Index(props) {
+    
+    const { key = "", field = [], schema = {}, initial = {} } = props;
 
-    const { key: pKey = "", field = [] } = props;
+    const {
+        register,
+        control, 
+        handleSubmit, 
+        reset: loadData, 
+        formState: {
+            errors,
+            isDirty
+        } 
+    } = useForm({ 
+        mode: "onChange",
+        resolver: zodResolver(schema)
+    });
 
-    const [form, setForm] = useState({});
-    const [initData, setInitData] = useState({});
-
-    const loadData = (data = {}) => {
-        setForm(_ => data);
-        setInitData(_ => data);
-    }
-
-    const updateData = (key, value) => {
-        setForm((pForm) => (
-            {
-                ...pForm,
-                [key]: value
-            }
-        ));
-    };
-
-    const deleteData = (key) => {
-        setForm((pForm) => {
-            const { [key]: _, ...rest } = pForm;
-            return rest;
-        });
-    };
-
-    const updateDataHtml = (evt) => {
-        const { name = "", value = "" } = evt.target;
-
-        if (!name) return;
-
-        setForm((pForm) => (
-            {
-                ...pForm,
-                [name]: value,
-            }
-        ));
-    };
-
-    const resetData = () => {
-        const _data = clsUtility.genDefaultItem(field);
-        setForm(() => _data);
-        setInitData(() => _data);
-    };
-
-    const isChanged = JSON.stringify(form) === JSON.stringify(initData);
-
+    const resetData = _ => loadData(initial);
+ 
     return {
-        key: pKey, data: form, field, 
-        updateData, updateDataHtml,
-        loadData, deleteData, resetData, isChanged
-    };
+        key,
+        field,
+        control,
+        handleSubmit,
+        loadData,
+        resetData,
+        isDirty
+    }
 }
 
-export default useForm;
+export default Index;

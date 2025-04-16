@@ -1,5 +1,14 @@
-const obj = {
 
+import { z } from "zod";
+
+const schema = z.object({
+    name: z.string().min(1, "Name is required"),
+    value: z.string().min(1, "Value is required"),
+    category: z.enum(["social_media", "platform", "nickname", "others"]),
+    type: z.enum(["string", "file", "others"]),
+});
+
+const obj = {
     key: "Scammer Attribute",
     field: [
         {
@@ -13,6 +22,24 @@ const obj = {
         {
             "name": "category",
             "type": "dropdown",
+            "selection": [
+                {
+                    "name": "social_media",
+                    "value": "social_media"
+                },
+                {
+                    "name": "platform",
+                    "value": "platform"
+                },
+                {
+                    "name": "nickname",
+                    "value": "nickname"
+                },
+                {
+                    "name": "others",
+                    "value": "others"
+                },
+            ]
         },
         {
             "name": "type",
@@ -32,7 +59,14 @@ const obj = {
                 }
             ]
         }
-    ]
+    ],
+    initial: {
+        "name": "",
+        "value": "",
+        "category": "",
+        "type": ""
+    },
+    schema
 
 }
 

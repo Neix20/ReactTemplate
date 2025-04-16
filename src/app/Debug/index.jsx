@@ -1,217 +1,252 @@
+
 import { useState, useEffect } from "react";
 
-import { Container, Grid2, Typography, Button, Paper, IconButton, Box, Tooltip } from "@mui/material";
-import { Snackbar, Alert } from "@mui/material";
+import { Container, Grid2, Typography, Button, IconButton, Box, Tooltip, Paper, Card, alertTitleClasses } from "@mui/material";
 
-import { GlobalStyles } from "@config";
+import { ColorModeIconDropdown, BpForm, BpInput, BpDataTable } from "@components";
 
-import { BpForm, BpLoading } from "@components";
-import { useForm, useToggle } from "@hooks";
+import { FormControl, Select, MenuItem } from "@mui/material";
 
-import { Amplify } from "@libs/auth";
+import { GlobalStyles, Models, SampleData } from "@config";
 
+import { clsUtility } from "@utility";
 
-import { fetchAuthSession, getCurrentUser } from "@aws-amplify/auth";
-const { handleSignIn, handleSignUp, handleConfirmSignUp, handleSignOut, handleResetPassword, handleConfirmResetPassword, isAuthenticated, handleResendSignUpCode } = Amplify;
+import { useForm, useFormDataLs } from "@hooks";
+
+import { Delete, Add } from "@mui/icons-material";
+
+import { z } from "zod";
+
+const socialMediaSchema = z.object({
+    social_media: z.array(z.object({
+        platform: z.string().email("Invalid email"),
+        post_url: z.string().min(1, "Post URL is required"),
+    }))
+});
 
 const template = {
-    login: {
-        key: "login",
+    social_media: {
+        key: "social_media",
         field: [
             {
-                "name": "username",
-                "type": "email"
+                "name": "platform",
+                "type": "dropdown"
             },
             {
-                "name": "password",
-                "type": "password"
-            }
-        ]
-    },
-    signUp: {
-        key: "sign_up",
-        field: [
-            {
-                "name": "username",
-                "type": "email"
-            },
-            {
-                "name": "password",
-                "type": "password"
-            },
-            {
-                "name": "confirm_password",
-                "type": "password"
-            }
-        ]
-    },
-    otpCode: {
-        key: "otp_code",
-        field: [
-            {
-                "name": "username",
-                "type": "email"
-            },
-            {
-                "name": "code",
+                "name": "post_url",
                 "type": "text"
             }
-        ]
+        ],
+        initial: {
+            platform: "",
+            post_url: ""
+        },
+        schema: socialMediaSchema
+    },
+    basic: {
+        key: "basic",
+        field: [
+            {
+                name: "name",
+                type: "text"
+            },
+            {
+                name: "quantity",
+                type: "int"
+            }
+        ],
+        initial: {
+            name: "",
+            quantity: 0
+        },
+        schema: z.object({
+            name: z.string().min(1, "Name is required"),
+            quantity: z.number().min(1, "Quantity is required")
+        })
     }
 }
 
-function TxtButton(props) {
+function ExampleFormDataLs(props) {
 
-    const { onClick = () => { }, children = (<></>) } = props;
+    const { key, control, handleSubmit, isDirty } = useForm(template.social_media);
+    const { data, append, remove } = useFormDataLs({ key, control });
+
+    const renderItem = (item, ind) => {
+
+        const onDeleteItem = () => remove(ind);
+
+        return (
+            <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
+                <Grid2 item size={3} sx={{ display: "flex" }}>
+                    <BpInput
+                        name={`social_media.${ind}.platform`} type={"dropdown"}
+                        placeholder={"Platform"} selection={SampleData.Platform}
+                        control={control} />
+                </Grid2>
+                <Grid2 item size={9} sx={{ display: "flex", gap: 1 }}>
+                    <BpInput name={`social_media.${ind}.post_url`} type={"text"}
+                        placeholder={"Enter username / Profile URL"}
+                        control={control} />
+                    <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
+                        <Delete />
+                    </IconButton>
+                </Grid2>
+            </Grid2>
+        )
+    }
+
+    const onSubmit = (data) => {
+        console.log(data);
+    };
+
+    const onAdd = () => (append({}));
 
     return (
-        <Typography
-            sx={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                "&:hover": { textDecoration: "underline" },
-            }}
-            onClick={onClick}
-        >
-            {children}
-        </Typography>
-    );
+        <Grid2 container flexDirection={"column"} spacing={1}>
+            <Typography>Social Media</Typography>
+            <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+                {data.map(renderItem)}
+                <Grid2 container spacing={1} sx={{ mt: 1 }}>
+                    <Button type={"submit"} variant={"contained"} disabled={!isDirty} sx={{ mt: 1 }}> Submit Form Data List </Button>
+                    <Button type={"button"} variant={"contained"} startIcon={<Add />} onClick={onAdd} sx={{ mt: 1 }}>Add Social Media</Button>
+                </Grid2>
+            </Box>
+        </Grid2>
+    )
+}
+
+function ExampleForm(props) {
+
+    const { field, control, handleSubmit, resetData, loadData, isDirty } = useForm(Models.Sample);
+
+    const onSubmit = (data) => {
+        console.log(data)
+    };
+
+    return (
+        <Box component={"form"} onSubmit={handleSubmit(onSubmit)}
+            sx={GlobalStyles.bordered}>
+            <BpForm field={field} control={control} hasLabel={true} />
+            <Grid2 container spacing={2} sx={{ mt: 1 }}>
+                <Button type="submit" variant="contained" color="primary" disabled={!isDirty}>
+                    Submit New
+                </Button>
+                <Button onClick={resetData} variant={"contained"} color={"error"}>Reset</Button>
+            </Grid2>
+        </Box>
+    )
+};
+
+function ExampleDataTable(props) {
+
+    const { data, append, update, remove } = useFormDataLs(template.basic);
+
+    const addUser = ({ table, row, values }) => {
+        append(values);
+        table.setCreatingRow(null);
+    }
+
+    const updateUser = ({ table, row, values }) => {
+        update(row.index, values);
+        table.setEditingRow(null);
+    }
+
+    const deleteUser = ({ row }) => {
+        remove(row.index);
+    }
+
+    const onDebug = () => {
+        console.log(data);
+    }
+
+    return (
+        <Grid2 container flexDirection={"column"} spacing={1} sx={{ mt: 1 }}>
+            <BpDataTable idx={"basic"}
+                data={data}
+                field={field}
+                enableRowAction={true}
+                enableTopAction={true}
+                enableDefaultAdd={true}
+                enableDefaultUpdate={true}
+                onBtnAdd={addUser}
+                onUpdate={updateUser}
+                onDelete={deleteUser}
+            />
+            <Button variant={"contained"} onClick={onDebug}>Debug</Button>
+        </Grid2>
+    )
+}
+
+import { BpSearchMenuList } from "@components";
+
+function useFilterData() {
+    const [data, setData] = useState([]);
+
+    const handleAddData = (_data) => {
+        setData((prevData) => {
+            if (!prevData.includes(_data)) {
+                return [...prevData, _data];
+            }
+            return prevData;
+        });
+    };
+
+    const handleRemoveData = (obj) => {
+        setData((prevData) => prevData.filter((s) => s !== obj));
+    };
+
+    return {
+        data, setData, handleAddData, handleRemoveData
+    }
+}
+
+function ExampleItemSelect(props) {
+
+    const scammerSelection = [
+        {
+            "name": "Tan Xuan Qing",
+            "value": "SCAMMER-0c3535ad-b583-4fa4-b6a8-e7b243f64777"
+        },
+        {
+            "name": "Tan Xi En",
+            "value": "SCAMMER-5fd8eb8f-a9ce-4f26-bf3b-452001133295"
+        },
+        {
+            "name": "Pang Siang Cheng",
+            "value": "SCAMMER-7db83672-c528-4baf-97d9-bd67d5c55ecf"
+        },
+        {
+            "name": "Captain America",
+            "value": "SCAMMER-fba6f1b4-8535-444d-93b5-0f2a99b4c187"
+        }
+    ];
+
+    const {
+        data: scammer,
+        setData: setScammer,
+        handleAddData: handleAddScammer,
+        handleRemoveData: handleRemoveScammer
+    } = useFilterData();
+
+    return (
+        <BpSearchMenuList
+            data={scammer} searchField={"scammer"} selection={scammerSelection}
+            handleAddData={handleAddScammer} handleRemoveData={handleRemoveScammer}
+        />
+    )
 }
 
 function Index(props) {
-
-    const { key: lKey, data: lData, field: lField, updateDataHtml: updateLData, resetData: resetLData } = useForm(template.login);
-    const { key: sKey, data: sData, field: sField, updateDataHtml: updateSData, resetData: resetSData } = useForm(template.signUp);
-    const { key: oKey, data: oData, field: oField, updateDataHtml: updateOData, resetData: resetOData } = useForm(template.otpCode);
-
-    const { flag: resendFlag, toggle: toggleResend } = useToggle(false);
-    const { flag: userFlag, open: setUserTrue, close: setUserFalse, toggle: toggleUser } = useToggle(false);
-
-    const [session, setSession] = useState({});
-    const [signUpSession, setSignUpSession] = useState({});
-
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        console.log(session);
-    }, [session])
-
-    const onLogin = () => {
-        handleSignIn(lData)
-            .then((res) => {
-                alert("User has signed in!");
-                setUserTrue();
-
-                // Store this Data inside Redux, with Last Session Date
-                setSession(_ => res);
-            })
-            .catch(err => {
-                alert(err);
-            })
-    }
-    const onLogOut = () => {
-        handleSignOut()
-            .then(() => {
-                alert("User has signed out!");
-                setUserFalse();
-            })
-    }
-
-    const onSignUp = () => {
-        handleSignUp(sData)
-            .then((res) => {
-                alert("User has signed up! Please Check Email for Activation Code!");
-
-                setSignUpSession(_ => res);
-            })
-            .catch(err => {
-                alert(err);
-            })
-    }
-
-    const onConfirmSignUp = () => {
-        handleConfirmSignUp(oData)
-            .then(() => {
-                alert("User has confirmed sign up!");
-            })
-            .catch(err => {
-                alert(err);
-            })
-    }
-
-    const onResendSignUpCode = () => {
-        toggleResend();
-    }
-
     return (
-        <>
-            <BpLoading loading={loading} />
-
-            <Container maxWidth={"xl"} sx={{ padding: 2 }}>
-                <Box>
-                    <Typography variant={"h2"}>Amplify Cognito</Typography>
-                </Box>
-                <Box sx={{ mt: 2, ...GlobalStyles.bordered }}>
-                    <BpForm
-                        key={lKey} idx={lKey}
-                        data={lData} field={lField}
-                        onUpdate={updateLData}
-                        hasLabel={true} size={{ xs: 1, sm: 1 }} />
-                    <Grid2 container spacing={1} sx={{ mt: 2 }}>
-                        <Button variant={"contained"} onClick={onLogin}>Login</Button>
-                        <Button variant={"contained"} onClick={onLogOut}>Logout</Button>
-                    </Grid2>
-                </Box>
-                <Box sx={{ mt: 2, ...GlobalStyles.bordered }}>
-                    <BpForm
-                        key={sKey} idx={sKey}
-                        data={sData} field={sField}
-                        onUpdate={updateSData}
-                        hasLabel={true} size={{ xs: 1, sm: 1 }} />
-                    <Box sx={{ mt: 2 }}>
-                        <Button variant={"contained"} onClick={onSignUp}>Sign Up</Button>
-                    </Box>
-                </Box>
-                <Box sx={{ mt: 2, ...GlobalStyles.bordered }}>
-                    <BpForm
-                        key={oKey} idx={oKey}
-                        data={oData} field={oField}
-                        onUpdate={updateOData}
-                        hasLabel={true} size={{ xs: 1, sm: 1 }} />
-                    <Box sx={{ mt: 1 }}>
-                        <TxtButton onClick={onResendSignUpCode}>Resend Code</TxtButton>
-                    </Box>
-                    <Snackbar open={resendFlag} autoHideDuration={3000}
-                        onClose={toggleResend}
-                        anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "center",
-                        }}>
-                        <Alert onClose={toggleResend} severity="success" variant="filled">
-                            Successfully Resend OTP Code!
-                        </Alert>
-                    </Snackbar>
-
-                    <Box sx={{ mt: 2 }}>
-                        <Button variant={"contained"} onClick={onConfirmSignUp}>Confirm OTP</Button>
-                    </Box>
-                </Box>
-                <Box sx={{ mt: 1 }}>
-                    {
-                        (userFlag) ? (
-                            <Typography variant={"h4"}>Welcome, User</Typography>
-                        ) : (
-                            <Typography variant={"h4"}>Not Signed In</Typography>
-                        )
-                    }
-
-                    <Typography variant={"h4"}>{JSON.stringify(session)}</Typography>
-                    <Typography variant={"h4"}>{JSON.stringify(signUpSession)}</Typography>
-                </Box>
-            </Container>
-        </>
+        <Grid2 container flexDirection={"column"} spacing={1} sx={{ padding: 2 }}>
+            <ColorModeIconDropdown />
+            <ExampleFormDataLs />
+            {/* <ExampleForm /> */}
+            {/* <ExampleDataTable /> */}
+            {/* <ExampleItemSelect /> */}
+        </Grid2>
     )
 }
 
 export default Index;
+

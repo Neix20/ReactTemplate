@@ -71,13 +71,13 @@ const handleSignOut = async () => {
 
 const isAuthenticated = async () => {
     try {
-        const session = await fetchAuthSession();
+        const { userSub = "" } = await fetchAuthSession();
 
-        if (!session) {
+        if (userSub.length == 0) {
             throw new Error("User Session has Expired");
         }
 
-        return true;
+        return userSub;
     } catch (error) {
         throw error;
     }

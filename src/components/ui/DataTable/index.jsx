@@ -1,29 +1,30 @@
 
 import { useState, useEffect } from "react";
 
-import { Grid2, Typography, Button, IconButton, Box, Tooltip } from "@mui/material";
+import { Grid2, Typography, Button, IconButton, Box, Tooltip, Icon } from "@mui/material";
 import { MRT_Table, MRT_EditActionButtons, MaterialReactTable, useMaterialReactTable } from 'material-react-table';
 
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Add, Edit, Delete } from '@mui/icons-material';
+
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import { clsUtility } from "@utility";
-import { GlobalStyles } from "@config";
 
-import { Add } from "@mui/icons-material";
-
-function generateColumns(field = [], style = {}) {
+function generateColumns(field = []) {
 
     const _arr = [];
 
     // Factory Method Using Dictionary
     const colDict = {
         "text": ({ name = "" }) => ({
+            accessorKey: name,
+            header: clsUtility.capitalize(name),
+        }),
+        "email": ({ name = "" }) => ({
             accessorKey: name,
             header: clsUtility.capitalize(name),
         }),
@@ -81,7 +82,7 @@ function generateColumns(field = [], style = {}) {
             accessorKey: name,
             header: clsUtility.capitalize(name),
             Cell: ({ cell }) => (
-                <img src={cell.getValue()} style={style.tableImg} />
+                <img src={cell.getValue()} style={{ width: 40, height: 40 }} />
             ),
             enableEditing: false
         })
@@ -91,26 +92,30 @@ function generateColumns(field = [], style = {}) {
 
         const { type = "" } = obj;
 
-        const factoryMethod = colDict[type];
-        const _obj = factoryMethod(obj);
+        if (type in colDict) {
+            const factoryMethod = colDict[type];
+            const _obj = factoryMethod(obj);
+            _arr.push(_obj);
+        }
 
-        _arr.push(_obj);
     }
 
     return _arr;
 }
 
 function AddItemBtn(props) {
-    const { table, onPreAdd = null } = props;
+    const { table, enableDefaultAdd = false, onClick = null } = props;
 
-    if (onPreAdd == null) {
+    if (!enableDefaultAdd) {
         return (<Box />)
     }
 
+    const _onClick = onClick == null ? () => (table.setCreatingRow(true)) : onClick;
+
     return (
-        <Button variant={"outlined"} 
-            startIcon={<Add />}
-            onClick={_ => onPreAdd({ table })}>
+        <Button variant={"outlined"}
+            onClick={_onClick} 
+            startIcon={<Add />} >
             New
         </Button>
     )
@@ -118,58 +123,60 @@ function AddItemBtn(props) {
 
 function Index(props) {
 
-    const { data = [], field = [], hideField = [], fieldOrder = [], } = props;
+    const { idx: key = "", data = [], field = [], hideField = [], fieldOrder = [], } = props;
     const { enableRowAction = false, enableTopAction = false } = props;
-    const { onPreAdd = null, onPosUpdate = () => { } } = props;
-    const { onAdd = () => { }, onUpdate = () => { }, onDelete = () => { } } = props;
-    // const { sx = {} } = props;
+    const { enableDefaultAdd = false, enableDefaultUpdate = false } = props;
+    const { onBtnAdd = null, onAdd = () => { }, onUpdate = () => { }, onDelete = () => { } } = props; 
 
-    const style = {
-        tableImg: {
-            width: 40,
-            height: 40
-        },
-        dialog: { 
-            display: 'flex', 
-            flexDirection: 'column', 
-            gap: '1rem' 
-        }
-    }
-
-    const columns = generateColumns(field, style);
+    const columns = generateColumns(field);
+    const name = clsUtility.capitalize(key);
 
     // #region Render Functions
-    const renderRowActions = ({ row, table }) => (
-        <Box sx={{ display: 'flex', gap: '1rem' }}>
-            <Tooltip title={"Edit"}>
-                <IconButton onClick={_ => onUpdate({ row, table })}>
-                    <EditIcon />
-                </IconButton>
-            </Tooltip>
-            <Tooltip title={"Delete"}>
-                <IconButton onClick={_ => onDelete({ row, table })}>
-                    <DeleteIcon />
-                </IconButton>
-            </Tooltip>
-        </Box>
-    );
+    const renderRowActions = ({ table, row, values}) => {
 
-    const renderCreateModal = ({ table, row, internalEditComponents }) => (
-        <>
-            <DialogTitle variant="h3">Create New User</DialogTitle>
-            <DialogContent sx={style.dialog}>
-                {internalEditComponents}
-            </DialogContent>
-            <DialogActions>
-                <MRT_EditActionButtons variant="text" table={table} row={row} />
-            </DialogActions>
-        </>
-    )
+        const onSelectUpdate = ({ table, row, values}) => {
+            table.setEditingRow(row);
+        }
+
+        const _update = enableDefaultUpdate ? _ => onSelectUpdate({ table, row, values }) : _ => onUpdate({ table, row, values });
+        const _delete = _ => onDelete({ row, table });
+
+        return (
+            <Box sx={{ display: 'flex', gap: '1rem' }}>
+                <Tooltip title={"Edit"}>
+                    <IconButton onClick={_update}>
+                        <Edit />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title={"Delete"}>
+                    <IconButton onClick={_delete}>
+                        <Delete />
+                    </IconButton>
+                </Tooltip>
+            </Box>
+        )
+    };
+    // #endregion
+
+    // #region We Could Make Custom
+    const renderCreateModal = ({ table, row, internalEditComponents }) => {
+        return (
+            <>
+                <DialogTitle variant="h3">Create New {name}</DialogTitle>
+                <DialogContent>
+                    {internalEditComponents}
+                </DialogContent>
+                <DialogActions>
+                    <MRT_EditActionButtons variant="text" table={table} row={row} />
+                </DialogActions>
+            </>
+        )
+    }
 
     const renderUpdateModal = ({ table, row, internalEditComponents }) => (
         <>
-            <DialogTitle variant="h3">Update User</DialogTitle>
-            <DialogContent sx={style.dialog}>
+            <DialogTitle variant="h3">Update {name}</DialogTitle>
+            <DialogContent>
                 {internalEditComponents}
             </DialogContent>
             <DialogActions>
@@ -198,23 +205,19 @@ function Index(props) {
         enableEditing: enableRowAction,
         enableRowActions: enableRowAction,
         renderRowActions: renderRowActions,
-        onCreatingRowSave: ({ values, table }) => onAdd({ values, table }),
-        onEditingRowSave: ({ values, table }) => onPosUpdate({ values, table }),
+        onCreatingRowSave: ({ table, row, values }) => onAdd({ table, row, values }),
+        onEditingRowSave: ({ table, row, values }) => onUpdate({ table, row, values }),
         renderCreateRowDialogContent: renderCreateModal,
         renderEditRowDialogContent: renderUpdateModal,
-        renderTopToolbarCustomActions: ({ table }) => (<AddItemBtn table={table} onPreAdd={onPreAdd} />),
-        // muiTablePaperProps: { sx: style.tblPaper },
-        // muiTopToolbarProps: { sx: style.tblTop },
-        // muiTableContainerProps: { sx: style.tblContainer },
-        // muiBottomToolbarProps: { sx: style.tblBottom },
-        initialState: { 
+        renderTopToolbarCustomActions: ({ table }) => (<AddItemBtn table={table} enableDefaultAdd={enableDefaultAdd} onClick={onBtnAdd} />),
+        initialState: {
             columnOrder: fieldOrder, // Must Be Full, Otherwise Wont Work
             columnVisibility: hideField.reduce((res, item) => { res[item] = false; return res; }, {}),
             columnPinning: {
                 left: ["mrt-row-actions"]
             }
-        },
-    }
+        }
+    };
 
     const table = useMaterialReactTable(tblOption);
 

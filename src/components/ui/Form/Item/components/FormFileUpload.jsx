@@ -8,7 +8,7 @@ import { FileUploadOutlined, Clear } from "@mui/icons-material";
 
 function Index(props) {
 
-    const { label = "", name = "", value = "", onChange = () => { } } = props;
+    const { value = "", onChange = () => { }, error = false } = props;
 
     const [fileData, setFileData] = useState("");
 
@@ -50,12 +50,7 @@ function Index(props) {
             const base64String = evt.target.result; // This contains the Base64 string
 
             setFileData(_ => fileName);
-            onChange({
-                target: {
-                    name: name,
-                    value: base64String
-                }
-            });
+            onChange(base64String);
         };
 
         // Read the file as a data URL (Base64)
@@ -63,12 +58,7 @@ function Index(props) {
     }
 
     const onClear = () => {
-        onChange({
-            target: {
-                name: name,
-                value: ""
-            }
-        });
+        onChange("");
     }
 
     return (
@@ -84,8 +74,8 @@ function Index(props) {
                 <TextField type={"text"}
                     placeholder={"No File Uploaded"}
                     variant={"outlined"}
-                    label={label}
                     value={fileData}
+                    error={error}
                     slotProps={{
                         input: {
                             readOnly: true,

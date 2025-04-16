@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import Index from "./BasicFormItem";
+import Index from "./Input";
 
 import { SampleData } from "@config";
 

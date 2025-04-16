@@ -8,7 +8,7 @@ import { FileUpload, Clear, Cancel } from "@mui/icons-material";
 
 function ImagePreview(props) {
 
-    const { label = "", name = "", value = "" } = props;
+    const { name = "", value = "" } = props;
     const { onDelete = () => { } } = props;
 
     const style = {
@@ -41,25 +41,21 @@ function ImagePreview(props) {
             flexDirection={"column"}
             alignItems={"center"}
             sx={{ padding: 1 }}>
-            <Box>
-                <Box sx={style.btn}>
-                    <Box component={"img"}
-                        src={value} alt={name} sx={style.img} />
-                    <IconButton size="small" className="remove-btn"
-                        onClick={onDelete}
-                        sx={style.closeIcon}>
-                        <Cancel fontSize="small" />
-                    </IconButton>
-
-                </Box>
-                <Typography>{label}</Typography>
+            <Box sx={style.btn}>
+                <Box component={"img"}
+                    src={value} alt={name} sx={style.img} />
+                <IconButton size="small" className="remove-btn"
+                    onClick={onDelete}
+                    sx={style.closeIcon}>
+                    <Cancel fontSize="small" />
+                </IconButton>
             </Box>
         </Grid2>
     )
 }
 
 function EmptyPreview(props) {
-    const { onClick = () => {}} = props;
+    const { onClick = () => { } } = props;
     const style = {
         main: {
             cursor: "pointer",
@@ -79,7 +75,7 @@ function EmptyPreview(props) {
 
 function Index(props) {
 
-    const { label = "", name = "", value = "", onChange = () => { } } = props;
+    const { name = "", value = "", onChange = () => { }, error = null } = props;
 
     const fileUploadRef = useRef(null);
 
@@ -99,12 +95,7 @@ function Index(props) {
         reader.onload = (evt) => {
             const base64String = evt.target.result; // This contains the Base64 string
 
-            onChange({
-                target: {
-                    name: name,
-                    value: base64String
-                }
-            })
+            onChange(base64String)
         };
 
         // Read the file as a data URL (Base64)
@@ -116,18 +107,13 @@ function Index(props) {
             flex: 1,
             width: "100%",
             border: "2px dashed",
-            borderColor: "grey.400",
+            borderColor: error ? "red" : "grey.400",
             borderRadius: 2
         }
     }
 
     const onDelete = () => {
-        onChange({
-            target: {
-                name: name,
-                value: ""
-            }
-        });
+        onChange("");
         fileUploadRef.current.value = "";
     }
 
@@ -141,7 +127,7 @@ function Index(props) {
                         <EmptyPreview onClick={onAddImg} />
                     ) : (
 
-                        <ImagePreview label={label} name={name} value={value} onDelete={onDelete} />
+                        <ImagePreview name={name} value={value} onDelete={onDelete} />
                     )
                 }
             </Box>

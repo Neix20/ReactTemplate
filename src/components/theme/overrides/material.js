@@ -21,6 +21,9 @@ const material = {
                     outline: `3px solid ${alpha(theme.palette.primary.main, 0.5)}`,
                     outlineOffset: '2px',
                 },
+                '&:hover': {
+                    opacity: 0.8,
+                }
             }),
         },
     },

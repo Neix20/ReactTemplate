@@ -7,11 +7,10 @@ import { clsUtility } from "@utility";
 
 function Index(props) {
 
-    const { idx: key = "", field = [] } = props;
-    const { children = (<></>), sx = {}, size = {} } = props;
+    const { field = [], size = {}  } = props;
+    const { children = (<></>), sx = {}, ...itemProps } = props;
 
-    const { data = {}, onUpdate = () => { }, hasLabel = false } = props;
-
+    // Props For Item
     const _spacing= {
         xs: 1, 
         sm: 2,
@@ -19,9 +18,6 @@ function Index(props) {
     };
 
     const renderItem = (obj) => {
-        const { name = "" } = obj;
-
-        const idx = `${key}-${name}`;
 
         const _xs = 12 / _spacing.xs;
         const _sm = 12 / _spacing.sm;
@@ -32,10 +28,7 @@ function Index(props) {
         }
 
         return (
-            <BpFormItem key={idx} idx={idx}
-                value={data[name]} onChange={onUpdate}
-                hasLabel={hasLabel} size={_size}
-                {...obj} />
+            <BpFormItem size={_size} {...obj} {...itemProps}  />
         )
     };
 
@@ -45,7 +38,7 @@ function Index(props) {
     };
 
     return (
-        <Grid2 container flexWrap={"wrap"} spacing={_spacing} 
+        <Grid2 container flexWrap={"wrap"} spacing={{ xs: 1 }} 
             alignItems={"flex-start"} sx={style.main}>
             {field.filter(x => x.show !== false).map(renderItem)}
             {children}

@@ -3,19 +3,14 @@ import { TextField, Typography, Grid2 } from "@mui/material";
 
 import { clsUtility } from "@utility";
 
-import BasicFormItem from "./BasicFormItem";
+import Input from "./Input";
 
 const FormItem = (props = {}) => {
 
-    const { hasLabel = false } = props;
+    const { hasLabel = false, name = "", size = {} } = props;
 
-    const { required = false, name = "", size = {} } = props;
-
-    const style = {
-        txtLabel: {
-            width: { xs: "120px", sm: "135px" },
-        }
-    }
+    const placeholder = clsUtility.capitalize(name);
+    const label = hasLabel ? placeholder : "";
 
     const _size = {
         xs: 12, 
@@ -23,13 +18,9 @@ const FormItem = (props = {}) => {
         ...size,
     }
 
-    // Parameters
-    const placeholder = clsUtility.capitalize(name);
-    const lbl = hasLabel ? "" : placeholder;
     return (
         <Grid2 item size={_size} sx={{ display: "flex", alignItems: "center"}}>
-            {hasLabel ? (<Typography sx={style.txtLabel}>{placeholder}{required ? "*" : ""}</Typography>) : (<></>)}
-            <BasicFormItem label={lbl} placeholder={placeholder} {...props} />
+            <Input label={label} placeholder={placeholder} {...props} />
         </Grid2>
     );
 }
