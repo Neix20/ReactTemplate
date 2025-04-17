@@ -38,15 +38,12 @@ function Wrapper(props) {
 function Index(props) {
 
     const { name = "", type = "text", control = null } = props;
-    const { selection = [], rows = 3, sx = {} } = props;
     const { label = "", placeholder = "" } = props;
+    const { selection = [], rows = 3, sx = {} } = props;
 
     // We Should Make This Flexible to be able to customize our own Form Item
     const elemDict = {
         "text": ({ field = {}, error = null }) => (
-            <TextField type={"text"} placeholder={placeholder} error={error} {...field} />
-        ),
-        "email": ({ field = {}, error = null }) => (
             <TextField type={"text"} placeholder={placeholder} error={error} {...field} />
         ),
         "password": ({ field = {}, error = null }) => (

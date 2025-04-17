@@ -22,7 +22,7 @@ const template = {
         field: [
             {
                 "name": "username",
-                "type": "email"
+                "type": "text"
             },
             {
                 "name": "password",
@@ -43,7 +43,7 @@ const template = {
         field: [
             {
                 "name": "username",
-                "type": "email"
+                "type": "text"
             },
             {
                 "name": "password",
@@ -70,7 +70,7 @@ const template = {
         field: [
             {
                 "name": "username",
-                "type": "email"
+                "type": "text"
             },
             {
                 "name": "code",

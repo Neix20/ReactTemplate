@@ -1,11 +1,10 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
-import { Grid2, Typography, Button, IconButton, Box, Tooltip, Icon } from "@mui/material";
+import { Grid2, Typography, Button, IconButton, Box, Tooltip, Icon, TextField, } from "@mui/material";
 import { MRT_Table, MRT_EditActionButtons, MaterialReactTable, useMaterialReactTable } from 'material-react-table';
 
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material';
-
 
 import { Add, Edit, Delete } from '@mui/icons-material';
 
@@ -14,6 +13,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import { clsUtility } from "@utility";
 
+// Fix Generate Columns
 function generateColumns(field = []) {
 
     const _arr = [];
@@ -21,10 +21,6 @@ function generateColumns(field = []) {
     // Factory Method Using Dictionary
     const colDict = {
         "text": ({ name = "" }) => ({
-            accessorKey: name,
-            header: clsUtility.capitalize(name),
-        }),
-        "email": ({ name = "" }) => ({
             accessorKey: name,
             header: clsUtility.capitalize(name),
         }),
@@ -46,6 +42,13 @@ function generateColumns(field = []) {
                 type: "number"
             }
         }),
+        "date": ({ name = "" }) => ({
+            accessorKey: name,
+            header: clsUtility.capitalize(name),
+            muiEditTextFieldProps: {
+                type: "date"
+            }
+        }),
         "decimal": ({ name = "" }) => ({
             accessorKey: name,
             header: clsUtility.capitalize(name),
@@ -60,23 +63,17 @@ function generateColumns(field = []) {
                 }
             }
         }),
-        "date": ({ name = "" }) => ({
-            accessorFn: (row) => new Date(row[name]),
-            id: name,
-            header: clsUtility.capitalize(name),
-            filterVariant: 'date',
-            filterFn: 'lessThan',
-            sortingFn: 'datetime',
-            Cell: ({ cell }) => cell.getValue()?.toLocaleDateString(),
-            muiEditTextFieldProps: {
-                type: "date"
-            }
-        }),
         "dropdown": ({ name = "", selection = [] }) => ({
             accessorKey: name,
             header: clsUtility.capitalize(name),
             editVariant: "select",
             editSelectOptions: selection
+        }),
+        "file": ({ name = "" }) => ({
+            accessorKey: name,
+            header: clsUtility.capitalize(name),
+            Cell: ({ cell }) => (<></>),
+            enableEditing: false
         }),
         "image": ({ name = "" }) => ({
             accessorKey: name,
@@ -128,7 +125,7 @@ function Index(props) {
     const { enableDefaultAdd = false, enableDefaultUpdate = false } = props;
     const { onBtnAdd = null, onAdd = () => { }, onUpdate = () => { }, onDelete = () => { } } = props; 
 
-    const columns = generateColumns(field);
+    const columns = useMemo(_ => generateColumns(field), [field]);
     const name = clsUtility.capitalize(key);
 
     // #region Render Functions

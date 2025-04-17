@@ -3,12 +3,10 @@ import { Typography, Grid2, Box } from "@mui/material";
 
 import { BpFormItem } from "@components";
 
-import { clsUtility } from "@utility";
-
 function Index(props) {
 
-    const { field = [], size = {}  } = props;
-    const { children = (<></>), sx = {}, ...itemProps } = props;
+    const { preHeader = "", field = [], size = {}, children = (<></>), sx = {}, ...itemProps } = props;
+
 
     // Props For Item
     const _spacing= {
@@ -19,8 +17,11 @@ function Index(props) {
 
     const renderItem = (obj) => {
 
-        const _xs = 12 / _spacing.xs;
-        const _sm = 12 / _spacing.sm;
+        // Complete Pre-Header
+        const _name = [preHeader, obj.name].filter(x => x.length > 0).join(".");
+
+        const _xs = 12 / (_spacing.xs || 1);
+        const _sm = 12 / (_spacing.sm || 1);
 
         const _size = {
             xs: _xs,
@@ -28,7 +29,7 @@ function Index(props) {
         }
 
         return (
-            <BpFormItem size={_size} {...obj} {...itemProps}  />
+            <BpFormItem size={_size} {...obj} name={_name} {...itemProps}  />
         )
     };
 

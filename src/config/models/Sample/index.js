@@ -51,7 +51,7 @@ const obj = {
         },
         {
             "name": "email",
-            "type": "email"
+            "type": "text"
         },
         {
             "name": "password",

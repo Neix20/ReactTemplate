@@ -8,9 +8,9 @@ import { Images } from "@config";
 
 function Index(props) {
 
-    const { data = "", onChange = () => { }, sx = {} } = props;
+    const { name = "", value = "", onChange = () => { }, images = [], sx = {} } = props;
 
-    const { imgName = "Profile", imgData = Images.defaultAvatar } = data;
+    const { imgName = "Profile", imgData = Images.defaultAvatar } = value;
 
     const fileUploadRef = useRef(null);
 
@@ -62,35 +62,12 @@ function Index(props) {
         ...sx
     };
 
-    const imgArr = [
-        {
-            "imgName": "bgStock01",
-            "imgData": Images.bgStock01
-        },
-        {
-            "imgName": "bgStock02",
-            "imgData": Images.bgStock02
-        },
-        {
-            "imgName": "bgStock03",
-            "imgData": Images.bgStock03
-        },
-        {
-            "imgName": "bgStock04",
-            "imgData": Images.bgStock04
-        },
-        {
-            "imgName": "bgStock05",
-            "imgData": Images.bgStock05
-        }
-    ]
-
     const renderItem = ({ imgName = "", imgData = "" }, ind) => {
         const _onClick = () => {
             if (fileUploadRef?.current) {
                 fileUploadRef.current.value = null;
             }
-            onChange(_ => ({ imgName, imgData }));
+            onChange({ imgName, imgData });
         };
         return (
             <ButtonBase onClick={_onClick}>
@@ -112,7 +89,7 @@ function Index(props) {
             <Grid2 container spacing={2}
                 flexWrap={"wrap"}
                 justifyContent={"center"}>
-                {imgArr.map(renderItem)}
+                {images.map(renderItem)}
             </Grid2>
             <input ref={fileUploadRef}
                 hidden

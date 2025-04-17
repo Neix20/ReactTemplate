@@ -33,7 +33,7 @@ import { alpha, styled } from '@mui/material/styles';
 
 // import avatar1 from '@assets/images/users/avatar-1.png';
 
-import { Images } from "@config";
+import { Images, clsConst } from "@config";
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
@@ -78,9 +78,10 @@ export default function Profile() {
 	};
 
 	const logOut = () => {
+		
 		Amplify.handleSignOut()
 			.then(() => {
-				window.location.reload();
+				window.location = clsConst.LOG_OUT_URL;
 			})
 			.catch(error => {
 				console.error(error);
