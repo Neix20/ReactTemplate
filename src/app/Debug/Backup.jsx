@@ -243,11 +243,6 @@ function ExampleItemSelect(props) {
     )
 }
 
-// Code Example for Report
-function ExampleReport(props) {
-
-}
-
 function Index(props) {
     return (
         <Grid2 container flexDirection={"column"} spacing={1} sx={{ padding: 2 }}>

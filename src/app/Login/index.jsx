@@ -250,7 +250,6 @@ function Main(props) {
         const _data = {
             id: userId,
             name,
-            // Update This to Base64 or S3 URL
             profile: imgData
         };
 

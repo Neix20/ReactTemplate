@@ -1,21 +1,19 @@
 
-import { InputLabel, Select, MenuItem } from "@mui/material";
+import Select from 'react-select';
 
 const FormDropdown = (props = {}) => {
 
-    const { placeholder = "", selection = [], value = "", ..._props } = props;
-
-    const renderItem = ({ name = "", value = "" }) => (<MenuItem value={value}>{name}</MenuItem>);
+    const { placeholder = "", selection = [], ..._props } = props;
 
     return (
-        // <Select displayEmpty {..._props}>
-        <Select displayEmpty value={value} {..._props}>
-            <MenuItem value="" disabled>
-                {placeholder}
-            </MenuItem>
-            {selection.map(renderItem)}
-        </Select>
-    )
+        <Select
+            isClearable={true}
+            isSearchable={true}
+            options={selection}
+            placeholder={placeholder}
+            {..._props}
+        />
+    );
 }
 
 export default FormDropdown;

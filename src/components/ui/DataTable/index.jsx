@@ -69,12 +69,6 @@ function generateColumns(field = []) {
             editVariant: "select",
             editSelectOptions: selection
         }),
-        "file": ({ name = "" }) => ({
-            accessorKey: name,
-            header: clsUtility.capitalize(name),
-            Cell: ({ cell }) => (<></>),
-            enableEditing: false
-        }),
         "image": ({ name = "" }) => ({
             accessorKey: name,
             header: clsUtility.capitalize(name),

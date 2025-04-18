@@ -32,6 +32,20 @@ const template = {
             {
                 "name": "total_amount",
                 "type": "decimal"
+            },
+            {
+                "name": "scammer_type",
+                "type": "dropdown",
+                "selection": [
+                    {
+                        "label": "Seller",
+                        "value": "Seller"
+                    },
+                    {
+                        "label": "Buyer",
+                        "value": "Buyer"
+                    }
+                ]
             }
         ],
         initial: {
@@ -42,45 +56,69 @@ const template = {
                 name: z.string().min(1, "Name is required"),
                 description: z.string().min(1, "Description is required"),
                 quantity: z.number().min(1, "Quantity is required"),
-                total_amount: z.number().min(1, "Total Amount is required")
+                total_amount: z.number().min(1, "Total Amount is required"),
+                scammer_type: z.object({
+                    label: z.any(),
+                    value: z.enum(["Seller", "Buyer"])
+                }),
             }))
-        })
+        }),
+        isArray: true,
     },
     report: {
         key: "report",
         field: [
             {
-                "name": "platform",
+                "name": "name",
                 "type": "text"
             },
             {
-                "name": "post_url",
-                "type": "text"
+                "name": "scammer_type",
+                "type": "dropdown",
+                "selection": [
+                    {
+                        "label": "Seller",
+                        "value": "Seller"
+                    },
+                    {
+                        "label": "Buyer",
+                        "value": "Buyer"
+                    }
+                ]
             }
         ],
         initial: {
-            post: {}
+            name: "",
+            scammer_type: null
         },
         schema: z.object({
-            post: z.object({
-                platform: z.string().min(1, "Platform is required"),
-                post_url: z.string().min(1, "Post URL is required"),
-            })
+            name: z.string().min(1, "Name is required"),
+            scammer_type: z.object({
+                label: z.any(),
+                value: z.enum(["Seller", "Buyer"])
+            }),
         })
     }
 }
 
 function ExampleForm(props) {
 
-    const { field, control, handleSubmit, resetData, loadData, isDirty } = useForm(Models.Sample);
+    const { key, field, control, handleSubmit, resetData, isDirty } = useForm(template.report);
 
     const onSubmit = (data) => {
-        console.log(data);
+
+        // const _data = { ...data };
+
+        // for (const { name: _key } of field.filter(x => x.type === "dropdown")) {
+        //     _data[_key] = _data[_key].value;
+        // }
+
+        alert("For Real: " + JSON.stringify(data));
     };
 
     return (
         <Box component={"form"} onSubmit={handleSubmit(onSubmit)} sx={GlobalStyles.bordered}>
-            <BpForm hasLabel={true} control={control} field={field} />
+            <BpForm hasLabel={true} field={field} control={control} />
             <Grid2 container spacing={2} sx={{ mt: 1 }}>
                 <Button type="submit" variant="contained" color="primary" disabled={!isDirty}>
                     Submit New
@@ -118,7 +156,7 @@ function ExampleDataTable(props) {
 
     return (
         <Grid2 container flexDirection={"column"} spacing={1} sx={{ mt: 1 }}>
-            <BpDataTable 
+            <BpDataTable
                 idx={key}
                 data={data}
                 field={field}
@@ -139,18 +177,32 @@ function MultipleForm(props) {
     const { key, field, control, handleSubmit, resetData, isDirty } = useForm(template.standard);
     const { data, append, remove } = useFormDataLs({ key, control });
 
+    // Function Chaining
     const onSubmit = (data) => {
-        console.log(data);
+
+        // const _data = {
+        //     [key]: data[key].map(x => {
+        //         const _obj = { ...x };
+
+        //         for (const { name: _key } of field.filter(x => x.type === "dropdown")) {
+        //             _obj[_key] = _obj[_key].value;
+        //         }
+
+        //         return _obj;
+        //     })
+        // };
+
+        alert("For Real: " + JSON.stringify(data));
     };
 
     const onAdd = () => (append({}));
 
     const renderItem = (item, ind) => (
-        <BpForm 
-            control={control} 
-            preHeader={`${key}.${ind}`} 
-            hasLabel={false} 
-            field={field} 
+        <BpForm
+            control={control}
+            preHeader={`${key}.${ind}`}
+            hasLabel={false}
+            field={field}
         />
     )
 
@@ -173,57 +225,14 @@ function MultipleForm(props) {
 
 }
 
-// Code Example for Report
-function ExampleReport(props) {
-
-    const { key, field, control, handleSubmit, resetData, isDirty } = useForm(template.report);
-
-    const onSubmit = (data) => {
-        console.log(data);
-    };
-
-    const selection = [
-        {
-            "name": "Tan Xuan Qing",
-            "value": "SCAMMER-0c3535ad-b583-4fa4-b6a8-e7b243f64777"
-        },
-        {
-            "name": "Tan Xi En",
-            "value": "SCAMMER-5fd8eb8f-a9ce-4f26-bf3b-452001133295"
-        },
-        {
-            "name": "Pang Siang Cheng",
-            "value": "SCAMMER-7db83672-c528-4baf-97d9-bd67d5c55ecf"
-        },
-        {
-            "name": "Captain America",
-            "value": "SCAMMER-fba6f1b4-8535-444d-93b5-0f2a99b4c187"
-        }
-    ];
-
-    return (
-        <Box component={"form"} onSubmit={handleSubmit(onSubmit)} sx={GlobalStyles.bordered}>
-            <BpForm preHeader={"post"} control={control} field={field} />
-            <Grid2 container spacing={2} sx={{ mt: 1 }}>
-                <Button type="submit" variant="contained" color="primary" disabled={!isDirty}>
-                    Submit New
-                </Button>
-                <Button onClick={resetData} variant={"contained"} color={"error"}>Reset</Button>
-            </Grid2>
-        </Box>
-    )
-
-}
-
 function Index(props) {
     return (
         <Grid2 container flexDirection={"column"} spacing={1} sx={{ padding: 2 }}>
             <ColorModeIconDropdown />
             {/* <ExampleFormDataLs /> */}
-            {/* <ExampleForm /> */}
+            <ExampleForm />
             {/* <ExampleDataTable /> */}
-            {/* <MultipleForm /> */}
-            <ExampleReport />
+            <MultipleForm />
         </Grid2>
     )
 }

@@ -28,11 +28,11 @@ const obj = {
             "type": "dropdown",
             "selection": [
                 {
-                    "name": "Seller",
+                    "label": "Seller",
                     "value": "Seller"
                 },
                 {
-                    "name": "Buyer",
+                    "label": "Buyer",
                     "value": "Buyer"
                 }
             ]
