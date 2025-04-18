@@ -75,8 +75,8 @@ function Index(props) {
         "dropdown": ({ field = {}, error = null }) => (
             <FormDropdown selection={selection} placeholder={placeholder} error={error} {...field} />
         ),
-        "multi-select": ({ field = {}, error = null }) => (
-            <FormDropdown selection={selection} placeholder={placeholder} error={error} {...field} />
+        "multi-dropdown": ({ field = {}, error = null }) => (
+            <FormDropdown selection={selection} placeholder={placeholder} error={error} isMulti={true} {...field} />
         ),
         "color": ({ field = {}, error = null }) => (
             <FormColor placeholder={placeholder} error={error} {...field} />

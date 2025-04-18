@@ -74,6 +74,20 @@ const template = {
             },
             {
                 "name": "scammer_type",
+                "type": "multi-dropdown",
+                "selection": [
+                    {
+                        "label": "Seller",
+                        "value": "Seller"
+                    },
+                    {
+                        "label": "Buyer",
+                        "value": "Buyer"
+                    }
+                ]
+            },
+            {
+                "name": "payment",
                 "type": "dropdown",
                 "selection": [
                     {
@@ -89,11 +103,16 @@ const template = {
         ],
         initial: {
             name: "",
-            scammer_type: null
+            scammer_type: null,
+            payment: null
         },
         schema: z.object({
             name: z.string().min(1, "Name is required"),
             scammer_type: z.object({
+                label: z.any(),
+                value: z.enum(["Seller", "Buyer"])
+            }),
+            payment: z.object({
                 label: z.any(),
                 value: z.enum(["Seller", "Buyer"])
             }),
@@ -192,7 +211,7 @@ function MultipleForm(props) {
         //     })
         // };
 
-        alert("For Real: " + JSON.stringify(data));
+        alert(JSON.stringify(data));
     };
 
     const onAdd = () => (append({}));
@@ -222,17 +241,62 @@ function MultipleForm(props) {
             </Grid2>
         </Box>
     )
+}
 
+function CuSelect(props) {
+
+    const selection = [
+        {
+            "label": "Seller",
+            "value": "Seller"
+        },
+        {
+            "label": "Buyer",
+            "value": "Buyer"
+        }
+    ];
+
+    const template = {
+        key: "custom",
+        field: [
+            {
+                "name": "custom",
+                "type": "multi-dropdown",
+                "selection": selection
+            }
+        ],
+        schema: z.object({
+            custom: z.array(z.object({
+                label: z.any(),
+                value: z.enum(["Seller", "Buyer"])
+            })).min(1)
+        })
+    }
+
+    const { field, control, handleSubmit } = useForm(template);
+
+    const onSubmit = (data) => {
+        alert(JSON.stringify(data));
+    }
+
+    return (
+        <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+            <BpForm hasLabel={true} field={field} control={control} />
+            <Button type={"submit"} variant={"contained"}>Kill the Demon Lord</Button>
+        </Box>
+    )
 }
 
 function Index(props) {
+
     return (
         <Grid2 container flexDirection={"column"} spacing={1} sx={{ padding: 2 }}>
             <ColorModeIconDropdown />
+            <CuSelect />
             {/* <ExampleFormDataLs /> */}
             <ExampleForm />
             {/* <ExampleDataTable /> */}
-            <MultipleForm />
+            {/* <MultipleForm /> */}
         </Grid2>
     )
 }

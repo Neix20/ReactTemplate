@@ -4,14 +4,18 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-function processDropDownData(field, data) {
-
-    const dropDownOnly = field.filter(x => x.type === "dropdown");
+function processedFormData(field, data) {
 
     const _data = { ...data };
 
-    for (const { name: _key } of dropDownOnly) {
-        _data[_key] = _data[_key].value;
+    for (const {name: _key, type } of field) {
+        if (type === "dropdown") {
+            _data[_key] = _data[_key].value;
+        }
+
+        if (type === "multi-dropdown") {
+            _data[_key] = _data[_key].map(k => k.value);
+        }
     }
 
     return _data;
@@ -36,16 +40,16 @@ function Index(props) {
     });
 
     // Array or Object
-
     const cusHandleSubmit = (onSubmit, onError) => handleSubmit((data, e) => {
+        
         let transformedData = {};
 
         if (isArray) {
             transformedData = {
-                [key]: data[key].map(x => processDropDownData(field, x))
+                [key]: data[key].map(x => processedFormData(field, x))
             }
         } else {
-            transformedData = processDropDownData(field, data);
+            transformedData = processedFormData(field, data);
         }
 
         return onSubmit(transformedData, e);
