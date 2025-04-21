@@ -74,7 +74,7 @@ function FooterLinks(props) {
         <Typography variant="body2" sx={{ fontWeight: 600 }}>
           Legal
         </Typography>
-        <Link color="text.secondary" variant="body2" href="#">
+        <Link color="text.secondary" variant="body2" href="/terms-and-conditions">
           Terms & Conditions
         </Link>
         <Link color="text.secondary" variant="body2" href="/privacy-policy">
