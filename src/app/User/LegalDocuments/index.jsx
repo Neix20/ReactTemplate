@@ -12,8 +12,8 @@ const LegalDocs = () => {
   const navigate = useNavigate();
 
   const sidebarItems = [
-    { text: "Privacy Policy", path: "privacy-policy" },
     { text: "Terms And Conditions", path: "terms-and-conditions" },
+    { text: "Privacy Policy", path: "privacy-policy" },
   ];
 
   const toggleMobileMenu = () => {
@@ -43,7 +43,6 @@ const LegalDocs = () => {
   
 
   return (
-    <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
       <Container maxWidth="lg">
         <Box sx={{ py: { xs: 6, md: 10 } }}>
           <Grid2 container spacing={4}>
@@ -61,16 +60,13 @@ const LegalDocs = () => {
                         <ListItem key={index} disablePadding>
                           <ListItemButton
                             onClick={() => navigate(`/${item.path}`)}
-                            sx={{
+                            sx={(theme) => ({
                               bgcolor: isActive ? "rgba(59, 130, 246, 0.1)" : "transparent",
                               borderRadius: 1,
                               mb: 0.5,
-                              "&:hover": {
-                                bgcolor: isActive
-                                  ? "rgba(59, 130, 246, 0.15)"
-                                  : "rgba(0, 0, 0, 0.04)",
-                              },
-                            }}
+                              ...theme.applyStyles('dark', { bgcolor: isActive ? 'rgba(59, 130, 246, 0.15)' : 'transparent', '&:hover': { bgcolor: 'secondary.600' } }),
+                              ...theme.applyStyles('light', { bgcolor: isActive ? 'rgba(59, 130, 246, 0.1)' : 'transparent', '&:hover': { bgcolor: 'secondary.50' } }),
+                            })}
                           >
                             <ListItemText
                               primary={item.text}
@@ -109,7 +105,6 @@ const LegalDocs = () => {
           </Grid2>
         </Box>
       </Container>
-    </Box>
   );
 };
 
