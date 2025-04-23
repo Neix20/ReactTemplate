@@ -55,6 +55,9 @@ function a11yProps(index) {
 
 import { Amplify } from "@libs/auth";
 
+import { useDispatch, useSelector } from 'react-redux';
+import { Actions, Selectors } from '@libs/redux';
+
 export default function Profile() {
 	const theme = useTheme();
 
@@ -76,6 +79,8 @@ export default function Profile() {
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
+
+	const { name: userName } = useSelector(Selectors.userSelect);
 
 	const logOut = () => {
 		
@@ -108,7 +113,7 @@ export default function Profile() {
 				<Stack direction="row" sx={{ gap: 1.25, alignItems: 'center', p: 0.5 }}>
 					<Avatar alt="profile user" src={Images.defaultAvatar} sx={{ width: "32px", height: "32px" }} />
 					<Typography variant="subtitle1" sx={{ textTransform: 'capitalize' }}>
-						John Doe
+						{userName}
 					</Typography>
 				</Stack>
 			</ButtonBase>
@@ -141,7 +146,7 @@ export default function Profile() {
 												<Stack direction="row" sx={{ gap: 1.25, alignItems: 'center' }}>
 													<Avatar alt="profile user" src={Images.defaultAvatar} sx={{ width: 32, height: 32 }} />
 													<Stack>
-														<Typography variant="h6">John Doe</Typography>
+														<Typography variant="h6">{userName}</Typography>
 														<Typography variant="body2" color="text.secondary">
 															UI/UX Designer
 														</Typography>

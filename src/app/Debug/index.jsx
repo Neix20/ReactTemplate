@@ -287,11 +287,17 @@ function CuSelect(props) {
     )
 }
 
+import { useDispatch, useSelector } from 'react-redux';
+import { Actions, Selectors } from '@libs/redux';
+
 function Index(props) {
+
+    const user = useSelector(Selectors.userSelect);
 
     return (
         <Grid2 container flexDirection={"column"} spacing={1} sx={{ padding: 2 }}>
             <ColorModeIconDropdown />
+            <Typography>{JSON.stringify(user)}</Typography>
             <CuSelect />
             {/* <ExampleFormDataLs /> */}
             <ExampleForm />

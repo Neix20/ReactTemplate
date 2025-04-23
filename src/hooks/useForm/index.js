@@ -16,6 +16,14 @@ function processedFormData(field, data) {
         if (type === "multi-dropdown") {
             _data[_key] = _data[_key].map(k => k.value);
         }
+
+        if (type === "file") {
+            _data[_key] = _data[_key].imgData;
+        }
+
+        if (type === "image") {
+            _data[_key] = _data[_key].imgData;
+        }
     }
 
     return _data;

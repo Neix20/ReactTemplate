@@ -12,12 +12,12 @@ function getThemeStyle(mode = "single") {
                 ...base,
                 // background: colourOptions[2].color,
                 //placeholder color
-                color: "hotpink",
+                color: "lightblue",
                 width: "100%"
             }),
             control: (base, state) => ({
                 ...base,
-                background: "#121212"
+                background: "transparent"
             })
         },
         "multi": {
@@ -26,12 +26,12 @@ function getThemeStyle(mode = "single") {
                 ...base,
                 // background: colourOptions[2].color,
                 //placeholder color
-                color: "#fff",
+                color: "lightblue",
                 width: "100%"
             }),
             control: (base, state) => ({
                 ...base,
-                background: "#121212"
+                background: "transparent"
             }),
             option: (styles, { data, isDisabled, isFocused, isSelected }) => {
                 // const color = chroma(data.color);
@@ -57,7 +57,7 @@ function getThemeStyle(mode = "single") {
             }),
             multiValueRemove: (styles) => ({
                 ...styles,
-                color: "#12121",
+                color: "#121212",
                 ":hover": {
                     backgroundColor: "#fff", // on hover x bg color
                     color: "#000" // on hover x icon color
@@ -76,22 +76,22 @@ function getThemeStyle(mode = "single") {
              * menu/backgroundColor
              * option/color(selected)
              */
-            // neutral0: "#000",
-
-            neutral0: "#000",
+            neutral0: "#434343", // Background Color
             neutral30: "lightblue", //control/borderColor(focused)
             neutral80: "#FFF", //input color
             primary: "#bfbfbf", //option bg color selected
-            primary25: "#434343", //option bg color focued
+            primary25: "#495057", //option bg color focued
         }
     });
 
     return { styles: styles[mode], theme }
 }
 
-const FormDropdown = (props = {}) => {
+const Index = (props = {}) => {
 
-    const { placeholder = "", selection = [], isMulti = false, ..._props } = props;
+    const { placeholder = "", selection = [], ..._props } = props;
+
+    const isMulti = true;
 
     const { mode } = useColorScheme();
 
@@ -127,4 +127,4 @@ const FormDropdown = (props = {}) => {
 
 }
 
-export default FormDropdown;
+export default Index;

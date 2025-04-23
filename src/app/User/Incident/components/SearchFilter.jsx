@@ -2,7 +2,44 @@ import React, { useState, useEffect, useRef } from "react";
 import { TextField, Box, Grid2, Button, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, IconButton } from "@mui/material";
 import { Search, Add, Undo, Close, ExpandMore, Cancel } from "@mui/icons-material";
 
-const App = () => {
+import { fetchIncidentQuery } from "@api";
+import { BpLoading, BpInput } from "@components";
+import { useToggle, useForm } from "@hooks";
+
+import { DateTime } from 'luxon';
+
+function genDateRange(term, dateRange = {}) {
+    const now = DateTime.now();
+    const dict = {
+        "Last 24 Hours": {
+            start: now.minus({ hours: 24 }).toISODate(),
+            end: now.toISODate(),
+        },
+        "Last 7 Days": {
+            start: now.minus({ days: 7 }).toISODate(),
+            end: now.toISODate(),
+        },
+        "Last 30 Days": {
+            start: now.minus({ days: 30 }).toISODate(),
+            end: now.toISODate(),
+        },
+        "Last 6 Months": {
+            start: now.minus({ months: 6 }).toISODate(),
+            end: now.toISODate(),
+        },
+        "Last Year": {
+            start: now.minus({ years: 1 }).toISODate(),
+            end: now.toISODate(),
+        },
+        "Custom Range": dateRange,
+    };
+
+    return dict[term] ?? { start: null, end: null };
+}
+
+function App(props) {
+
+    const { updateIncident = _ => { } } = props;
 
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedFilters, setSelectedFilters] = useState([]);
@@ -14,6 +51,8 @@ const App = () => {
 
     const [dateRange, setDateRange] = useState({ start: "", end: "" });
     const [showDateDialog, setShowDateDialog] = useState(false);
+
+    const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle(false);
 
     // todo: Get From General API
     const filterOptions = [
@@ -32,6 +71,7 @@ const App = () => {
     };
 
     const onDeleteFilter = (id) => {
+
         const _obj = { ...selectedFilters };
         delete _obj[id];
 
@@ -58,6 +98,33 @@ const App = () => {
                 </IconButton>
             </Box>
         )
+    };
+
+    const onSubmit = () => {
+
+        const { platform = "", time = "", category = "" } = selectedFilters;
+
+        const _data = {
+            query: searchTerm,
+            date_range: genDateRange(time, dateRange),
+            platform,
+            category
+        };
+
+        setLoadingTrue();
+        fetchIncidentQuery(_data)
+        .then(res => {
+            setLoadingFalse();
+
+            const { data = {} } = res;
+            updateIncident(data);
+        })
+        .catch(err => {
+            setLoadingFalse();
+            console.error(err);
+        });
+
+
     }
 
     const renderFilterDialogItem = (filter) => (
@@ -78,30 +145,21 @@ const App = () => {
 
     return (
         <>
+            <BpLoading loading={loading} />
             <Grid2 container flexDirection={"column"} spacing={1.5}>
-                {/* Normal Section */}
-                {/* <Grid2 container spacing={1}>
-                    <TextField
-                        variant="outlined"
-                        placeholder="Search by scammer name..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        sx={{ flexGrow: 1 }}
-                    />
-                    <Button variant={"contained"} startIcon={<Search />}>Search</Button>
-                </Grid2> */}
-                {/* Mobile Section */}
                 <Grid2 container spacing={1}>
-                <TextField
+                    <TextField
                         variant="outlined"
                         placeholder="Search by scammer name..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         sx={{ flex: .8, flexGrow: 1 }}
                     />
-                    <Button variant={"contained"} startIcon={<Search />} sx={{ flex: .2, maxWidth: "100px", minWidth: "100px" }}>Search</Button>
+                    <Button variant={"contained"} startIcon={<Search />}
+                        onClick={onSubmit}
+                        sx={{ flex: .2, maxWidth: "100px", minWidth: "100px" }}>Search</Button>
                 </Grid2>
-                
+
                 {/* Normal Section */}
                 <Grid2 container flexWrap={"wrap"} spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Button
@@ -155,8 +213,8 @@ const App = () => {
             </Grid2>
             {/* Dropdown Menu */}
             <Menu
-                anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
                 onClose={() => setAnchorEl(null)}
             >
                 {filterOptions.find((f) => f.id === currentFilter)?.options.map((option) => (
@@ -201,7 +259,7 @@ const App = () => {
                     <Button
                         onClick={() => {
                             if (dateRange.start && dateRange.end) {
-                                setSelectedFilters((prev) => ({ ...prev, time: `${dateRange.start} to ${dateRange.end}` }));
+                                setSelectedFilters((prev) => ({ ...prev, time: "Custom Range" }));
                                 setShowDateDialog(false);
                             }
                         }}

@@ -8,7 +8,7 @@ import { Images } from "@config";
 
 function Index(props) {
 
-    const { name = "", value = "", onChange = () => { }, images = [], sx = {} } = props;
+    const { name = "", value = {}, onChange = () => { }, images = [], sx = {} } = props;
 
     const { imgName = "Profile", imgData = Images.defaultAvatar } = value;
 

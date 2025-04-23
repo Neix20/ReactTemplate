@@ -5,7 +5,9 @@ import { FormControl, FormLabel, FormHelperText } from "@mui/material";
 
 import { clsUtility } from "@utility";
 
-import FormDropdown from "./components/FormDropdown";
+import SingleDropdown from "./components/Dropdown/Single";
+import MultiDropdown from "./components/Dropdown/Multi";
+
 import FormColor from "./components/FormColor";
 import FormImage from "./components/FormImage";
 import FormFileUpload from "./components/FormFileUpload";
@@ -73,10 +75,10 @@ function Index(props) {
             />
         ),
         "dropdown": ({ field = {}, error = null }) => (
-            <FormDropdown selection={selection} placeholder={placeholder} error={error} {...field} />
+            <SingleDropdown selection={selection} placeholder={placeholder} error={error} {...field} />
         ),
         "multi-dropdown": ({ field = {}, error = null }) => (
-            <FormDropdown selection={selection} placeholder={placeholder} error={error} isMulti={true} {...field} />
+            <MultiDropdown selection={selection} placeholder={placeholder} error={error} {...field} />
         ),
         "color": ({ field = {}, error = null }) => (
             <FormColor placeholder={placeholder} error={error} {...field} />

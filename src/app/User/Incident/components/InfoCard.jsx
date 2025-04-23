@@ -11,6 +11,7 @@ import { Card, CardContent, CardActionArea } from "@mui/material";
 import { clsUtility } from "@utility";
 
 function ImageWithText(props) {
+
     const { children, imgProps = {} } = props;
 
     const style = {
@@ -68,7 +69,7 @@ function ImageWithText(props) {
 
 function InfoCard(props) {
     
-    const { PK = "", title = "", subtitle = "" } = props;
+    const { PK = "", title = "", total_amount = "", reported_date = "" } = props;
 
     const imgIdx = clsUtility.genRandNum(0, 4);
     const imgArr = [Images.bgStock01, Images.bgStock02, Images.bgStock03, Images.bgStock04, Images.bgStock05];
@@ -143,7 +144,7 @@ function InfoCard(props) {
                             sx={style.platformIcon}
                         />
                         <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                            Madge Santos
+                            {title}
                         </Typography>
                     </Box>
 
@@ -153,7 +154,7 @@ function InfoCard(props) {
                             Amount Scammed
                         </Typography>
                         <Typography sx={style.amount}>
-                            RM 9,999.99
+                            {clsUtility.formatCurrency(total_amount)}
                         </Typography>
                     </Box>
 
@@ -163,7 +164,7 @@ function InfoCard(props) {
                             Date
                         </Typography>
                         <Typography sx={style.value}>
-                            Feb 2, 2025
+                            {clsUtility.formatDate(reported_date)}
                         </Typography>
                     </Box>
                 </Box>
