@@ -5,11 +5,13 @@ import { GlobalStyles, SampleData } from "@config";
 
 import Stepper from "./components/Stepper";
 
-import { BpFormItem, BpInput, BpImageGallery, BpImageUpload, BpSearchMenuList } from "@components";
+import { BpFormItem, BpInput, BpImageGallery, BpImageUpload, BpLoading } from "@components";
 
-import { useForm, useFormDataLs } from "@hooks";
+import { useForm, useFormDataLs, useToggle } from "@hooks";
 
 import { Delete, Add } from "@mui/icons-material";
+
+import { fetchIpSeriesGetAll } from "@api";
 
 function useStep() {
     const [step, setStep] = useState(0);
@@ -28,6 +30,8 @@ import Page3 from "./img/page_3.jpeg";
 
 import { z } from "zod";
 
+import { Controller } from "react-hook-form";
+
 const template = {
     report: {
         key: "report",
@@ -36,21 +40,21 @@ const template = {
             social_media: z.array(z.object({
                 platform: z.string().min(1, "Platform is required"),
                 post_url: z.string().min(1, "Post URL is required"),
-            })),
+            })).optional(),
             payment_method: z.array(z.object({
                 platform: z.string().min(1, "Platform is required"),
                 post_url: z.string().min(1, "Post URL is required"),
-            })),
+            })).optional(),
             nickname: z.array(z.object({
                 value: z.string().min(1, "Nickname is required"),
-            })),
+            })).optional(),
             phone_number: z.array(z.object({
-                value: z.string().min(1, "Nickname is required"),
-            })),
+                value: z.string().min(1, "Phone Number is required"),
+            })).optional(),
             pretend_to_be: z.string().min(1, "Pretend to be is required"),
             pretend_to_sell: z.array(z.object({
-                platform: z.string().min(1, "Platform is required"),
-                post_url: z.string().min(1, "Post URL is required"),
+                label: z.any(),
+                value: z.string()
             })),
             total_amount: z.number(),
             transaction_date: z.string().date("Invalid date"),
@@ -59,13 +63,19 @@ const template = {
                 post_url: z.string().optional(),
             })
         }),
+        field: [
+            {
+                "name": "pretend_to_sell",
+                "type": "multi-dropdown",
+            }
+        ],
         initial: {
             name: "",
             social_media: [],
             nickname: [],
             payment_method: [],
             phone_number: [],
-            pretend_to_sell: [],
+            pretend_to_sell: null,
             pretend_to_be: "",
             total_amount: 0,
             transaction_date: "",
@@ -281,105 +291,6 @@ function PhoneNumberSection(props) {
     )
 }
 
-function PretendToSellSection(props) {
-    const { term = "", control = null } = props;
-    const { data, append: onAdd, remove: onDelete } = useFormDataLs({ key: term, control });
-
-    const renderItem = (item, ind) => {
-        const onDeleteItem = () => onDelete(ind);
-        return (
-            <>
-                <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
-                    <Grid2 item size={3} sx={{ display: "flex" }}>
-                        <BpInput name={`${term}.${ind}.platform`} type={"dropdown"}
-                            placeholder={"Platform"} selection={SampleData.Platform}
-                            control={control} />
-                    </Grid2>
-                    <Grid2 item size={9} sx={{ display: "flex", gap: 1 }}>
-                        <BpInput name={`${term}.${ind}.post_url`} type={"text"}
-                            placeholder={"Enter username / Profile URL"}
-                            control={control} />
-                        <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
-                            <Delete />
-                        </IconButton>
-                    </Grid2>
-                </Grid2>
-                <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
-                    <Grid2 item size={10} container spacing={1}>
-                        <BpInput
-                            name={`${term}.${ind}.platform`} type={"dropdown"}
-                            placeholder={"Platform"} selection={SampleData.Platform}
-                            control={control} />
-                        <BpInput
-                            name={`${term}.${ind}.post_url`} type={"text"}
-                            placeholder={"Enter username / Profile URL"}
-                            control={control} />
-                    </Grid2>
-                    <Grid2 item size={2}>
-                        <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
-                            <Delete />
-                        </IconButton>
-                    </Grid2>
-                </Grid2>
-            </>
-        )
-    }
-
-    const _onAdd = _ => onAdd({});
-
-    return (
-        <Grid2 container flexDirection={"column"} spacing={1}>
-            <Typography>Pretend To Sell</Typography>
-            {data.map(renderItem)}
-            <Grid2 container>
-                <Button startIcon={<Add />} onClick={_onAdd} variant={"contained"}>Add Sellee</Button>
-            </Grid2>
-        </Grid2>
-    )
-}
-
-function Term(props) {
-    return (
-        <>
-            {/* Second Page */}
-            <Grid2 hidden={step !== 1} sx={style.reportBody}>
-                <Grid2 container flexDirection={"column"} spacing={2}>
-                    <Grid2 container justifyContent={"center"}>
-                        <Box component={"img"} src={Page2} sx={style.img} />
-                    </Grid2>
-                    <BpInput name={"pretend_to_be"} type={"dropdown"} control={control} placeholder={"What did they pretend to be?"} label={"Pretend To Be"} hasLabel={true} />
-                    <PretendToSellSection term={"pretend_to_sell"} control={control} />
-
-                    <BpInput name={"total_amount"} type={"decimal"} control={control} placeholder={"Enter Amount"} label={"Total Amount Scammed (RM)"} hasLabel={true} />
-                    <BpInput name={"transaction_date"} type={"date"} control={control} placeholder={"Enter Date"} label={"Transaction Date"} hasLabel={true} />
-                    <Grid2 container flexDirection={"column"} spacing={1}>
-                        <Typography>(Optional) Have you ever posted this on your social media?</Typography>
-                        <Grid2 container>
-                            <BpInput name={"post.platform"} type={"dropdown"} placeholder={"Select Platform"} selection={SampleData.Platform} />
-                            <BpInput name={"post.post_url"} type={"text"} placeholder={"https://www.facebook.com/username"} />
-                        </Grid2>
-                    </Grid2>
-                </Grid2>
-            </Grid2>
-
-            {/* Third Page */}
-            <Grid2 hidden={step !== 2} sx={style.reportBody}>
-                <Grid2 container flexDirection={"column"} spacing={2}>
-                    <Grid2 container justifyContent={"center"}>
-                        <Box component={"img"} src={Page3} sx={style.img} />
-                    </Grid2>
-                    <BpInput name={"comments"} type={"textarea"} control={control} placeholder={"Do you have anything to comment about this incident?"} label={"Comments"} hasLabel={true} />
-                    <Grid2 container flexDirection={"column"} spacing={1}>
-                        <Typography>Upload Screenshots</Typography>
-                        <BpImageUpload onAddImage={addImgAsset} />
-                        <BpImageGallery images={imgAsset} onDelete={deleteImgAsset} />
-                    </Grid2>
-                </Grid2>
-            </Grid2>
-        </>
-    )
-}
-
 function Index(props) {
 
     const { step, add, minus } = useStep();
@@ -393,13 +304,41 @@ function Index(props) {
             width: { xs: "180px", sm: "240px" },
             height: { xs: "180px", sm: "240px" }
         }
+    };
+
+    const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
+
+    // #region Ip Series Actions
+    const [ipSeriesSelection, setIpSeriesSelection] = useState([]);
+
+    const getAllIpSeries = () => {
+        setLoadingTrue();
+        fetchIpSeriesGetAll()
+            .then(res => {
+                setLoadingFalse();
+
+                const { data = [] } = res;
+
+                const _arr = data.map(x => ({
+                    label: x.name,
+                    value: x.PK
+                }));
+
+                setIpSeriesSelection(_ => _arr);
+            })
+            .catch(() => {
+                setLoadingFalse();
+            })
     }
+    // #endregion
 
     // #region Image Asset
+    const { flag: imgErrFlag, open: setImgErrTrue, close: setImgErrFalse } = useToggle();
     const [imgAsset, setImgAsset] = useState([]);
 
     const addImgAsset = (item) => {
         setImgAsset((arr) => [...arr, item]);
+        setImgErrFalse();
     }
 
     const deleteImgAsset = (idx) => {
@@ -413,10 +352,21 @@ function Index(props) {
     }
     // #endregion
 
+    useEffect(() => {
+        getAllIpSeries();
+    }, []);
+
     const { control, handleSubmit, isDirty } = useForm(template.report);
 
     const onSubmit = (data) => {
+        if (imgAsset.length <= 0) {
+            setImgErrTrue();
+            alert("Error! Must have at least one image");
+            return;
+        }
+
         alert("Success!");
+        setImgErrFalse();
         console.log(data);
     }
 
@@ -428,6 +378,8 @@ function Index(props) {
             gap: { xs: 2, sm: 2 },
             pt: { xs: 4, sm: 4 }
         }}>
+
+            <BpLoading loading={loading} />
 
             {/* Header */}
             <Grid2 container flexDirection={"column"} spacing={2}>
@@ -447,9 +399,9 @@ function Index(props) {
                                 label={"Name"} placeholder={"Name"}
                                 control={control} hasLabel={true} />
                             <NickNameSection term={"nickname"} control={control} />
+                            <PhoneNumberSection term={"phone_number"} control={control} />
                             <SocialMediaSection term={"social_media"} control={control} />
                             <PaymentMethodSection term={"payment_method"} control={control} />
-                            <PhoneNumberSection term={"phone_number"} control={control} />
                         </Grid2>
                     </Grid2>
 
@@ -459,8 +411,21 @@ function Index(props) {
                             <Grid2 container justifyContent={"center"}>
                                 <Box component={"img"} src={Page2} sx={style.img} />
                             </Grid2>
-                            <BpInput name={"pretend_to_be"} type={"text"} control={control} placeholder={"What did they pretend to be?"} label={"Pretend To Be"} hasLabel={true} />
-                            <PretendToSellSection term={"pretend_to_sell"} control={control} />
+                            <BpInput 
+                                name={"pretend_to_be"} 
+                                type={"dropdown"} 
+                                control={control}
+                                label={"Pretend To Be"}
+                                placeholder={"What did they pretend to be?"} 
+                                selection={SampleData.Seller} />
+                            <BpInput
+                                name={"pretend_to_sell"} 
+                                type={"multi-dropdown"}
+                                control={control}
+                                selection={ipSeriesSelection}
+                                label={"Pretend To Sell"}
+                                placeholder={"Labubu"}
+                            />
 
                             <BpInput name={"total_amount"} type={"decimal"} control={control} placeholder={"Enter Amount"} label={"Total Amount Scammed (RM)"} hasLabel={true} />
                             <BpInput name={"transaction_date"} type={"date"} control={control} placeholder={"Enter Date"} label={"Transaction Date"} hasLabel={true} />
@@ -484,10 +449,10 @@ function Index(props) {
                             <Grid2 container justifyContent={"center"}>
                                 <Box component={"img"} src={Page3} sx={style.img} />
                             </Grid2>
-                            <BpInput name={"comments"} type={"textarea"} control={control} placeholder={"Do you have anything to comment about this incident?"} label={"Comments"} hasLabel={true} />
+                            <BpInput name={"comments"} type={"textarea"} control={control} placeholder={"Do you have anything to comment about this incident?"} label={"(Optional) Comments"} hasLabel={true} />
                             <Grid2 container flexDirection={"column"} spacing={1}>
                                 <Typography>Upload Screenshots</Typography>
-                                <BpImageUpload onAddImage={addImgAsset} />
+                                <BpImageUpload onAddImage={addImgAsset} error={imgErrFlag} />
                                 <BpImageGallery images={imgAsset} onDelete={deleteImgAsset} />
                             </Grid2>
                         </Grid2>

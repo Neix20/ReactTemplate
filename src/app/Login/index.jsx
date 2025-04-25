@@ -258,24 +258,24 @@ function Main(props) {
     // Make an API to check if it exists
     const images = [
         {
-            "imgName": "bgStock01",
-            "imgData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-01.jpg"
+            "fileName": "bgStock01",
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-01.jpg"
         },
         {
-            "imgName": "bgStock02",
-            "imgData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-02.jpg"
+            "fileName": "bgStock02",
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-02.jpg"
         },
         {
-            "imgName": "bgStock03",
-            "imgData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-03.jpg"
+            "fileName": "bgStock03",
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-03.jpg"
         },
         {
-            "imgName": "bgStock04",
-            "imgData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-04.jpg"
+            "fileName": "bgStock04",
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-04.jpg"
         },
         {
-            "imgName": "bgStock05",
-            "imgData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-05.jpg"
+            "fileName": "bgStock05",
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-05.jpg"
         }
     ];
 

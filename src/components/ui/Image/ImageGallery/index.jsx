@@ -132,7 +132,7 @@ function Index(props) {
                     </IconButton>
 
                     {/* Image Display */}
-                    <Box component="img" src={images[curIdx].imgData} alt={images[curIdx].imgName} sx={style.modalImg} />
+                    <Box component="img" src={images[curIdx].fileData} alt={images[curIdx].fileName} sx={style.modalImg} />
 
                     {/* Navigation Controls */}
                     <Grid2 container

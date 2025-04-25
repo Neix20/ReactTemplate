@@ -6,7 +6,7 @@ import { FileUpload } from "@mui/icons-material";
 
 function Index(props) {
 
-    const { onAddImage = () => { }, sx = {} } = props;
+    const { onAddImage = () => { }, error = null, sx = {} } = props;
 
     const fileUploadRef = useRef(null);
 
@@ -29,9 +29,9 @@ function Index(props) {
             const base64String = evt.target.result; // This contains the Base64 string
 
             const item = {
-                imgName: fileName,
-                imgData: base64String,
-                imgType: fileType
+                fileName: fileName,
+                fileData: base64String,
+                fileType: fileType
             }
 
             onAddImage(item);
@@ -45,7 +45,7 @@ function Index(props) {
         modalCnt: {
             cursor: "pointer",
             border: "2px dashed",
-            borderColor: "grey.400",
+            borderColor: error ? "red" : "grey.400",
             borderRadius: 2,
             padding: 3
         }

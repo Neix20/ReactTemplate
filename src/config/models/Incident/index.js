@@ -11,8 +11,9 @@ const schema = z.object({
     reported_date: z.string().date("Invalid date"), // If date string, keep as string
     trade_method: z.enum(["Shipping"]),
     total_amount: z.number(),
-    category: z.enum(["Scam", "Suspicious", "Others"]),
-    platform: z.string().min(1, "Platform is required")
+    category: z.enum(["Scam", "Alert", "Others"]),
+    platform: z.string().min(1, "Platform is required"),
+    status: z.enum(["Active", "Pending", "Inactive"])
 });
 
 const obj = {
@@ -27,11 +28,11 @@ const obj = {
             "type": "dropdown",
             "selection": [
                 {
-                    "name": "Seller",
+                    "label": "Seller",
                     "value": "Seller"
                 },
                 {
-                    "name": "Buyer",
+                    "label": "Buyer",
                     "value": "Buyer"
                 }
             ]
@@ -61,7 +62,7 @@ const obj = {
             "type": "dropdown",
             "selection": [
                 {
-                    "name": "Shipping",
+                    "label": "Shipping",
                     "value": "Shipping"
                 }
             ]
@@ -75,12 +76,16 @@ const obj = {
             "type": "dropdown",
             "selection": [
                 {
-                    "name": "Scam",
+                    "label": "Scam",
                     "value": "Scam"
                 },
                 {
-                    "name": "Alert",
+                    "label": "Alert",
                     "value": "Alert"
+                },
+                {
+                    "label": "Others",
+                    "value": "Others"
                 }
             ]
         },
@@ -88,7 +93,25 @@ const obj = {
             "name": "platform",
             "type": "dropdown",
             "show": false
-        }
+        },
+        {
+            "name": "status",
+            "type": "dropdown",
+            "selection": [
+                {
+                    "label": "Active",
+                    "value": "Active"
+                },
+                {
+                    "label": "Pending",
+                    "value": "Pending"
+                },
+                {
+                    "label": "Inactive",
+                    "value": "Inactive"
+                }
+            ]
+        },
     ],
     initial: {
         title: "",
@@ -101,7 +124,8 @@ const obj = {
         trade_method: "",
         total_amount: "",
         category: "",
-        platform: ""
+        platform: "",
+        status: ""
     },
     schema
 }

@@ -19,6 +19,8 @@ import ScamReport from "./components/ScamReport";
 import CommunitySupport from "./components/CommunitySupport";
 import HelpResource from "./components/HelpResource";
 
+import { fetchIncidentGetUser } from "@api";
+
 const sampleData = {
     incident: [
         {
@@ -162,7 +164,30 @@ function Index(props) {
         }
     }
 
-    const { incident, ip_series: ipSeries, scammer, scammer_attr: scammerAttr } = sampleData;
+    const [data, setData] = useState({});
+
+    const { header = {}, scammer_details, ipSeries, otherIncidents, scam_statistic, comment } = data;
+
+    const getIncidentDetails = () => {
+        setLoadingTrue();
+        fetchIncidentGetUser({
+            PK: IncidentId
+        })
+            .then(res => {
+                setLoadingFalse();
+                setData(_ => res);
+            })
+            .catch(err => {
+                setLoadingFalse();
+                console.error(err);
+            })
+    }
+
+    useEffect(() => {
+        if (IncidentId.length > 0) {
+            getIncidentDetails();
+        }
+    }, [IncidentId])
 
     const renderPlatformItem = (item, ind) => (
         <Typography key={`platform-item-${ind}`} sx={(theme) => ({
@@ -170,7 +195,7 @@ function Index(props) {
             px: 1,
             borderRadius: .5,
             fontWeight: "bold"
-        })}>{item}</Typography>
+        })}>{clsUtility.capitalize(item)}</Typography>
     );
 
     const TitleSection = () => (
@@ -184,7 +209,7 @@ function Index(props) {
                 gap: 1
             }}>
                 <Grid2 container alignItems={"center"} spacing={1}>
-                    <Typography sx={style.scammerTitle}>{scammer.name}</Typography>
+                    <Typography sx={style.scammerTitle}>{header.scammer_name}</Typography>
                     <Typography sx={{
                         backgroundColor: "error.main",
                         p: .5,
@@ -199,10 +224,10 @@ function Index(props) {
                 <Typography sx={{
                     fontWeight: "600",
                     color: "#d3d3d3"
-                }}>Reported by 15 people</Typography>
+                }}>Reported by {header.no_reported} people</Typography>
                 {/* Platform Lists */}
                 <Grid2 container spacing={1}>
-                    {scammer.platform.map(renderPlatformItem)}
+                    {header.scammer_platform?.map(renderPlatformItem)}
                 </Grid2>
             </Box>
         </Grid2>
@@ -211,27 +236,30 @@ function Index(props) {
     const tabPages = [
         {
             title: "SCAM REPORTS",
-            element: (<BodyWrapper>
-                <ScamReport />
+            element: (
+            <BodyWrapper details={scammer_details} statistic={scam_statistic} ipSeries={ipSeries}>
+                <ScamReport incident={otherIncidents} />
             </BodyWrapper>)
         },
         {
             title: "COMMUNITY SUPPORT",
             element: (
-                <BodyWrapper>
-                    <CommunitySupport />
+                <BodyWrapper details={scammer_details} statistic={scam_statistic} ipSeries={ipSeries}>
+                    <CommunitySupport comment={comment} />
                 </BodyWrapper>
             )
         },
         {
             title: "HELP RESOURCES",
             element: (
-                <BodyWrapper>
+                <BodyWrapper details={scammer_details} statistic={scam_statistic} ipSeries={ipSeries}>
                     <HelpResource />
                 </BodyWrapper>
             )
         },
     ];
+
+    
 
     return (
         <>

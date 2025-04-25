@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 
 function Index(props) {
 
-    const { imgName = "", imgData = "", onClick = () => {}, sx = {} } = props;
+    const { fileName = "", fileData = "", onClick = () => {}, sx = {} } = props;
 
     const style = {
         main: {
@@ -20,7 +20,7 @@ function Index(props) {
     }
 
     return (
-        <Box component={"img"} onClick={onClick} src={imgData} alt={imgName} sx={style.main} />
+        <Box component={"img"} onClick={onClick} src={fileData} alt={fileName} sx={style.main} />
     )
 }
 

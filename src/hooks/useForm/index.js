@@ -9,20 +9,17 @@ function processedFormData(field, data) {
     const _data = { ...data };
 
     for (const {name: _key, type } of field) {
-        if (type === "dropdown") {
-            _data[_key] = _data[_key].value;
-        }
 
         if (type === "multi-dropdown") {
             _data[_key] = _data[_key].map(k => k.value);
         }
 
         if (type === "file") {
-            _data[_key] = _data[_key].imgData;
+            _data[_key] = _data[_key].fileData;
         }
 
         if (type === "image") {
-            _data[_key] = _data[_key].imgData;
+            _data[_key] = _data[_key].fileData;
         }
     }
 
@@ -38,6 +35,7 @@ function Index(props) {
         control,
         handleSubmit,
         reset: loadData,
+        watch,
         formState: {
             errors,
             isDirty
@@ -69,6 +67,7 @@ function Index(props) {
         key,
         field,
         control,
+        watch,
         handleSubmit: cusHandleSubmit,
         loadData,
         resetData,

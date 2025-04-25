@@ -10,7 +10,7 @@ function Index(props) {
 
     const { name = "", value = {}, onChange = () => { }, images = [], sx = {} } = props;
 
-    const { imgName = "Profile", imgData = Images.defaultAvatar } = value;
+    const { fileName = "Profile", fileData = Images.defaultAvatar } = value;
 
     const fileUploadRef = useRef(null);
 
@@ -33,9 +33,9 @@ function Index(props) {
             const base64String = evt.target.result; // This contains the Base64 string
 
             const item = {
-                imgName: fileName,
-                imgData: base64String,
-                imgType: fileType
+                fileName: fileName,
+                fileData: base64String,
+                fileType: fileType
             };
 
 
@@ -62,17 +62,17 @@ function Index(props) {
         ...sx
     };
 
-    const renderItem = ({ imgName = "", imgData = "" }, ind) => {
+    const renderItem = ({ fileName = "", fileData = "" }, ind) => {
         const _onClick = () => {
             if (fileUploadRef?.current) {
                 fileUploadRef.current.value = null;
             }
-            onChange({ imgName, imgData });
+            onChange({ fileName, fileData });
         };
         return (
             <ButtonBase onClick={_onClick}>
                 <Tooltip title={`Profile-${ind}`}>
-                    <Box component={"img"} src={imgData} alt={imgName} sx={style.item} />
+                    <Box component={"img"} src={fileData} alt={fileName} sx={style.item} />
                 </Tooltip>
             </ButtonBase>
         )
@@ -83,7 +83,7 @@ function Index(props) {
         <Grid2 container flexDirection={"column"} alignItems={"center"} spacing={2}>
             <Grid2 container spacing={1} justifyContent={"center"}>
                 <ButtonBase onClick={onImgClick}>
-                <Box component={"img"} src={imgData} alt={imgName} sx={style.main} />
+                <Box component={"img"} src={fileData} alt={fileName} sx={style.main} />
                 </ButtonBase>
             </Grid2>
             <Grid2 container spacing={2}

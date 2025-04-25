@@ -52,9 +52,9 @@ function Index(props) {
             setFileData(_ => fileName);
             
             const item = {
-                imgName: fileName,
-                imgData: base64String,
-                imgType: fileType
+                fileName: fileName,
+                fileData: base64String,
+                fileType: fileType
             };
 
             onChange(item);

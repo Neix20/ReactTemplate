@@ -69,10 +69,7 @@ function ImageWithText(props) {
 
 function InfoCard(props) {
     
-    const { PK = "", title = "", total_amount = "", reported_date = "" } = props;
-
-    const imgIdx = clsUtility.genRandNum(0, 4);
-    const imgArr = [Images.bgStock01, Images.bgStock02, Images.bgStock03, Images.bgStock04, Images.bgStock05];
+    const { PK = "", title = "", total_amount = "", reported_date = "", images = "" } = props;
 
     const style = {
         card: {
@@ -127,7 +124,7 @@ function InfoCard(props) {
             <CardActionArea component={Link} to={`/Incident/${PK}`}>
                 <ImageWithText 
                     imgProps={{
-                        src: imgArr[imgIdx],
+                        src: images,
                         alt: title
                     }}
                 >

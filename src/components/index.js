@@ -28,8 +28,6 @@ import BpSessionChecker from "./ui/SessionChecker";
 
 import BpHeader from "./ui/Header";
 
-import BpSearchMenuList from "./ui/SearchMenuList";
-
 import UserLayout from "./layout/User";
 import AdminLayout from "./layout/Admin";
 
@@ -60,7 +58,6 @@ export {
     BpLogo,
     BpGridMasonry,
     BpTab,
-    BpSessionChecker,
-    BpSearchMenuList
+    BpSessionChecker
 }
 

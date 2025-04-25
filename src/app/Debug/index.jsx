@@ -122,7 +122,7 @@ const template = {
 
 function ExampleForm(props) {
 
-    const { key, field, control, handleSubmit, resetData, isDirty } = useForm(template.report);
+    const { key, field, control, handleSubmit, resetData, isDirty } = useForm(Models.Sample);
 
     const onSubmit = (data) => {
 
