@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { TextField, Box, Grid2, Button, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, IconButton } from "@mui/material";
-import { Search, Add, Undo, Close, ExpandMore, Cancel } from "@mui/icons-material";
+import { Search, Add, Undo, Close, ExpandMore, Cancel, Clear } from "@mui/icons-material";
 
 import { fetchIncidentQuery } from "@api";
 import { BpLoading, BpInput } from "@components";
@@ -57,8 +57,8 @@ function App(props) {
     // todo: Get From General API
     const filterOptions = [
         { id: "platform", label: "Platform", options: ["Facebook", "Instagram", "Twitter", "LinkedIn", "WhatsApp"] },
-        { id: "time", label: "Time", options: ["Last 24 Hours", "Last 7 Days", "Last 30 Days", "Last 6 Months", "Last Year", "Custom Range"] },
         { id: "category", label: "Category", options: ["Phishing", "Identity Theft", "Investment Fraud", "Romance Scam", "Tech Support Scam"] },
+        { id: "time", label: "Time", options: ["Last 24 Hours", "Last 7 Days", "Last 30 Days", "Last 6 Months", "Last Year", "Custom Range"] }
     ];
 
     const handleFilterSelect = (filterId, option) => {
@@ -143,6 +143,10 @@ function App(props) {
         </Button>
     )
 
+    const onClearSearch = () => {
+        setSearchTerm(_ => "");
+    }
+
     return (
         <>
             <BpLoading loading={loading} />
@@ -150,9 +154,18 @@ function App(props) {
                 <Grid2 container spacing={1}>
                     <TextField
                         variant="outlined"
-                        placeholder="Search by scammer name..."
+                        placeholder="Search by name..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                        slotProps={{
+                            input: {
+                              endAdornment: (searchTerm && (
+                                <IconButton onClick={onClearSearch}>
+                                    <Clear />
+                                </IconButton>
+                              )),
+                            },
+                          }}
                         sx={{ flex: .8, flexGrow: 1 }}
                     />
                     <Button variant={"contained"} startIcon={<Search />}

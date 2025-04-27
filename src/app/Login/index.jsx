@@ -13,6 +13,8 @@ import { ColorModeIconDropdown, BpInput, BpLoading } from "@components";
 import { useForm, useToggle } from "@hooks";
 
 import { Controller } from "react-hook-form";
+import { FormControl, FormLabel, FormHelperText } from "@mui/material";
+import ReactSelect from "@components/ui/Form/Item/components/Dropdown/Multi";
 
 const BpContainer = styled(Container)(({ theme }) => ({
     height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
@@ -96,19 +98,60 @@ function ProfilePhotoPage(props) {
     )
 };
 
+import { Male, Female } from "@mui/icons-material";
+
+function CuGenderSelect(props) {
+
+    const { name = "", control = null } = props;
+    const { label = "", placeholder = "", selection = [], sx = {} } = props;
+
+    const formatOptionLabel = ({ label, icon }) => {
+        return (
+            <Grid2 container spacing={1}>
+                {icon}
+                <Typography>{label}</Typography>
+            </Grid2>
+        );
+    };
+
+    return (
+        <Controller
+            name={name}
+            control={control}
+            render={({ field, fieldState: { error } }) => {
+                return (
+                    <FormControl fullWidth errors={error} sx={sx}>
+                        <FormLabel>{label}</FormLabel>
+                        <ReactSelect
+                            isMulti={false}
+                            placeholder={placeholder}
+                            selection={selection}
+                            error={error}
+                            {...field}
+                            formatOptionLabel={formatOptionLabel} />
+                        <FormHelperText sx={{ color: "error.main" }}>{error?.message}</FormHelperText>
+                    </FormControl>
+                )
+            }}
+        />
+    )
+}
+
 function NamePage(props) {
     const { control = null } = props;
 
     const gender = [
         {
-            "label": "♂️ Male",
-            "value": "Male"
+            "label": "Male",
+            "value": "Male",
+            "icon": <Male sx={{ color: "lightblue" }} />
         },
         {
-            "label": "♀️ Female",
-            "value": "Female"
+            "label": "Female",
+            "value": "Female",
+            "icon": <Female sx={{ color: "pink" }} />
         }
-    ]
+    ];
 
     return (
         <>
@@ -127,9 +170,8 @@ function NamePage(props) {
                 placeholder={"Enter Your Name"}
                 sx={{ mt: 1 }}
             />
-            <BpInput
-                name={"gender"} type={"dropdown"}
-                hasLabel={true} label={"Gender"}
+            <CuGenderSelect
+                name={"gender"} label={"Gender"}
                 control={control} selection={gender}
                 placeholder={"Select Gender"}
                 sx={{ mt: 1 }}
@@ -221,8 +263,8 @@ const template = {
             profile: z.any().optional(),
             name: z.string(),
             gender: z.object({
-                label: z.any(),
-                value: z.enum(["Male", "Female"])
+                label: z.string(),
+                value: z.string()
             }),
             birthday: z.string().date("Invalid Date")
         })
@@ -324,7 +366,8 @@ function Main(props) {
 
         const _data = {
             id: userId,
-            ...data
+            ...data,
+            gender: data["gender"].value
         };
 
         signUp(_data);
@@ -336,9 +379,7 @@ function Main(props) {
 
     if (!firstTime) {
         return (
-            <Card sx={{ padding: 2 }}>
-                <CompletePage seconds={seconds} />
-            </Card>
+            <></>
         );
     }
 

@@ -116,14 +116,14 @@ function Index(props) {
 
     const { idx: key = "", data = [], field = [], hideField = [], fieldOrder = [], } = props;
     const { enableRowAction = false, enableTopAction = false } = props;
-    const { enableDefaultAdd = false, enableDefaultUpdate = false } = props;
+    const { enableDefaultAdd = false, enableDefaultUpdate = false, renderRowActions = null } = props;
     const { onBtnAdd = null, onAdd = () => { }, onUpdate = () => { }, onDelete = () => { } } = props; 
 
     const columns = useMemo(_ => generateColumns(field), [field]);
     const name = clsUtility.capitalize(key);
 
     // #region Render Functions
-    const renderRowActions = ({ table, row, values}) => {
+    const _renderRowActions = ({ table, row, values}) => {
 
         const onSelectUpdate = ({ table, row, values}) => {
             table.setEditingRow(row);
@@ -195,7 +195,7 @@ function Index(props) {
         enableTopToolbar: enableTopAction,
         enableEditing: enableRowAction,
         enableRowActions: enableRowAction,
-        renderRowActions: renderRowActions,
+        renderRowActions: (renderRowActions == null) ? _renderRowActions : renderRowActions,
         onCreatingRowSave: ({ table, row, values }) => onAdd({ table, row, values }),
         onEditingRowSave: ({ table, row, values }) => onUpdate({ table, row, values }),
         renderCreateRowDialogContent: renderCreateModal,

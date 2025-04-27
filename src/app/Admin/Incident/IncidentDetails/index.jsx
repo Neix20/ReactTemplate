@@ -19,11 +19,10 @@ function Index(props) {
     const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
     const { flag: refresh, toggle: toggleRefresh } = useToggle();
 
-    const [imgAsset, setImgAsset] = useState([]);
-
     const [scammerSelection, setScammerSelection] = useState([]);
     const [ipSeriesSelection, setIpSeriesSelection] = useState([]);
 
+    // Fix This for Incident
     const { control: multiSelControl, watch: multiSelWatch, loadData: loadMultiSel, isDirty: isMultiDirty } = useForm({});
 
     const scammer = multiSelWatch("scammer");
@@ -63,7 +62,9 @@ function Index(props) {
 
                 const { incident, incidentAsset, scammer, ipSeries } = res;
                 loadIncData(incident);
+
                 setImgAsset(_ => incidentAsset);
+                
                 loadMultiSel(_ => ({ scammer, ipSeries }));
 
             })
@@ -132,6 +133,7 @@ function Index(props) {
                 const { data = [] } = res;
 
                 const _arr = data.map(x => ({
+                    image: x.image,
                     label: x.name,
                     value: x.PK
                 }));
@@ -145,14 +147,7 @@ function Index(props) {
     // #endregion
 
     const onSave = (data) => {
-        if (imgAsset.length <= 0) {
-            setImgErrTrue();
-            alert("Error! Must have at least one image");
-            return;
-        }
 
-        setImgErrFalse();
-        
         const _data = {
             incident: data,
             incidentAsset: imgAsset,
@@ -165,11 +160,11 @@ function Index(props) {
     };
 
     // #region Images
-    const { flag: imgErrFlag, open: setImgErrTrue, close: setImgErrFalse } = useToggle();
+
+    const [imgAsset, setImgAsset] = useState([]);
 
     const addImgAsset = (item) => {
         setImgAsset((arr) => [...arr, item]);
-        setImgErrFalse();
     }
 
     const deleteImgAsset = (idx) => {
@@ -183,7 +178,6 @@ function Index(props) {
     }
 
     const uploadImgAsset = () => {
-        // Array of FileName, ContentType and Data
         setLoadingTrue();
         fetchIncidentUploadImg(imgAsset)
             .then(res => {
@@ -198,6 +192,15 @@ function Index(props) {
             })
     }
     // #endregion
+
+    const formatIpSeriesOptionLabel = ({ label, image }) => {
+        return (
+            <Grid2 container spacing={1}>
+                <Box component={"img"} src={image} alt={label} sx={{ width: "20px", height: "20px" }} />
+                <Typography>{label}</Typography>
+            </Grid2>
+        );
+    };
 
     return (
         <>
@@ -250,7 +253,10 @@ function Index(props) {
                         <Typography variant="h4" sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>
                             Ip Series
                         </Typography>
-                        <BpInput name={"ipSeries"} type={"multi-dropdown"} control={multiSelControl} selection={ipSeriesSelection} />
+                        <BpInput 
+                            name={"ipSeries"} type={"multi-dropdown"} 
+                            control={multiSelControl} selection={ipSeriesSelection}
+                            formatOptionLabel={formatIpSeriesOptionLabel} />
                     </Grid2>
 
                     {/* Image Asset */}
@@ -261,10 +267,8 @@ function Index(props) {
                         </Grid2>
 
                         {/* Upload Image */}
-                        <BpImageUpload onAddImage={addImgAsset} error={imgErrFlag} sx={{ height: "180px" }} />
-
-                        {/* Images */}
-                        <BpImageGallery images={imgAsset} onDelete={deleteImgAsset} />
+                        <BpImageUpload onAdd={addImgAsset} error={null} sx={{ height: "180px" }} />
+                        <BpImageGallery data={imgAsset} onDelete={deleteImgAsset} />
                     </Grid2>
                 </Grid2>
             </Box>

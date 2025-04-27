@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 import { Images } from "@config";
 
-import { Card, CardContent, CardActionArea } from "@mui/material";
+import { Card, CardActionArea } from "@mui/material";
 
 import { clsUtility } from "@utility";
 
@@ -67,9 +67,39 @@ function ImageWithText(props) {
     );
 }
 
+function InfoPlatform(props) {
+
+    const { term = "Facebook", sx = {} } = props;
+
+    const dict = {
+        "Facebook": {
+            src: Images.facebook,
+            alt: "Facebook"
+        },
+        "Instagram": {
+            src: Images.instagram,
+            alt: "Instagram"
+        },
+        "Xiaohongshu": {
+            src: Images.xiaohongshu,
+            alt: "Xiaohongshu"
+        }
+    }
+    
+    if (!(term in dict)) {
+        return (
+            <Box component="img" src={Images.facebook} alt="Facebook" sx={sx} />
+        )
+    }
+
+    return (
+        <Box component="img" {...dict[term]} sx={sx} />
+    )
+}
+
 function InfoCard(props) {
     
-    const { PK = "", title = "", total_amount = "", reported_date = "", images = "" } = props;
+    const { PK = "", title = "", total_amount = "", reported_date = "", images = "", platform = "Facebook" } = props;
 
     const style = {
         card: {
@@ -122,24 +152,14 @@ function InfoCard(props) {
     return (
         <Card sx={style.card}>
             <CardActionArea component={Link} to={`/Incident/${PK}`}>
-                <ImageWithText 
-                    imgProps={{
-                        src: images,
-                        alt: title
-                    }}
-                >
+                <ImageWithText imgProps={{ src: images, alt: title }}>
                     Fake Seller
                 </ImageWithText>
                 
                 <Box sx={style.contentWrapper}>
                     {/* Header - Platform Icon & Name */}
                     <Box sx={style.header}>
-                        <Box
-                            component="img"
-                            src={Images.facebook}
-                            alt="Facebook"
-                            sx={style.platformIcon}
-                        />
+                        <InfoPlatform term={platform} sx={style.platformIcon} />
                         <Typography variant="h6" sx={{ fontWeight: 600 }}>
                             {title}
                         </Typography>

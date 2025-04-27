@@ -41,7 +41,7 @@ function Index(props) {
 
     const { name = "", type = "text", control = null } = props;
     const { label = "", placeholder = "" } = props;
-    const { selection = [], rows = 3, sx = {} } = props;
+    const { selection = [], rows = 3, formatOptionLabel, sx = {} } = props;
 
     // We Should Make This Flexible to be able to customize our own Form Item
     const elemDict = {
@@ -78,7 +78,7 @@ function Index(props) {
             <SingleDropdown selection={selection} placeholder={placeholder} error={error} {...field} />
         ),
         "multi-dropdown": ({ field = {}, error = null }) => (
-            <MultiDropdown selection={selection} placeholder={placeholder} error={error} {...field} />
+            <MultiDropdown selection={selection} placeholder={placeholder} error={error} formatOptionLabel={formatOptionLabel} {...field} />
         ),
         "color": ({ field = {}, error = null }) => (
             <FormColor placeholder={placeholder} error={error} {...field} />

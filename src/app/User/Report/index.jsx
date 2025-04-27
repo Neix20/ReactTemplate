@@ -5,13 +5,16 @@ import { GlobalStyles, SampleData } from "@config";
 
 import Stepper from "./components/Stepper";
 
-import { BpFormItem, BpInput, BpImageGallery, BpImageUpload, BpLoading } from "@components";
+import { BpForm, BpInput, BpImageGallery, BpImageUpload, BpLoading } from "@components";
 
 import { useForm, useFormDataLs, useToggle } from "@hooks";
 
 import { Delete, Add } from "@mui/icons-material";
 
-import { fetchIpSeriesGetAll } from "@api";
+import { fetchIpSeriesGetAll, fetchIncidentUploadImg, fetchUserReport } from "@api";
+
+import { useDispatch, useSelector } from 'react-redux';
+import { Actions, Selectors } from '@libs/redux';
 
 function useStep() {
     const [step, setStep] = useState(0);
@@ -30,20 +33,18 @@ import Page3 from "./img/page_3.jpeg";
 
 import { z } from "zod";
 
-import { Controller } from "react-hook-form";
-
 const template = {
     report: {
         key: "report",
         schema: z.object({
             name: z.string(),
             social_media: z.array(z.object({
-                platform: z.string().min(1, "Platform is required"),
-                post_url: z.string().min(1, "Post URL is required"),
+                name: z.string().min(1, "Platform is required"),
+                value: z.string().min(1, "Post URL is required"),
             })).optional(),
             payment_method: z.array(z.object({
-                platform: z.string().min(1, "Platform is required"),
-                post_url: z.string().min(1, "Post URL is required"),
+                name: z.string().min(1, "Platform is required"),
+                value: z.string().min(1, "Post URL is required"),
             })).optional(),
             nickname: z.array(z.object({
                 value: z.string().min(1, "Nickname is required"),
@@ -61,14 +62,15 @@ const template = {
             post: z.object({
                 platform: z.string().optional(),
                 post_url: z.string().optional(),
-            })
+            }),
+            images: z.array(z.object({
+                fileName: z.string(),
+                fileData: z.string(),
+                fileType: z.string(),
+                fileSize: z.number()
+            })).min(1),
+            comments: z.string().optional()
         }),
-        field: [
-            {
-                "name": "pretend_to_sell",
-                "type": "multi-dropdown",
-            }
-        ],
         initial: {
             name: "",
             social_media: [],
@@ -83,9 +85,11 @@ const template = {
                 platform: "",
                 post_url: ""
             },
-            comments: ""
+            comments: "",
+            images: []
         }
-    }
+    },
+
 }
 
 function NickNameSection(props) {
@@ -143,12 +147,12 @@ function SocialMediaSection(props) {
             <>
                 <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Grid2 item size={3} sx={{ display: "flex" }}>
-                        <BpInput name={`${term}.${ind}.platform`} type={"dropdown"}
+                        <BpInput name={`${term}.${ind}.name`} type={"dropdown"}
                             placeholder={"Platform"} selection={SampleData.Platform}
                             control={control} />
                     </Grid2>
                     <Grid2 item size={9} sx={{ display: "flex", gap: 1 }}>
-                        <BpInput name={`${term}.${ind}.post_url`} type={"text"}
+                        <BpInput name={`${term}.${ind}.value`} type={"text"}
                             placeholder={"Enter username / Profile URL"}
                             control={control} />
                         <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
@@ -159,11 +163,11 @@ function SocialMediaSection(props) {
                 <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
                     <Grid2 item size={10} container spacing={1}>
                         <BpInput
-                            name={`${term}.${ind}.platform`} type={"dropdown"}
+                            name={`${term}.${ind}.name`} type={"dropdown"}
                             placeholder={"Platform"} selection={SampleData.Platform}
                             control={control} />
                         <BpInput
-                            name={`${term}.${ind}.post_url`} type={"text"}
+                            name={`${term}.${ind}.value`} type={"text"}
                             placeholder={"Enter username / Profile URL"}
                             control={control} />
                     </Grid2>
@@ -200,12 +204,12 @@ function PaymentMethodSection(props) {
             <>
                 <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Grid2 item size={3} sx={{ display: "flex" }}>
-                        <BpInput name={`${term}.${ind}.platform`} type={"dropdown"}
+                        <BpInput name={`${term}.${ind}.name`} type={"dropdown"}
                             placeholder={"Platform"} selection={SampleData.Platform}
                             control={control} />
                     </Grid2>
                     <Grid2 item size={9} sx={{ display: "flex", gap: 1 }}>
-                        <BpInput name={`${term}.${ind}.post_url`} type={"text"}
+                        <BpInput name={`${term}.${ind}.value`} type={"text"}
                             placeholder={"Enter username / Profile URL"}
                             control={control} />
                         <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
@@ -216,11 +220,11 @@ function PaymentMethodSection(props) {
                 <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
                     <Grid2 item size={10} container spacing={1}>
                         <BpInput
-                            name={`${term}.${ind}.platform`} type={"dropdown"}
+                            name={`${term}.${ind}.name`} type={"dropdown"}
                             placeholder={"Platform"} selection={SampleData.Platform}
                             control={control} />
                         <BpInput
-                            name={`${term}.${ind}.post_url`} type={"text"}
+                            name={`${term}.${ind}.value`} type={"text"}
                             placeholder={"Enter username / Profile URL"}
                             control={control} />
                     </Grid2>
@@ -291,9 +295,101 @@ function PhoneNumberSection(props) {
     )
 }
 
+import { Controller } from "react-hook-form";
+
+import { FormControl, FormLabel, FormHelperText } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+
+import ReactSelect from "@components/ui/Form/Item/components/Dropdown/Multi";
+
+function CuIpSeriesSelect(props) {
+
+    const { name = "", control = null } = props;
+    const { label = "", placeholder = "", selection = [], onAdd = _ => { } } = props;
+
+    const formatOptionLabel = ({ label, image }) => {
+        return (
+            <Grid2 container spacing={1}>
+                <Box component={"img"} src={image} alt={label} sx={{ width: "20px", height: "20px" }} />
+                <Typography>{label}</Typography>
+            </Grid2>
+        );
+    };
+
+    const { flag: cuForm, open: setCuFormTrue, close: setCuFormFalse } = useToggle();
+
+    const { field, control: cuControl, getValues, resetData } = useForm({
+        field: [
+            {
+                "name": "name",
+                "type": "text"
+            },
+            {
+                "name": "image",
+                "type": "image"
+            }
+        ],
+        initial: {
+            name: "",
+            image: ""
+        }
+    });
+
+    const onSubmit = () => {
+        const { name, image: { fileName, fileData, fileType }} = getValues();
+        const _data = {
+            label: name,
+            value: fileData,
+            image: fileData
+        }
+        onAdd(_data);
+        resetData();
+        setCuFormFalse();
+    }
+
+    return (
+        <>
+            <Controller
+                name={name}
+                control={control}
+                render={({ field, fieldState: { error } }) => {
+                    return (
+                        <FormControl fullWidth errors={error}>
+                            <FormLabel>{label}</FormLabel>
+                            <ReactSelect
+                                placeholder={placeholder}
+                                selection={selection}
+                                error={error}
+                                {...field}
+                                formatOptionLabel={formatOptionLabel} />
+                            <FormHelperText sx={{ color: "error.main" }}>{error?.message}</FormHelperText>
+                        </FormControl>
+                    )
+                }}
+            />
+
+            <Dialog open={cuForm} onClose={setCuFormFalse}>
+                <DialogTitle>Add IP Series</DialogTitle>
+                <DialogContent>
+                    <BpForm hasLabel={true} field={field} control={cuControl} size={{ xs: 1, sm: 1 }} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={onSubmit} variant={"contained"}>Submit</Button>
+                </DialogActions>
+            </Dialog>
+
+            <Grid2 container>
+                <Button startIcon={<Add />} onClick={setCuFormTrue} variant={"contained"}>IP Series</Button>
+            </Grid2>
+        </>
+    )
+}
+
 function Index(props) {
 
     const { step, add, minus } = useStep();
+
+    const { PK: userId } = useSelector(Selectors.userSelect);
 
     const style = {
         reportBody: (theme) => ({
@@ -307,9 +403,15 @@ function Index(props) {
     };
 
     const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
+    const { control, handleSubmit, isDirty } = useForm(template.report);
 
     // #region Ip Series Actions
     const [ipSeriesSelection, setIpSeriesSelection] = useState([]);
+
+    const addSelection = (obj) => {
+        const _arr = [...ipSeriesSelection, obj];
+        setIpSeriesSelection(_ => _arr);
+    }
 
     const getAllIpSeries = () => {
         setLoadingTrue();
@@ -320,6 +422,7 @@ function Index(props) {
                 const { data = [] } = res;
 
                 const _arr = data.map(x => ({
+                    image: x.image,
                     label: x.name,
                     value: x.PK
                 }));
@@ -333,41 +436,33 @@ function Index(props) {
     // #endregion
 
     // #region Image Asset
-    const { flag: imgErrFlag, open: setImgErrTrue, close: setImgErrFalse } = useToggle();
-    const [imgAsset, setImgAsset] = useState([]);
+    const { data: imgAsset, append: onAdd, remove: onDelete } = useFormDataLs({ key: "images", control });
 
-    const addImgAsset = (item) => {
-        setImgAsset((arr) => [...arr, item]);
-        setImgErrFalse();
-    }
-
-    const deleteImgAsset = (idx) => {
-        let arr = [...imgAsset];
-
-        if (idx > -1) {
-            arr.splice(idx, 1)
-        }
-
-        setImgAsset(_ => arr);
-    }
+    const addImgAsset = (item) => onAdd(item);
+    const deleteImgAsset = (idx) => onDelete(idx);
     // #endregion
 
     useEffect(() => {
         getAllIpSeries();
     }, []);
 
-    const { control, handleSubmit, isDirty } = useForm(template.report);
-
     const onSubmit = (data) => {
-        if (imgAsset.length <= 0) {
-            setImgErrTrue();
-            alert("Error! Must have at least one image");
-            return;
+
+        // Processing of Data
+
+        // const { images = [], ..._data } = data;
+
+        const paramData = {
+            userId,
+            ...data,
         }
 
-        alert("Success!");
-        setImgErrFalse();
-        console.log(data);
+        console.log(paramData);
+    }
+
+    const onError = (error) => {
+        alert("Please check if all required fields have been filled up!");
+        console.error(error);
     }
 
     return (
@@ -388,7 +483,7 @@ function Index(props) {
             </Grid2>
 
             <Paper sx={{ width: "100%", padding: 2 }}>
-                <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+                <Box component={"form"} onSubmit={handleSubmit(onSubmit, onError)}>
                     {/* First Page */}
                     <Grid2 hidden={step !== 0} sx={style.reportBody}>
                         <Grid2 container flexDirection={"column"} spacing={2}>
@@ -411,20 +506,20 @@ function Index(props) {
                             <Grid2 container justifyContent={"center"}>
                                 <Box component={"img"} src={Page2} sx={style.img} />
                             </Grid2>
-                            <BpInput 
-                                name={"pretend_to_be"} 
-                                type={"dropdown"} 
+                            <BpInput
+                                name={"pretend_to_be"}
+                                type={"dropdown"}
                                 control={control}
                                 label={"Pretend To Be"}
-                                placeholder={"What did they pretend to be?"} 
+                                placeholder={"What did they pretend to be?"}
                                 selection={SampleData.Seller} />
-                            <BpInput
-                                name={"pretend_to_sell"} 
-                                type={"multi-dropdown"}
+                            <CuIpSeriesSelect
+                                name={"pretend_to_sell"}
                                 control={control}
-                                selection={ipSeriesSelection}
                                 label={"Pretend To Sell"}
                                 placeholder={"Labubu"}
+                                selection={ipSeriesSelection}
+                                onAdd={addSelection}
                             />
 
                             <BpInput name={"total_amount"} type={"decimal"} control={control} placeholder={"Enter Amount"} label={"Total Amount Scammed (RM)"} hasLabel={true} />
@@ -452,8 +547,18 @@ function Index(props) {
                             <BpInput name={"comments"} type={"textarea"} control={control} placeholder={"Do you have anything to comment about this incident?"} label={"(Optional) Comments"} hasLabel={true} />
                             <Grid2 container flexDirection={"column"} spacing={1}>
                                 <Typography>Upload Screenshots</Typography>
-                                <BpImageUpload onAddImage={addImgAsset} error={imgErrFlag} />
-                                <BpImageGallery images={imgAsset} onDelete={deleteImgAsset} />
+                                <Controller
+                                    name={"images"}
+                                    control={control}
+                                    render={({ fieldState }) => {
+                                        return (
+                                            <>
+                                                <BpImageUpload onAdd={addImgAsset} error={fieldState.error} />
+                                                <BpImageGallery data={imgAsset} onDelete={deleteImgAsset} />
+                                            </>
+                                        )
+                                    }}
+                                />
                             </Grid2>
                         </Grid2>
                     </Grid2>

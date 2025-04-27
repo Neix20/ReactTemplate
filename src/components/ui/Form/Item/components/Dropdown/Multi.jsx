@@ -89,9 +89,7 @@ function getThemeStyle(mode = "single") {
 
 const Index = (props = {}) => {
 
-    const { placeholder = "", selection = [], ..._props } = props;
-
-    const isMulti = true;
+    const { placeholder = "", selection = [], isMulti = true, ..._props } = props;
 
     const { mode } = useColorScheme();
 

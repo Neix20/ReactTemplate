@@ -6,7 +6,7 @@ import { Add, Save, Cancel } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { BpHeader, BpLoading, BpForm, BpFormItem } from "@components";
-import { useToggle } from "@hooks";
+import { useToggle, useForm } from "@hooks";
 
 import { GlobalStyles, Models, SampleData } from "@config";
 
@@ -55,7 +55,7 @@ function Index(props) {
                 const { data } = res;
 
                 const _arr = data.map(x => ({
-                    name: x.name,
+                    label: x.name,
                     value: x.PK
                 }));
                 setIpAsset(_ => _arr);
@@ -76,7 +76,12 @@ function Index(props) {
                 setLoadingFalse();
 
                 const { data } = res;
-                loadIpData(data);
+                loadIpData({
+                    ...data,
+                    image: {
+                        fileData: data.image
+                    }
+                });
             })
             .catch(err => {
                 setLoadingFalse();
@@ -140,22 +145,20 @@ function Index(props) {
                         </Grid2>
                     }
                 />
-                <Grid2 container>
-                    <Box sx={GlobalStyles.bordered}>
-                        <BpForm
+                <Box sx={GlobalStyles.bordered}>
+                    <BpForm
+                        hasLabel={true}
+                        field={ipField}
+                        control={ipControl}>
+                        <BpFormItem
                             hasLabel={true}
-                            field={ipField}
-                            control={ipControl}>
-                            <BpFormItem
-                                hasLabel={true}
-                                name={"parent"}
-                                type={"dropdown"}
-                                selection={ipAsset}
-                                control={ipControl}
-                            />
-                        </BpForm>
-                    </Box>
-                </Grid2>
+                            name={"parent"}
+                            type={"dropdown"}
+                            selection={ipAsset}
+                            control={ipControl}
+                        />
+                    </BpForm>
+                </Box>
             </Box>
         </>
     )

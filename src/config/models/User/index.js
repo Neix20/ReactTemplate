@@ -1,22 +1,12 @@
 
 import { z } from "zod";
 
-import { SampleData } from "@config";
-
 const schema = z.object({
-    title: z.string(),
-    scammer_type: z.enum(["Seller", "Buyer"]),
-    subtitle: z.string(),
-    description: z.string(),
-    social_url: z.string().startsWith("https://"),
-    post_date: z.string().date("Invalid date"), // If date string, keep as string
-    reported_date: z.string().date("Invalid date"), // If date string, keep as string
-    trade_method: z.enum(["Shipping"]),
-    total_amount: z.number(),
-    category: z.enum(["Scam", "Alert", "Others"]),
-    platform: z.string().min(1, "Platform is required"),
-    status: z.enum(["Active", "Pending", "Inactive"]),
-    tag: z.string()
+    profile: z.any(),
+    name: z.string(),
+    gender: z.enum(["Male", "Female"]),
+    birthday: z.string().date("Invalid date"),
+    role: z.enum(["Admin", "User"]),
 });
 
 const obj = {

@@ -6,9 +6,15 @@ import { FileUpload } from "@mui/icons-material";
 
 import { Images } from "@config";
 
+import { BpLoading } from "@components";
+import { useToggle } from "@hooks";
+import { fetchUserProfilePhoto } from "@api";
+
 function Index(props) {
 
     const { name = "", value = {}, onChange = () => { }, images = [], sx = {} } = props;
+
+    const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle(false);
 
     const { fileName = "Profile", fileData = Images.defaultAvatar } = value;
 
@@ -23,7 +29,7 @@ function Index(props) {
 
         const file = e.target.files?.[0]; // Get the first file
 
-        const { name: fileName, type: fileType } = file;
+        const { name: fileName, type: fileType, size: fileSize } = file;
 
         // Create a FileReader to read the file
         const reader = new FileReader();
@@ -33,13 +39,28 @@ function Index(props) {
             const base64String = evt.target.result; // This contains the Base64 string
 
             const item = {
-                fileName: fileName,
+                fileName,
                 fileData: base64String,
-                fileType: fileType
+                fileType,
+                fileSize
             };
 
+            // todo: Add Logic Here
+            setLoadingTrue();
+            fetchUserProfilePhoto(item)
+            .then(res => {
 
-            onChange(_ => item);
+                setLoadingFalse();
+
+                const { data = "" } = res;
+                item["fileData"] = data;
+
+                onChange(item);
+            })
+            .catch(err => {
+                setLoadingFalse();
+                console.error(err);
+            })
         };
 
         // Read the file as a data URL (Base64)
@@ -81,6 +102,7 @@ function Index(props) {
 
     return (
         <Grid2 container flexDirection={"column"} alignItems={"center"} spacing={2}>
+            <BpLoading loading={loading} />
             <Grid2 container spacing={1} justifyContent={"center"}>
                 <ButtonBase onClick={onImgClick}>
                 <Box component={"img"} src={fileData} alt={fileName} sx={style.main} />

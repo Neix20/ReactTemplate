@@ -12,7 +12,7 @@ import { BpGridMasonry, BpLoading } from "@components";
 
 import { useCusMedia, useToggle } from "@hooks";
 
-import { fetchIncidentGetAll } from "@api";
+import { fetchIncidentActive } from "@api";
 
 function Index(props) {
 
@@ -23,7 +23,7 @@ function Index(props) {
 
     const getAllIncident = () => {
         setLoadingTrue();
-        fetchIncidentGetAll()
+        fetchIncidentActive()
         .then(res => {
             setLoadingFalse();
             const { data = {} } = res;

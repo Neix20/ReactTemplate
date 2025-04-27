@@ -19,7 +19,7 @@ function Index(props) {
         <Box sx={{ backgroundColor: "#243757", borderRadius: 2, display: "flex", gap: 1, p: 2 }}>
             <Box component={"img"} src={obj.image} alt="CRYBABY Series" style={{ width: 48, height: 48, borderRadius: 8 }} />
             <Box>
-                <Typography variant="body1" fontWeight="medium">{obj.name}<Typography sx={{ fontStyle: "italic"}}>{obj.parent.name}</Typography></Typography>
+                <Typography variant="body1" fontWeight="medium">{obj.name}<Typography sx={{ fontStyle: "italic"}}>{obj.parent}</Typography></Typography>
                 <Typography variant="body2" color="gray">{obj.description}</Typography>
             </Box>
         </Box>

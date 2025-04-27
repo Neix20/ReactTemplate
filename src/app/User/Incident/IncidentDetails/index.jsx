@@ -19,124 +19,7 @@ import ScamReport from "./components/ScamReport";
 import CommunitySupport from "./components/CommunitySupport";
 import HelpResource from "./components/HelpResource";
 
-import { fetchIncidentGetUser } from "@api";
-
-const sampleData = {
-    incident: [
-        {
-            "reported_date": "2025-03-09",
-            "entity_type": "INCIDENT",
-            "status": "Pending",
-            "social_url": "https://www.facebook.com/share/p/GAqBde3Tv5eAv6pk",
-            "trade_method": "Shipping",
-            "post_date": "2025-03-15",
-            "subtitle": "Testing Subtitle",
-            "platform": "XiaoHongShu",
-            "category": "Scam",
-            "SK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "scammer_type": "Seller",
-            "description": "Minim nulla id fugiat ut amet fugiat sit mollit aute do fugiat amet.",
-            "PK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "total_amount": 12000,
-            "title": "Test"
-        },
-        {
-            "reported_date": "2025-03-09",
-            "entity_type": "INCIDENT",
-            "status": "Pending",
-            "social_url": "https://www.facebook.com/share/p/GAqBde3Tv5eAv6pk",
-            "trade_method": "Shipping",
-            "post_date": "2025-01-15",
-            "subtitle": "Testing Subtitle",
-            "platform": "XiaoHongShu",
-            "category": "Scam",
-            "SK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "scammer_type": "Seller",
-            "description": "Fuck This",
-            "PK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "total_amount": 12000,
-            "title": "Test"
-        },
-        {
-            "reported_date": "2025-03-09",
-            "entity_type": "INCIDENT",
-            "status": "Pending",
-            "social_url": "https://www.facebook.com/share/p/GAqBde3Tv5eAv6pk",
-            "trade_method": "Shipping",
-            "post_date": "2025-02-15",
-            "subtitle": "Testing Subtitle",
-            "platform": "XiaoHongShu",
-            "category": "Scam",
-            "SK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "scammer_type": "Seller",
-            "description": "Test",
-            "PK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "total_amount": 12000,
-            "title": "Test"
-        }
-    ],
-    ip_series: [
-        {
-            "title": "Crying For Love Series",
-            "image": "https://i.imgur.com/lGEPhaA.jpeg",
-            "parent": "CRYBABY",
-            "type": "Vinyl Plush Hanging Card"
-        }
-    ],
-    scammer: {
-        "name": "James Rodriguez",
-        "platform": [
-            "Facebook",
-            "Instagram",
-            "WhatsApp",
-            "Xiao Hong Shu"
-        ]
-    },
-    scammerAttr: [
-        {
-            "value": "Jimmy Investments",
-            "name": "name",
-            "category": "name",
-            "type": "string"
-        },
-        {
-            "value": "Jay Rod",
-            "name": "name",
-            "category": "name",
-            "type": "string"
-        },
-        {
-            "value": "@eliz.parker88",
-            "name": "Facebook",
-            "category": "social_media",
-            "type": "string"
-        },
-        {
-            "value": "@eliz_investments",
-            "name": "Instagram",
-            "category": "social_media",
-            "type": "string"
-        },
-        {
-            "name": "GXbank",
-            "value": "8888004154126",
-            "category": "payment_methods",
-            "type": "string"
-        },
-        {
-            "name": "BigPay",
-            "value": "83047584153125",
-            "category": "payment_methods",
-            "type": "string"
-        },
-        {
-            "name": "Public Bank",
-            "value": "6420013123",
-            "category": "payment_methods",
-            "type": "string"
-        }
-    ]
-};
+import { fetchIncidentGetUser } from "@api";;
 
 function Index(props) {
 
@@ -259,12 +142,10 @@ function Index(props) {
         },
     ];
 
-    
-
     return (
         <>
             <BpLoading loading={loading} />
-            <Box sx={{ py: 4 }}>
+            <Box sx={{ py: 3 }}>
                 <Container maxWidth={"xl"}>
                     {/* Title */}
                     <TitleSection />

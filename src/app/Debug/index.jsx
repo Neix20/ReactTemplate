@@ -62,8 +62,7 @@ const template = {
                     value: z.enum(["Seller", "Buyer"])
                 }),
             }))
-        }),
-        isArray: true,
+        })
     },
     report: {
         key: "report",
@@ -75,20 +74,6 @@ const template = {
             {
                 "name": "scammer_type",
                 "type": "multi-dropdown",
-                "selection": [
-                    {
-                        "label": "Seller",
-                        "value": "Seller"
-                    },
-                    {
-                        "label": "Buyer",
-                        "value": "Buyer"
-                    }
-                ]
-            },
-            {
-                "name": "payment",
-                "type": "dropdown",
                 "selection": [
                     {
                         "label": "Seller",
@@ -290,6 +275,65 @@ function CuSelect(props) {
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions, Selectors } from '@libs/redux';
 
+import { FormControl, FormLabel, FormHelperText } from "@mui/material";
+import { Controller } from "react-hook-form";
+
+import { BpImageUpload, BpImageGallery } from "@components";
+
+function ExampleFormDataLs(props) {
+
+    const templ = {
+        report: {
+            key: "images",
+            schema: z.object({
+                images: z.array(z.object({
+                    fileName: z.string(),
+                    fileData: z.string(),
+                    fileType: z.string(),
+                    fileSize: z.number()
+                })).min(1),
+            }),
+            initial: {
+                images: []
+            }
+        }
+    }
+
+    const { key: term, control, handleSubmit, resetData } = useForm(templ.report);
+    const { data: imgAsset, append: onAdd, remove: onDelete } = useFormDataLs({ key: term, control });
+
+    const addImgAsset = (item) => onAdd(item);
+    const deleteImgAsset = (idx) => onDelete(idx);
+
+    const onSubmit = (data) => {
+        alert("Success");
+    }
+
+    return (
+        <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+            <Grid2 container flexDirection={"column"} spacing={1}>
+                <Typography>Nickname</Typography>
+                <Controller
+                    name={term}
+                    control={control}
+                    render={({ fieldState: { error } }) => {
+                        return (
+                            <>
+                                <BpImageUpload onAdd={addImgAsset} error={error} />
+                                <BpImageGallery data={imgAsset} onDelete={deleteImgAsset} />
+                            </>
+                        )
+                    }}
+                />
+                <Grid2 container>
+                    <Button variant={"contained"} onClick={resetData}>Reset</Button>
+                    <Button type={"submit"} variant={"contained"}>Submit</Button>
+                </Grid2>
+            </Grid2>
+        </Box>
+    )
+}
+
 function Index(props) {
 
     const user = useSelector(Selectors.userSelect);
@@ -298,11 +342,11 @@ function Index(props) {
         <Grid2 container flexDirection={"column"} spacing={1} sx={{ padding: 2 }}>
             <ColorModeIconDropdown />
             <Typography>{JSON.stringify(user)}</Typography>
-            <CuSelect />
-            {/* <ExampleFormDataLs /> */}
-            <ExampleForm />
+            {/* <CuSelect /> */}
+            {/* <ExampleForm /> */}
             {/* <ExampleDataTable /> */}
             {/* <MultipleForm /> */}
+            <ExampleFormDataLs />
         </Grid2>
     )
 }

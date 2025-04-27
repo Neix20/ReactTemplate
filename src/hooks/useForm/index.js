@@ -28,11 +28,13 @@ function processedFormData(field, data) {
 
 function Index(props) {
 
-    const { key = "", field = [], schema = {}, initial = {}, isArray = false } = props;
+    const { key = "", field = [], schema = {}, initial = {} } = props;
 
     const {
         register,
         control,
+        setValues,
+        getValues,
         handleSubmit,
         reset: loadData,
         watch,
@@ -41,23 +43,14 @@ function Index(props) {
             isDirty
         }
     } = useForm({
-        mode: "onChange",
+        // mode: "onChange",
         resolver: zodResolver(schema)
     });
 
     // Array or Object
     const cusHandleSubmit = (onSubmit, onError) => handleSubmit((data, e) => {
         
-        let transformedData = {};
-
-        if (isArray) {
-            transformedData = {
-                [key]: data[key].map(x => processedFormData(field, x))
-            }
-        } else {
-            transformedData = processedFormData(field, data);
-        }
-
+        let transformedData = processedFormData(field, data);
         return onSubmit(transformedData, e);
     }, onError);
 
@@ -67,6 +60,8 @@ function Index(props) {
         key,
         field,
         control,
+        setValues,
+        getValues,
         watch,
         handleSubmit: cusHandleSubmit,
         loadData,

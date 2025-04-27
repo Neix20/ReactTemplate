@@ -12,6 +12,7 @@ import IpSeries from "@app/Admin/IpSeries";
 import IpSeriesDetails from "@app/Admin/IpSeries/IpSeriesDetails";
 
 import Approve from "@app/Admin/Approve";
+import ApproveIncidentDetails from "@app/Admin/Approve/IncidentDetails";
 
 import Scammer from "@app/Admin/Scammer";
 import ScammerDetails from "@app/Admin/Scammer/ScammerDetails";
@@ -83,6 +84,12 @@ const menuItems = [
                 url: '/Admin/Approve',
                 icon: AssignmentTurnedIn,
                 element: <Approve />
+            },
+            {
+                id: 'admin-approve-incident-details',
+                show: false,
+                url: '/Admin/Approve/:IncidentId',
+                element: <ApproveIncidentDetails />
             },
             {
                 id: 'admin-ip-series',

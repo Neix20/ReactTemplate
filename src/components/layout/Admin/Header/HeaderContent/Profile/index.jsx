@@ -80,7 +80,7 @@ export default function Profile() {
 		setValue(newValue);
 	};
 
-	const { name: userName } = useSelector(Selectors.userSelect);
+	const { name: userName, profile: userProfile } = useSelector(Selectors.userSelect);
 
 	const logOut = () => {
 		
@@ -111,8 +111,8 @@ export default function Profile() {
 				onClick={handleToggle}
 			>
 				<Stack direction="row" sx={{ gap: 1.25, alignItems: 'center', p: 0.5 }}>
-					<Avatar alt="profile user" src={Images.defaultAvatar} sx={{ width: "32px", height: "32px" }} />
-					<Typography variant="subtitle1" sx={{ textTransform: 'capitalize' }}>
+					<Avatar alt="profile user" src={userProfile} sx={{ width: "32px", height: "32px" }} />
+					<Typography variant="subtitle1" color="text.primary" sx={{ textTransform: 'capitalize' }}>
 						{userName}
 					</Typography>
 				</Stack>
@@ -144,7 +144,7 @@ export default function Profile() {
 										<Grid container justifyContent="space-between" alignItems="center">
 											<Grid>
 												<Stack direction="row" sx={{ gap: 1.25, alignItems: 'center' }}>
-													<Avatar alt="profile user" src={Images.defaultAvatar} sx={{ width: 32, height: 32 }} />
+													<Avatar alt="profile user" src={userProfile} sx={{ width: 32, height: 32 }} />
 													<Stack>
 														<Typography variant="h6">{userName}</Typography>
 														<Typography variant="body2" color="text.secondary">

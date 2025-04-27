@@ -74,6 +74,7 @@ import fetchIncidentUpdate from "./Incident/update";
 import fetchIncidentDelete from "./Incident/delete";
 import fetchIncidentUploadImg from "./Incident/uploadImg";
 import fetchIncidentQuery from "./Incident/query";
+import fetchIncidentUpdateStatus from "./Incident/updateStatus";
 
 export {
     fetchIncidentGetAll,
@@ -85,7 +86,8 @@ export {
     fetchIncidentUpdate,
     fetchIncidentDelete,
     fetchIncidentUploadImg,
-    fetchIncidentQuery
+    fetchIncidentQuery,
+    fetchIncidentUpdateStatus
 }
 
 import fetchIpSeriesGetAll from "./IpSeries/getAll";
@@ -94,6 +96,7 @@ import fetchIpSeriesGetIncident from "./IpSeries/getIncident";
 import fetchIpSeriesAdd from "./IpSeries/add";
 import fetchIpSeriesUpdate from "./IpSeries/update";
 import fetchIpSeriesDelete from "./IpSeries/delete";
+import fetchIpSeriesPending from "./IpSeries/pending";
 
 export {
     fetchIpSeriesGetAll,
@@ -101,13 +104,20 @@ export {
     fetchIpSeriesGetIncident,
     fetchIpSeriesAdd,
     fetchIpSeriesUpdate,
-    fetchIpSeriesDelete
+    fetchIpSeriesDelete,
+    fetchIpSeriesPending
 }
 
 import fetchSignIn from "./User/signIn";
 import fetchSignUp from "./User/signUp";
+import fetchUserReport from "./User/report";
+import fetchUserDashboard from "./User/dashboard";
+import fetchUserProfilePhoto from "./User/uploadProfilePhoto";
 
 export {
     fetchSignIn,
-    fetchSignUp
+    fetchSignUp,
+    fetchUserReport,
+    fetchUserDashboard,
+    fetchUserProfilePhoto
 }
