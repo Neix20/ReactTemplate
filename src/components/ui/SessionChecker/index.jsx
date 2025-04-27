@@ -11,19 +11,21 @@ const Index = (props) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const user = useSelector(Selectors.userSelect);
+    const { role = "User" } = useSelector(Selectors.userSelect);
 
     useEffect(() => {
-        // if (location.pathname.startsWith("/Admin")) {
-        //     clsAuth.isUserAuthenticated(user)
-        //     .then(data => {
-        //     })
-        //     .catch(err => {
-        //         alert(err);
-        //         navigate("/Login");
-        //     })
-        // }
-    }, [location.pathname]);
+        if (location.pathname.startsWith("/Admin") && role === "User") {
+            navigate("/");
+                alert("Unfortunately, you're not an Admin!");
+            // clsAuth.isUserAuthenticated(user)
+            // .then(data => {
+            // })
+            // .catch(err => {
+            //     alert(err);
+            //     navigate("/Login");
+            // })
+        }
+    }, [location.pathname, role]);
 
     return null;
 };

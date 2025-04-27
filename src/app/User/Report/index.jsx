@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-import { Container, Grid2, Typography, Button, IconButton, Box, Tooltip, Paper, Card } from "@mui/material";
+import { Container, Grid2, Typography, Button, IconButton, Box, Tooltip, Paper, TextField, Card, getCollapseUtilityClass } from "@mui/material";
 import { GlobalStyles, SampleData } from "@config";
 
 import Stepper from "./components/Stepper";
@@ -9,12 +9,14 @@ import { BpForm, BpInput, BpImageGallery, BpImageUpload, BpLoading } from "@comp
 
 import { useForm, useFormDataLs, useToggle } from "@hooks";
 
-import { Delete, Add } from "@mui/icons-material";
+import { Delete, Add, CheckCircle, ContentCopy } from "@mui/icons-material";
 
 import { fetchIpSeriesGetAll, fetchIncidentUploadImg, fetchUserReport } from "@api";
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions, Selectors } from '@libs/redux';
+
+import { clsUtility } from "@utility";
 
 function useStep() {
     const [step, setStep] = useState(0);
@@ -336,7 +338,7 @@ function CuIpSeriesSelect(props) {
     });
 
     const onSubmit = () => {
-        const { name, image: { fileName, fileData, fileType }} = getValues();
+        const { name, image: { fileName, fileData, fileType } } = getValues();
         const _data = {
             label: name,
             value: fileData,
@@ -387,7 +389,7 @@ function CuIpSeriesSelect(props) {
 
 function Index(props) {
 
-    const { step, add, minus } = useStep();
+    const { step, add: addStep, minus: minusStep } = useStep();
 
     const { PK: userId } = useSelector(Selectors.userSelect);
 
@@ -404,6 +406,8 @@ function Index(props) {
 
     const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
     const { control, handleSubmit, isDirty } = useForm(template.report);
+
+    const [incTag, setIncTag] = useState("Error");
 
     // #region Ip Series Actions
     const [ipSeriesSelection, setIpSeriesSelection] = useState([]);
@@ -442,6 +446,23 @@ function Index(props) {
     const deleteImgAsset = (idx) => onDelete(idx);
     // #endregion
 
+    const uploadUserReport = (data) => {
+        setLoadingTrue();
+        fetchUserReport(data)
+            .then(res => {
+                setLoadingFalse();
+
+                const { tag = "" } = res;
+                setIncTag(_ => tag);
+
+                addStep();
+            })
+            .catch(err => {
+                setLoadingFalse();
+                console.error(err);
+            })
+    }
+
     useEffect(() => {
         getAllIpSeries();
     }, []);
@@ -449,20 +470,21 @@ function Index(props) {
     const onSubmit = (data) => {
 
         // Processing of Data
-
-        // const { images = [], ..._data } = data;
-
         const paramData = {
             userId,
             ...data,
         }
 
-        console.log(paramData);
+        uploadUserReport(paramData);
     }
 
     const onError = (error) => {
         alert("Please check if all required fields have been filled up!");
         console.error(error);
+    }
+
+    const copyIncTag = () => {
+        clsUtility.copyToClipboard(incTag);
     }
 
     return (
@@ -563,11 +585,43 @@ function Index(props) {
                         </Grid2>
                     </Grid2>
 
+                    {/* Last Page */}
+                    <Grid2 hidden={step !== 3} sx={style.reportBody}>
+                        <Grid2 container
+                            flexDirection={"column"}
+                            alignItems={"center"}
+                            spacing={2}>
+                            <Typography variant="h2">Success!</Typography>
+                            <CheckCircle sx={{ fontSize: 120, color: 'success.main' }} />
+                            <Typography variant="h4">Your incident tag is</Typography>
+                            <TextField
+                                value={incTag}
+                                slotProps={{
+                                    input: {
+                                        readOnly: true,
+                                        endAdornment: (incTag && (
+                                            <IconButton onClick={copyIncTag}>
+                                                <ContentCopy />
+                                            </IconButton>
+                                        ))
+                                    }
+                                }}
+                                sx={{
+                                    width: "280px",
+                                    input: {
+                                        textAlign: "center",
+                                        px: 3,
+                                    }
+                                }}
+                            />
+                        </Grid2>
+                    </Grid2>
+
                     {/* Button */}
-                    <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
-                        <Button type={"button"} variant={"outlined"} onClick={minus} sx={{ visibility: step < 1 ? "hidden" : "visible" }}>Previous</Button>
+                    <Grid2 container alignItems={"center"} justifyContent={"space-between"} sx={{ display: step < 3 ? "flex" : "none" }}>
+                        <Button type={"button"} variant={"outlined"} onClick={minusStep} sx={{ visibility: step < 1 ? "hidden" : "visible" }}>Previous</Button>
                         <Button type={"submit"} variant={"outlined"} disabled={!isDirty} sx={{ display: step == 2 ? "block" : "none" }}>Submit</Button>
-                        <Button type={"button"} variant={"contained"} onClick={add} sx={{ display: step < 2 ? "block" : "none" }}>Next</Button>
+                        <Button type={"button"} variant={"contained"} onClick={addStep} sx={{ display: step < 2 ? "block" : "none" }}>Next</Button>
                     </Grid2>
                 </Box>
             </Paper>

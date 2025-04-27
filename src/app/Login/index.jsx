@@ -289,6 +289,7 @@ function Main(props) {
     const onTimerDone = () => {
         navigate("/");
     }
+
     const { value: seconds, setValue: setSeconds } = useTimer(onTimerDone);
 
     const { control, handleSubmit, resetData } = useForm(template.login);
@@ -335,7 +336,13 @@ function Main(props) {
                 const { data = {} } = res;
                 dispatch(Actions.onChangeUser(data));
 
-                setSeconds(_ => 3);
+                const { role = "User" } = data;
+
+                if (role === "User") {
+                    navigate("/");
+                } else {
+                    navigate("/Admin");
+                }
             })
             .catch(err => {
                 setLoadingFalse();
@@ -379,7 +386,7 @@ function Main(props) {
 
     if (!firstTime) {
         return (
-            <></>
+            <CompletePage seconds={seconds} />
         );
     }
 

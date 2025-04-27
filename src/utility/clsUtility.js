@@ -58,9 +58,20 @@ function formatDate(dt, format = "LLLL d, yyyy") {
     return DateTime.fromISO(dt).toFormat(format);
 }
 
+function copyToClipboard(value) {
+    navigator.clipboard.writeText(value)
+    .then(() => {
+      alert('Copied to clipboard!');
+    })
+    .catch((err) => {
+      console.error('Failed to copy: ', err);
+    });
+}
+
 export {
     capitalize,
     genDefaultData,
+    copyToClipboard
 }
 
 export {

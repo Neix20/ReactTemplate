@@ -2,115 +2,63 @@
 import { z } from "zod";
 
 const schema = z.object({
-    profile: z.any(),
     name: z.string(),
     gender: z.enum(["Male", "Female"]),
     birthday: z.string().date("Invalid date"),
+    profile: z.any(),
     role: z.enum(["Admin", "User"]),
 });
 
 const obj = {
-    key: "Incident",
+    key: "User",
     field: [
         {
-            "name": "title",
+            "name": "name",
             "type": "text"
         },
         {
-            "name": "scammer_type",
+            "name": "gender",
             "type": "dropdown",
             "selection": [
                 {
-                    "label": "Seller",
-                    "value": "Seller"
+                    "label": "Male",
+                    "value": "Male",
                 },
                 {
-                    "label": "Buyer",
-                    "value": "Buyer"
+                    "label": "Female",
+                    "value": "Female",
                 }
             ]
         },
         {
-            "name": "tag",
-            "type": "text"
-        },
-        {
-            "name": "subtitle",
-            "type": "textarea"
-        },
-        {
-            "name": "description",
-            "type": "textarea"
-        },
-        {
-            "name": "social_url",
-            "type": "text"
-        },
-        {
-            "name": "post_date",
+            "name": "birthday",
             "type": "date"
         },
         {
-            "name": "reported_date",
-            "type": "date"
+            "name": "profile",
+            "type": "image"
         },
         {
-            "name": "trade_method",
+            "name": "role",
             "type": "dropdown",
             "selection": [
                 {
-                    "label": "Shipping",
-                    "value": "Shipping"
-                }
-            ]
-        },
-        {
-            "name": "total_amount",
-            "type": "decimal"
-        },
-        {
-            "name": "category",
-            "type": "dropdown",
-            "selection": [
-                {
-                    "label": "Scam",
-                    "value": "Scam"
+                    "label": "Admin",
+                    "value": "Admin",
                 },
                 {
-                    "label": "Alert",
-                    "value": "Alert"
-                },
-                {
-                    "label": "Others",
-                    "value": "Others"
+                    "label": "User",
+                    "value": "User",
                 }
             ]
-        },
-        {
-            "name": "platform",
-            "type": "dropdown",
-            "show": false
-        },
-        {
-            "name": "status",
-            "type": "dropdown",
-            "selection": SampleData.Status
-        },
+        }
     ],
     initial: {
-        title: "",
-        tag: "",
-        scammer_type: "",
-        subtitle: "",
-        description: "",
-        social_url: "",
-        post_date: "",
-        reported_date: "",
-        trade_method: "",
-        total_amount: "",
-        category: "",
-        platform: "",
-        status: ""
+        name: "",
+        gender: "",
+        birthday: "",
+        profile: null,
+        role: "",
     },
     schema
 }

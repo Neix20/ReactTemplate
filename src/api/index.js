@@ -114,10 +114,21 @@ import fetchUserReport from "./User/report";
 import fetchUserDashboard from "./User/dashboard";
 import fetchUserProfilePhoto from "./User/uploadProfilePhoto";
 
+import fetchUserGetAll from "./User/getAll";
+import fetchUserGet from "./User/get";
+import fetchUserAdd from "./User/add";
+import fetchUserUpdate from "./User/update";
+import fetchUserDelete from "./User/delete";
+
 export {
     fetchSignIn,
     fetchSignUp,
     fetchUserReport,
     fetchUserDashboard,
-    fetchUserProfilePhoto
+    fetchUserProfilePhoto,
+    fetchUserGetAll,
+    fetchUserGet,
+    fetchUserAdd,
+    fetchUserUpdate,
+    fetchUserDelete
 }

@@ -100,6 +100,7 @@ function Index(props) {
                         </Box>
                     </Box>
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
+                    <ColorModeIconDropdown />
                         {
                             (signInFlag) ? (
                                 <Profile />
@@ -108,7 +109,6 @@ function Index(props) {
                                     size="small" component={NavLink} to={"/Login"}>Login</Button>
                             )
                         }
-                        <ColorModeIconDropdown />
                     </Box>
                     <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
                         <ColorModeIconDropdown size="medium" />
@@ -127,12 +127,6 @@ function Index(props) {
                                     </IconButton>
                                 </Box>
                                 {menuItems?.map(renderMenuItem)}
-                                {/* <Divider sx={{ my: 3 }} />
-                            <MenuItem>
-                                <Button color="primary" variant="contained" fullWidth component={NavLink} to={"/SignIn"}>
-                                    Login
-                                </Button>
-                            </MenuItem> */}
                             </Box>
                         </Drawer>
                     </Box>

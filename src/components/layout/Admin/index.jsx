@@ -33,6 +33,8 @@ const BxContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
+import { BpSessionChecker } from "@components";
+
 export default function DashboardLayout(props) {
   
   const { pathname } = useLocation();
@@ -50,6 +52,7 @@ export default function DashboardLayout(props) {
     <Box sx={{ display: 'flex', width: '100%' }}>
       <Header />
       <Drawer />
+      <BpSessionChecker />
 
       <Box component="main" sx={{ width: 'calc(100% - 260px)', flexGrow: 1, 
           p: { xs: 2, sm: 3 } 

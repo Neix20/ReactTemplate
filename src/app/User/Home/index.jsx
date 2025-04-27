@@ -48,7 +48,9 @@ const template = {
 
 function SearchSection(props) {
 
-    const { setLoadingTrue, setLoadingFalse } = props;
+    const { loading = {} } = props;
+
+    const { setLoadingTrue, setLoadingFalse } = loading;
 
     const { flag, open, close } = useToggle();
     const { flag: isScammer, open: setScammerTrue, close: setScammerFalse } = useToggle();

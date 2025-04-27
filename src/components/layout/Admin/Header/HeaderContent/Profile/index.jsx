@@ -35,6 +35,8 @@ import { alpha, styled } from '@mui/material/styles';
 
 import { Images, clsConst } from "@config";
 
+import { clsUtility } from "@utility";
+
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
 	return (
@@ -58,8 +60,64 @@ import { Amplify } from "@libs/auth";
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions, Selectors } from '@libs/redux';
 
-export default function Profile() {
+function Temp(props) {
 	const theme = useTheme();
+
+	const [value, setValue] = useState(0);
+
+	const handleChange = (event, newValue) => {
+		setValue(newValue);
+	};
+
+	return (
+		<>
+			<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+				<Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="profile tabs">
+					<Tab
+						sx={{
+							display: 'flex',
+							flexDirection: 'row',
+							justifyContent: 'center',
+							alignItems: 'center',
+							textTransform: 'capitalize',
+							gap: 1.25,
+							'& .MuiTab-icon': {
+								marginBottom: 0
+							}
+						}}
+						icon={<UserOutlined />}
+						label="Profile"
+						{...a11yProps(0)}
+					/>
+					<Tab
+						sx={{
+							display: 'flex',
+							flexDirection: 'row',
+							justifyContent: 'center',
+							alignItems: 'center',
+							textTransform: 'capitalize',
+							gap: 1.25,
+							'& .MuiTab-icon': {
+								marginBottom: 0
+							}
+						}}
+						icon={<SettingOutlined />}
+						label="Setting"
+						{...a11yProps(1)}
+					/>
+				</Tabs>
+			</Box>
+			<TabPanel value={value} index={0} dir={theme.direction}>
+				<ProfileTab />
+			</TabPanel>
+			<TabPanel value={value} index={1} dir={theme.direction}>
+				<SettingTab />
+			</TabPanel>
+		</>
+	)
+}
+
+export default function Profile() {
 
 	const anchorRef = useRef(null);
 	const [open, setOpen] = useState(false);
@@ -74,16 +132,11 @@ export default function Profile() {
 		setOpen(false);
 	};
 
-	const [value, setValue] = useState(0);
+	const { name: userName, profile: userProfile, birthday: userBirthday } = useSelector(Selectors.userSelect);
 
-	const handleChange = (event, newValue) => {
-		setValue(newValue);
-	};
 
-	const { name: userName, profile: userProfile } = useSelector(Selectors.userSelect);
 
 	const logOut = () => {
-		
 		Amplify.handleSignOut()
 			.then(() => {
 				window.location = clsConst.LOG_OUT_URL;
@@ -148,7 +201,7 @@ export default function Profile() {
 													<Stack>
 														<Typography variant="h6">{userName}</Typography>
 														<Typography variant="body2" color="text.secondary">
-															UI/UX Designer
+															{clsUtility.formatDate(userBirthday)}
 														</Typography>
 													</Stack>
 												</Stack>
@@ -162,49 +215,7 @@ export default function Profile() {
 											</Grid>
 										</Grid>
 									</CardContent>
-
-									<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-										<Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="profile tabs">
-											<Tab
-												sx={{
-													display: 'flex',
-													flexDirection: 'row',
-													justifyContent: 'center',
-													alignItems: 'center',
-													textTransform: 'capitalize',
-													gap: 1.25,
-													'& .MuiTab-icon': {
-														marginBottom: 0
-													}
-												}}
-												icon={<UserOutlined />}
-												label="Profile"
-												{...a11yProps(0)}
-											/>
-											<Tab
-												sx={{
-													display: 'flex',
-													flexDirection: 'row',
-													justifyContent: 'center',
-													alignItems: 'center',
-													textTransform: 'capitalize',
-													gap: 1.25,
-													'& .MuiTab-icon': {
-														marginBottom: 0
-													}
-												}}
-												icon={<SettingOutlined />}
-												label="Setting"
-												{...a11yProps(1)}
-											/>
-										</Tabs>
-									</Box>
-									<TabPanel value={value} index={0} dir={theme.direction}>
-										<ProfileTab />
-									</TabPanel>
-									<TabPanel value={value} index={1} dir={theme.direction}>
-										<SettingTab />
-									</TabPanel>
+									<ProfileTab />
 								</MainCard>
 							</ClickAwayListener>
 						</Paper>
@@ -215,6 +226,7 @@ export default function Profile() {
 	);
 }
 
-TabPanel.propTypes = { 
-	children: PropTypes.node, 
-	value: PropTypes.number, index: PropTypes.number, other: PropTypes.any };
+TabPanel.propTypes = {
+	children: PropTypes.node,
+	value: PropTypes.number, index: PropTypes.number, other: PropTypes.any
+};
