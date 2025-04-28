@@ -10,12 +10,20 @@ import style from "./style";
 
 import { clsUtility } from "@utility";
 
+import { useNavigate } from "react-router-dom";
+
 const ScamReport = (props) => {
 
     const { incident = [] } = props;
 
+    const navigate = useNavigate();
+
+    const GoToReport = () => {
+        navigate("/Report");
+    }
+
     const renderReport = (obj, index) => (
-        <Box key={index} sx={{ borderBottom: "1px solid gray", pb: 2, mb: 2 }}>
+        <Box sx={{ borderBottom: "1px solid gray", pb: 2, mb: 2 }}>
             <Box display="flex" alignItems="center" gap={2} mb={2}>
                 <Avatar sx={{ bgcolor: "gray" }}></Avatar>
                 <Box>
@@ -37,8 +45,7 @@ const ScamReport = (props) => {
                 {obj.description}
             </Typography>
         </Box>
-    )
-
+    );
 
     return (
         <>
@@ -52,7 +59,7 @@ const ScamReport = (props) => {
             <Card sx={style.card}>
                 <Typography sx={style.cardTitle}>Submit Your Report</Typography>
                 <Typography color="gray">Have you been affected by this scammer? Share your experience to help protect others.</Typography>
-                <Button variant="contained" sx={{ backgroundColor: "#5096d1", mt: 2 }}>Submit Report</Button>
+                <Button variant="contained" onClick={GoToReport} sx={{ backgroundColor: "#5096d1", mt: 2 }}>Submit Report</Button>
             </Card>
         </>
     )

@@ -19,12 +19,12 @@ import ScamReport from "./components/ScamReport";
 import CommunitySupport from "./components/CommunitySupport";
 import HelpResource from "./components/HelpResource";
 
-import { fetchIncidentGetUser } from "@api";;
+import { fetchIncidentGetUser } from "@api";
 
 function Index(props) {
 
     const { IncidentId = "" } = useParams();
-
+    
     const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
 
     const style = {

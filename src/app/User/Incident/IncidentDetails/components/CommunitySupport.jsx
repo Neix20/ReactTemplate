@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Avatar, Box, Button, Checkbox, Divider, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, Checkbox, Divider, TextField, Typography, Card } from "@mui/material";
 import { ThumbUp } from "@mui/icons-material";
 
-const CommunityDiscussions = () => {
+import style from "./style";
+
+const CommunityDiscussions = (props) => {
   const [commentText, setCommentText] = useState("");
 
   const comments = [
@@ -28,11 +30,8 @@ const CommunityDiscussions = () => {
 
   return (
     <>
-
-
-      {/* Community Discussions */}
-      <Box sx={{ bgcolor: "#1E293B", borderRadius: 2, p: 3 }}>
-        <Typography sx={{ color: "#38BDF8", fontSize: "1.125rem", fontWeight: "medium", mb: 2 }}>
+      <Card sx={style.card}>
+        <Typography sx={style.cardTitle}>
           Community Discussions
         </Typography>
         {
@@ -60,11 +59,11 @@ const CommunityDiscussions = () => {
             </Box>
           ))
         }
-      </Box >
+      </Card >
 
       {/* Share Your Thoughts */}
-      < Box sx={{ bgcolor: "#1E293B", borderRadius: 2, p: 3 }}>
-        <Typography sx={{ fontSize: "1.125rem", fontWeight: "medium", mb: 2 }}>
+      <Card sx={style.card}>
+        <Typography sx={style.cardTitle}>
           Share Your Thoughts
         </Typography>
         <TextField
@@ -72,20 +71,17 @@ const CommunityDiscussions = () => {
           multiline
           rows={4}
           placeholder="Share your experience, advice, or support for other victims..."
-          sx={{ borderRadius: 2}}
+          sx={{ borderRadius: 2 }}
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
         />
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
-          <Box sx={{ display: "flex", alignItems: "center", color: "gray" }}>
-            <Checkbox sx={{ color: "gray" }} />
-            <Typography variant="body2">You can post anonymously</Typography>
-          </Box>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
+
           <Button variant="contained" sx={{ bgcolor: "#38BDF8", textTransform: "none" }}>
             Post Comment
           </Button>
         </Box>
-      </Box >
+      </Card >
     </>
   );
 };

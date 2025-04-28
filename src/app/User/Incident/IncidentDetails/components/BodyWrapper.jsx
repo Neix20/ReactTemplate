@@ -26,9 +26,9 @@ function Index(props) {
     )
 
     return (
-        <Grid2 container spacing={2}>
+        <Grid2 container spacing={1.5}>
             {/* Left Column */}
-            <Grid2 item size={{ xs: 12, sm: 4 }} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <Grid2 item size={{ xs: 12, sm: 4 }} sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
                 {/* Scammer Details */}
                 <Card sx={style.card}>
                     <Typography sx={style.cardTitle}>Scammer Details</Typography>
@@ -80,7 +80,7 @@ function Index(props) {
             </Grid2>
 
             {/* Right Column */}
-            <Grid2 item size={{ xs: 12, sm: 8 }} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <Grid2 item size={{ xs: 12, sm: 8 }} sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
                 {children}
             </Grid2>
         </Grid2>

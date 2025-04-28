@@ -16,7 +16,7 @@ const Index = (props) => {
     useEffect(() => {
         if (location.pathname.startsWith("/Admin") && role === "User") {
             navigate("/");
-                alert("Unfortunately, you're not an Admin!");
+            alert("Unfortunately, you're not an Admin!");
             // clsAuth.isUserAuthenticated(user)
             // .then(data => {
             // })
