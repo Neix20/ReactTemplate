@@ -74,10 +74,11 @@ function Index(props) {
 
     const renderPlatformItem = (item, ind) => (
         <Typography key={`platform-item-${ind}`} sx={(theme) => ({
-            backgroundColor: theme.palette.grey[400],
+            backgroundColor: theme.palette.grey[200],
             px: 1,
             borderRadius: .5,
-            fontWeight: "bold"
+            fontWeight: "bold",
+            color: "#000"
         })}>{clsUtility.capitalize(item)}</Typography>
     );
 
@@ -101,12 +102,12 @@ function Index(props) {
                         fontSize: {
                             xs: "0.75rem",
                             sm: "1rem"
-                        }
+                        },
+                        color: "#FFF"
                     }}>High Risk</Typography>
                 </Grid2>
                 <Typography sx={{
-                    fontWeight: "600",
-                    color: "#d3d3d3"
+                    fontWeight: "600"
                 }}>Reported by {header.no_reported} people</Typography>
                 {/* Platform Lists */}
                 <Grid2 container spacing={1}>
@@ -151,7 +152,11 @@ function Index(props) {
                     <TitleSection />
                 </Container>
             </Box>
-            <Box sx={{ backgroundColor: "#1a2332", py: 1 }}>
+            <Box sx={(theme) => ({
+                py: 1,
+                backgroundColor: "#f7fcfc",
+                ...theme.applyStyles('dark', { backgroundColor: "#1a2332"})
+            })}>
                 <Container maxWidth={"xl"}>
                     <BpTab
                         tabPages={tabPages}

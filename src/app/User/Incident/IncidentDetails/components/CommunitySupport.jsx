@@ -41,18 +41,10 @@ const CommunityDiscussions = (props) => {
                 <Avatar sx={{ bgcolor: "gray" }} />
                 <Box sx={{ flexGrow: 1 }}>
                   <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
-                    <Typography sx={{ color: "white" }}>{comment.name}</Typography>
+                    <Typography sx={(theme) => ({ color: "#000", ...theme.applyStyles('dark', { color: "#FFF" })})}>{comment.name}</Typography>
                     <Typography sx={{ color: "gray", fontSize: "0.875rem" }}>{comment.date}</Typography>
                   </Box>
-                  <Typography sx={{ color: "white", mb: 1 }}>{comment.text}</Typography>
-                  <Box sx={{ display: "flex", gap: 2 }}>
-                    <Button size="small" sx={{ color: "gray", textTransform: "none" }} startIcon={<ThumbUp />}>
-                      {comment.likes}
-                    </Button>
-                    <Button size="small" sx={{ color: "gray", textTransform: "none" }}>
-                      Reply
-                    </Button>
-                  </Box>
+                  <Typography sx={(theme) => ({ mb: 1, color: "#000", ...theme.applyStyles('dark', { color: "#FFF" })  })}>{comment.text}</Typography>
                 </Box>
               </Box>
               {index < comments.length - 1 && <Divider sx={{ borderColor: "gray", my: 2 }} />}
@@ -71,13 +63,13 @@ const CommunityDiscussions = (props) => {
           multiline
           rows={4}
           placeholder="Share your experience, advice, or support for other victims..."
-          sx={{ borderRadius: 2 }}
+          sx={{ borderRadius: 2}}
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
         />
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
-
-          <Button variant="contained" sx={{ bgcolor: "#38BDF8", textTransform: "none" }}>
+          
+        <Button variant="contained">
             Post Comment
           </Button>
         </Box>

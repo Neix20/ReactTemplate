@@ -30,7 +30,7 @@ const ScamReport = (props) => {
                     <Typography>Anonymous Victim</Typography>
                     <Typography variant="body2" color="gray">{clsUtility.formatDate(obj.reported_date)}</Typography>
                 </Box>
-                <Typography ml="auto" color={index === 0 ? "yellow" : "green"}>
+                <Typography ml="auto" color={index === 0 ? "#B8860B" : "green"}>
                     {index === 0 ? "Under Investigation" : "Verified"}
                 </Typography>
             </Box>
@@ -59,7 +59,7 @@ const ScamReport = (props) => {
             <Card sx={style.card}>
                 <Typography sx={style.cardTitle}>Submit Your Report</Typography>
                 <Typography color="gray">Have you been affected by this scammer? Share your experience to help protect others.</Typography>
-                <Button variant="contained" onClick={GoToReport} sx={{ backgroundColor: "#5096d1", mt: 2 }}>Submit Report</Button>
+                <Button variant="contained" onClick={GoToReport} sx={{ mt: 2 }}>Submit Report</Button>
             </Card>
         </>
     )

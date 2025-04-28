@@ -4,14 +4,14 @@ import { Security, Phone, Chat, Headset } from "@mui/icons-material";
 
 import style from "./style";
 
+
 const ResourceCard = ({ icon: Icon, title, details, contact }) => (
-    <Card sx={{ p: 2 }}>
+    <Card sx={(theme) => ({ p: 2, ...theme.applyStyles('dark', { backgroundColor: "#243757" }) })}>
         <Box display="flex" alignItems="center" gap={2} mb={2}>
-            <Box sx={{ width: 48, height: 48, 
-                backgroundColor: "rgba(56, 189, 248, 0.2)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Box sx={{ width: 48, height: 48, backgroundColor: "rgba(56, 189, 248, 0.2)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Icon sx={{ color: "#38BDF8", fontSize: 28 }} />
             </Box>
-            <Typography variant="body1" fontWeight="medium" color="white">{title}</Typography>
+            <Typography variant="body1" fontWeight="medium">{title}</Typography>
         </Box>
         <Typography variant="body2" color="gray" mb={1}>{details}</Typography>
         <Typography variant="body1">Contact:</Typography>
@@ -22,7 +22,7 @@ const ResourceCard = ({ icon: Icon, title, details, contact }) => (
 const HelpResource = () => {
     return (
         <>
-            <Card sx={{ backgroundColor: "#1E293B" }}>
+            <Card sx={style.cardBody}>
                 <CardContent>
                     <Typography sx={style.cardTitle}>Help & Support Resources</Typography>
                     <Grid2 container spacing={1.5} mt={1}>
@@ -42,7 +42,8 @@ const HelpResource = () => {
                 </CardContent>
             </Card>
 
-            <Card sx={{ position: "relative", overflow: "hidden" }}>
+            <Card sx={style.cardBody}>
+                {/* <Box sx={{ position: "absolute", top: 0, right: 0, width: "33%", height: "100%", background: "linear-gradient(to left, rgba(56, 189, 248, 0.1), transparent)" }} /> */}
                 <CardContent>
                     <Typography sx={style.cardTitle}>Need Immediate Help?</Typography>
                     <Typography color="gray" mb={3}>Don't face this alone. Reach out to our community.</Typography>
@@ -50,9 +51,9 @@ const HelpResource = () => {
                         <Avatar sx={{ bgcolor: "#38BDF8" }} />
                         <Avatar sx={{ bgcolor: "#3B82F6" }} />
                         <Avatar sx={{ bgcolor: "#2563EB" }} />
-                        <Typography color="white">150 people joined</Typography>
+                        <Typography>150 people joined</Typography>
                     </Grid2>
-                    <Button variant="contained" sx={{ backgroundColor: "#38BDF8" }}>Join our support community</Button>
+                    <Button variant="contained">Join our support community</Button>
                 </CardContent>
             </Card>
         </>

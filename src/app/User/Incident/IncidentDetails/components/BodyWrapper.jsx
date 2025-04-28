@@ -4,9 +4,7 @@ import { Box, Grid2, Card, Typography } from "@mui/material";
 // #1E293B
 
 // #38BDF8
-// #5096d1
-
-import { Images } from "@config";
+// #5096d1import { Images } from "@config";
 
 import { clsUtility } from "@utility";
 
@@ -16,7 +14,11 @@ function Index(props) {
     const { details = {}, statistic = {}, ipSeries = [], children = (<></>) } = props;
 
     const renderIpSeries = (obj) => (
-        <Box sx={{ backgroundColor: "#243757", borderRadius: 2, display: "flex", gap: 1, p: 2 }}>
+        <Box sx={(theme) => ({ 
+            borderRadius: 2, display: "flex", gap: 1, p: 2,
+            backgroundColor: theme.palette.primary["0"],
+            ...theme.applyStyles('dark', { backgroundColor: "#243757"})
+        })}>
             <Box component={"img"} src={obj.image} alt="CRYBABY Series" style={{ width: 48, height: 48, borderRadius: 8 }} />
             <Box>
                 <Typography variant="body1" fontWeight="medium">{obj.name}<Typography sx={{ fontStyle: "italic"}}>{obj.parent}</Typography></Typography>
