@@ -7,6 +7,7 @@ import Incident from "@app/User/Incident";
 import IncidentDetails from "@app/User/Incident/IncidentDetails";
 
 import Report from "@app/User/Report";
+import CheckReport from "@app/User/Report/CheckReport";
 
 import Error from "@app/Error";
 
@@ -54,6 +55,13 @@ const menuItems = [
         url: '/Report',
         type: "item",
         element: <Report />
+    },
+    {
+        id: "user-check-report",
+        title: "check_report",
+        url: '/CheckReport',
+        type: "item",
+        element: <CheckReport />
     },
     {
         id: "user-error",
