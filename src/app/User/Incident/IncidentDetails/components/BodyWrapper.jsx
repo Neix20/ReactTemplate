@@ -56,9 +56,8 @@ function Index(props) {
                 <Card sx={style.card}>
                     <Typography sx={style.cardTitle}>Scam Statistics</Typography>
                     <Box>
-                        <Typography sx={style.cardSubTitle}>Total Incidents</Typography>
+                        <Typography sx={style.cardSubTitle}>Total Incidents Reported</Typography>
                         <Typography variant="h4">{statistic.total_incident}</Typography>
-                        <Typography variant="body2" color="gray">reported cases</Typography>
                     </Box>
                     <Box>
                         <Typography sx={style.cardSubTitle}>Total Amount Scammed</Typography>

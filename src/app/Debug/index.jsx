@@ -312,7 +312,6 @@ function ExampleFormDataLs(props) {
     return (
         <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
             <Grid2 container flexDirection={"column"} spacing={1}>
-                <Typography>Nickname</Typography>
                 <Controller
                     name={term}
                     control={control}

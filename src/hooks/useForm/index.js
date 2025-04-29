@@ -33,11 +33,8 @@ function Index(props) {
     const {
         register,
         control,
-        setValues,
-        getValues,
         handleSubmit,
         reset: loadData,
-        watch,
         formState: {
             errors,
             isDirty
@@ -60,9 +57,6 @@ function Index(props) {
         key,
         field,
         control,
-        setValues,
-        getValues,
-        watch,
         handleSubmit: cusHandleSubmit,
         loadData,
         resetData,

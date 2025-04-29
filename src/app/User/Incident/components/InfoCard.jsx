@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 
-import { Grid2, Typography, Box } from "@mui/material";
+import { Grid2, Typography, Box, Card, CardActionArea } from "@mui/material";
 
 import { Link } from "react-router-dom";
 
 import { Images } from "@config";
 
-import { Card, CardActionArea } from "@mui/material";
+import { BpPlatformLogo } from "@components";
 
 import { clsUtility } from "@utility";
 
@@ -67,36 +67,6 @@ function ImageWithText(props) {
     );
 }
 
-function InfoPlatform(props) {
-
-    const { term = "Facebook", sx = {} } = props;
-
-    const dict = {
-        "Facebook": {
-            src: Images.facebook,
-            alt: "Facebook"
-        },
-        "Instagram": {
-            src: Images.instagram,
-            alt: "Instagram"
-        },
-        "Xiaohongshu": {
-            src: Images.xiaohongshu,
-            alt: "Xiaohongshu"
-        }
-    }
-    
-    if (!(term in dict)) {
-        return (
-            <Box component="img" src={Images.facebook} alt="Facebook" sx={sx} />
-        )
-    }
-
-    return (
-        <Box component="img" {...dict[term]} sx={sx} />
-    )
-}
-
 function InfoCard(props) {
     
     const { PK = "", title = "", total_amount = "", reported_date = "", images = "", platform = "Facebook" } = props;
@@ -110,18 +80,8 @@ function InfoCard(props) {
                 boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
             }
         },
-        platformIcon: {
-            height: 24,
-            width: 24,
-            marginRight: 1.5
-        },
         contentWrapper: {
             padding: 2
-        },
-        header: {
-            display: 'flex',
-            alignItems: 'center',
-            marginBottom: 2
         },
         detailRow: {
             display: 'flex',
@@ -158,12 +118,12 @@ function InfoCard(props) {
                 
                 <Box sx={style.contentWrapper}>
                     {/* Header - Platform Icon & Name */}
-                    <Box sx={style.header}>
-                        <InfoPlatform term={platform} sx={style.platformIcon} />
+                    <Grid2 container spacing={1} sx={{ mb: 1 }}>
+                    <BpPlatformLogo term={platform} />
                         <Typography variant="h6" sx={{ fontWeight: 600 }}>
                             {title}
                         </Typography>
-                    </Box>
+                    </Grid2>
 
                     {/* Amount Row */}
                     <Box sx={style.detailRow}>

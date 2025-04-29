@@ -53,9 +53,7 @@ function Index(props) {
 
     const getIncidentDetails = () => {
         setLoadingTrue();
-        fetchIncidentGetUser({
-            PK: IncidentId
-        })
+        fetchIncidentGetUser({ PK: IncidentId })
             .then(res => {
                 setLoadingFalse();
                 setData(_ => res);

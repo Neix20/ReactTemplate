@@ -10,6 +10,8 @@ import Report from "@app/User/Report";
 
 import Error from "@app/Error";
 
+import Profile from "@app/User/Profile";
+
 import { Context } from "@config";
 
 const menuItems = [
@@ -37,10 +39,14 @@ const menuItems = [
     {
         id: "user-incident-details",
 		url: "/Incident/:IncidentId",
-		text: "incident_details",
-		type: "item",
 		show: false,
 		element: <IncidentDetails />
+	},
+    {
+        id: "user-profile",
+		url: "/Profile",
+		show: false,
+		element: <Profile />
 	},
     {
         id: "user-report",

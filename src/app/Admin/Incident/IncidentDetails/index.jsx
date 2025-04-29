@@ -12,6 +12,8 @@ import { GlobalStyles, Models, SampleData } from "@config";
 
 import { fetchIncidentGetAdmin, fetchIncidentAdd, fetchIncidentUpdate, fetchIncidentUploadImg, fetchScammerGetAll, fetchIpSeriesGetAll } from "@api";
 
+import { useWatch } from "react-hook-form";
+
 function Index(props) {
 
     const { IncidentId = "0" } = useParams();
@@ -23,10 +25,10 @@ function Index(props) {
     const [ipSeriesSelection, setIpSeriesSelection] = useState([]);
 
     // Fix This for Incident
-    const { control: multiSelControl, watch: multiSelWatch, loadData: loadMultiSel, isDirty: isMultiDirty } = useForm({});
+    const { control: multiSelControl, loadData: loadMultiSel, isDirty: isMultiDirty } = useForm({});
 
-    const scammer = multiSelWatch("scammer");
-    const ipSeries = multiSelWatch("ipSeries");
+    const scammer = useWatch({ control: multiSelControl, name: "scammer" });
+    const ipSeries = useWatch({ control: multiSelControl, name: "ipSeries" });
 
     const {
         field: incField,
@@ -160,7 +162,6 @@ function Index(props) {
     };
 
     // #region Images
-
     const [imgAsset, setImgAsset] = useState([]);
 
     const addImgAsset = (item) => {
