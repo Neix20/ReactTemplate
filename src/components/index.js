@@ -4,6 +4,8 @@ import ColorModeSelect from "./ui/ColorMode/ColorModeSelect";
 
 // import BpLogo from "./ui/Logo/BeruPop";
 import BpLogo from "./ui/Logo";
+import BpPlatformLogo from "./ui/Logo/Platform/index.jsx";
+
 import BpLoading from "./ui/Loading";
 
 export {
@@ -13,7 +15,7 @@ export {
 
 import BpForm from "./ui/Form/Body/Form.jsx";
 import BpFormItem from "./ui/Form/Item/FormItem.jsx";
-import BpBasicFormItem from "./ui/Form/Item/BasicFormItem.jsx";
+import BpInput from "./ui/Form/Item/Input.jsx";
 
 import BpDataTable from "./ui/DataTable";
 import BpJsonDataTable from "./ui/DataTable/json.jsx";
@@ -28,12 +30,18 @@ import BpSessionChecker from "./ui/SessionChecker";
 
 import BpHeader from "./ui/Header";
 
-import BpSearchMenuList from "./ui/SearchMenuList";
+import UserLayout from "./layout/User";
+import AdminLayout from "./layout/Admin";
+
+export {
+    UserLayout,
+    AdminLayout
+}
 
 export {
     BpForm,
     BpFormItem,
-    BpBasicFormItem
+    BpInput
 }
 
 export {
@@ -50,9 +58,9 @@ export {
     BpLoading,
     BpHeader,
     BpLogo,
+    BpPlatformLogo,
     BpGridMasonry,
     BpTab,
-    BpSessionChecker,
-    BpSearchMenuList
+    BpSessionChecker
 }
 

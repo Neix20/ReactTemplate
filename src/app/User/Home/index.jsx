@@ -5,11 +5,14 @@ import { Container, Grid2, Typography, Button, Paper, Box, Tooltip, Collapse, Te
 import { Images } from "@config";
 import { clsUtility } from "@utility";
 
+import { useDispatch, useSelector } from 'react-redux';
+import { Actions, Selectors } from '@libs/redux';
+
 // #region Components
 function TitleSection() {
     return (
         <Grid2 container flexDirection={"column"} alignItems={"center"} justifyContent={"center"}>
-            <Typography variant={"h1"} sx={{ fontSize: { xs: "1.875rem", sm: "2.5rem" } }}>Is this A Scammer?</Typography>
+            <Typography variant={"h1"} sx={{ fontSize: { xs: "1.875rem", sm: "2.5rem" } }}>Is this a Scammer?</Typography>
             <Typography variant={"body1"} color={"text.secondary"} sx={{ fontSize: { xs: 11, sm: "0.875rem" } }}>
                 Check to see if the person you're dealing with is a scammer
             </Typography>
@@ -17,11 +20,13 @@ function TitleSection() {
     );
 }
 
-import { useForm, useToggle } from "@hooks";
-import { BpLoading } from "@components";
+import { useToggle, useForm } from "@hooks";
+import { BpLoading, BpInput } from "@components";
 
-import { fetchScammerAttrQuery } from "@api";
+import { fetchScammerAttrQuery, fetchUserDashboard } from "@api";
 import { Search } from "@mui/icons-material";
+
+import { z } from "zod";
 
 const template = {
     Scammer: {
@@ -31,29 +36,42 @@ const template = {
                 "name": "query",
                 "type": "text"
             }
-        ]
+        ],
+        initial: {
+            query: ""
+        },
+        schema: z.object({
+            query: z.string().min(1, "Query is required")
+        })
     }
 }
 
 function SearchSection(props) {
-    
-    const { flag: loadingFlag, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
-    
+
+    const { loading = {} } = props;
+
+    const { setLoadingTrue, setLoadingFalse } = loading;
+
     const { flag, open, close } = useToggle();
     const { flag: isScammer, open: setScammerTrue, close: setScammerFalse } = useToggle();
 
-    // const flag = true;
-    // const isScammer = true;
+    const { control, handleSubmit, resetData } = useForm(template.Scammer);
 
-    const { key, data, field, updateDataHtml, resetData } = useForm(template.Scammer);
+    const { PK: userId } = useSelector(Selectors.userSelect);
 
     const [inc, setInc] = useState({});
 
-    const onSearch = () => {
+    const onSearch = (data) => {
+
+        const _data = {
+            userId,
+            ...data
+        }
+
         setLoadingTrue();
         close();
 
-        fetchScammerAttrQuery(data)
+        fetchScammerAttrQuery(_data)
             .then(res => {
                 open();
                 setLoadingFalse();
@@ -62,7 +80,7 @@ function SearchSection(props) {
 
                 if (Object.keys(scammer).length > 0) {
                     setScammerTrue();
-                    setInc(_ => incident);
+                    setInc(_ => incident.at(0));
                 } else {
                     setScammerFalse();
                 }
@@ -85,12 +103,14 @@ function SearchSection(props) {
             p: 2
         },
         search: {
+            display: "flex",
+            gap: 1,
             width: { xs: "100%", sm: "80%", md: "60%" },
         },
         txtInput: {
             flex: .8,
             flexGrow: 1,
-            borderRadius: 0,
+            borderRadius: 0
         }
     }
 
@@ -110,8 +130,8 @@ function SearchSection(props) {
                 alignItems={"center"}
                 justifyContent={"center"} sx={style.error}>
                 <Typography variant={"h2"} sx={{ fontSize: { xs: "1rem", sm: "2.25rem" } }}>Danger! This person is a scammer</Typography>
-                <MuLink href={`/Incident/${inc.PK}`} underline={"hover"} sx={{ color: "inherit"}}>
-                    <Typography variant={"h3"} sx={{ fontSize: { xs: "0.75rem", sm: "1.75rem" } }}>{inc.scammer}</Typography>
+                <MuLink href={`/Incident/${inc.PK}`} underline={"hover"} sx={{ color: "inherit" }}>
+                    <Typography variant={"h3"} sx={{ fontSize: { xs: "0.75rem", sm: "1.75rem" } }}>{inc.title}</Typography>
                 </MuLink>
             </Grid2>
         )
@@ -121,60 +141,48 @@ function SearchSection(props) {
 
     return (
         <>
-            <BpLoading loading={loadingFlag} />
             <Grid2 container alignItems={"center"} justifyContent={"center"}
                 sx={{
                     borderTop: '1px solid',
                     borderColor: 'divider',
                     pt: { xs: 4, sm: 4 }
                 }}>
-                <Grid2 container spacing={1} sx={style.search}>
-                    <TextField
+
+                <Box component={"form"} onSubmit={handleSubmit(onSearch)} sx={style.search}>
+                    <BpInput
+                        name={"query"} type={"text"}
                         placeholder={"Social Media Ids, Bank Account..."}
-                        type={"text"}
-                        name={"query"}
-                        value={data["query"]}
-                        onChange={updateDataHtml}
-                        sx={style.txtInput}
-                    />
+                        control={control}
+                        sx={style.txtInput} />
                     <Button
+                        type={"submit"}
                         variant={"contained"}
                         color={"warning"}
-                        onClick={onSearch}
                         endIcon={<Search />}
                         sx={{ flex: .2, maxWidth: "100px", minWidth: "100px" }}>Search</Button>
-                </Grid2>
+                </Box>
             </Grid2>
-            <Collapse in={flag} sx={{ display: flag ? "block": "none" }}>
+            <Collapse in={flag} sx={{ display: flag ? "block" : "none" }}>
                 <SearchResult />
             </Collapse>
         </>
     )
 }
 
-function AnalyticSection() {
+function AnalyticSection(props) {
 
-    const data = [
-        {
-            "name": "no._scammer",
-            "value": "215"
-        },
-        {
-            "name": "no._incidents",
-            "value": "666"
-        },
-        {
-            "name": "amount_being_scammed",
-            "value": "812.83"
-        }
-    ]
+    const { data = {} } = props;
 
-    const renderItem = ({ name, value }) => (
+    data["total_amount_scammed"] = clsUtility.formatCurrency(data["total_amount_scammed"]);
+
+    const renderItem = ({ key, value }) => (
         <Grid2 container spacing={1} flexDirection={"column"} alignItems={"center"}>
             <Typography variant={"h2"} sx={{ fontSize: { xs: "1.5rem", sm: "2rem" } }}>{value}</Typography>
-            <Typography variant={"body"} color={"text.secondary"} sx={{ fontSize: { xs: "0.6rem", sm: "1rem" } }}>{clsUtility.capitalize(name)}</Typography>
+            <Typography variant={"body"} color={"text.secondary"} sx={{ fontSize: { xs: "0.6rem", sm: "1rem" } }}>{clsUtility.capitalize(key)}</Typography>
         </Grid2>
-    )
+    );
+
+    const arr = Object.entries(data).map(([key, value]) => ({ key, value }));
 
     return (
         <Grid2 container alignItems={"center"} justifyContent={"center"}
@@ -184,7 +192,7 @@ function AnalyticSection() {
                 borderColor: 'divider',
                 pt: { xs: 4, sm: 4 }
             }}>
-            {data.map(renderItem)}
+            {arr.map(renderItem)}
         </Grid2>
     )
 }
@@ -234,18 +242,32 @@ function SourceSection() {
     )
 }
 
-import Chart from "./components/Chart";
-
-function ChartSection() {
-    return (
-        <Paper sx={{ p: 2 }}>
-            <Chart />
-        </Paper>
-    )
-}
 // #endregion
 
 function Index(props) {
+
+    const { flag: loadingFlag, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
+
+    const [analytics, setAnalytics] = useState([]);
+
+    const getAnalytics = () => {
+        setLoadingTrue();
+        fetchUserDashboard()
+        .then(res => {
+            setLoadingFalse();
+
+            const { data = [] } = res;
+            setAnalytics(_ => data);
+        })
+        .catch(err => {
+            setLoadingFalse();
+        })
+    }
+
+    useEffect(() => {
+        getAnalytics();
+    }, [])
+
     return (
         <Container maxWidth={"xl"} sx={{
             display: "flex",
@@ -253,11 +275,11 @@ function Index(props) {
             gap: { xs: 5, sm: 5 },
             pt: { xs: 4, sm: 8 },
         }}>
+            <BpLoading loading={loadingFlag} />
             <TitleSection />
-            <SearchSection />
-            <AnalyticSection />
+            <SearchSection loading={{ setLoadingTrue, setLoadingFalse }} />
+            <AnalyticSection data={analytics} />
             <SourceSection />
-            {/* <ChartSection /> */}
         </Container>
     )
 }

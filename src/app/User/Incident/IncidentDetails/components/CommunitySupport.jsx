@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Avatar, Box, Button, Checkbox, Divider, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, Checkbox, Divider, TextField, Typography, Card } from "@mui/material";
 import { ThumbUp } from "@mui/icons-material";
 
-const CommunityDiscussions = () => {
+import style from "./style";
+
+const CommunityDiscussions = (props) => {
   const [commentText, setCommentText] = useState("");
 
   const comments = [
@@ -28,11 +30,8 @@ const CommunityDiscussions = () => {
 
   return (
     <>
-
-
-      {/* Community Discussions */}
-      <Box sx={{ bgcolor: "#1E293B", borderRadius: 2, p: 3 }}>
-        <Typography sx={{ color: "#38BDF8", fontSize: "1.125rem", fontWeight: "medium", mb: 2 }}>
+      <Card sx={style.card}>
+        <Typography sx={style.cardTitle}>
           Community Discussions
         </Typography>
         {
@@ -42,29 +41,21 @@ const CommunityDiscussions = () => {
                 <Avatar sx={{ bgcolor: "gray" }} />
                 <Box sx={{ flexGrow: 1 }}>
                   <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
-                    <Typography sx={{ color: "white" }}>{comment.name}</Typography>
+                    <Typography sx={(theme) => ({ color: "#000", ...theme.applyStyles('dark', { color: "#FFF" })})}>{comment.name}</Typography>
                     <Typography sx={{ color: "gray", fontSize: "0.875rem" }}>{comment.date}</Typography>
                   </Box>
-                  <Typography sx={{ color: "white", mb: 1 }}>{comment.text}</Typography>
-                  <Box sx={{ display: "flex", gap: 2 }}>
-                    <Button size="small" sx={{ color: "gray", textTransform: "none" }} startIcon={<ThumbUp />}>
-                      {comment.likes}
-                    </Button>
-                    <Button size="small" sx={{ color: "gray", textTransform: "none" }}>
-                      Reply
-                    </Button>
-                  </Box>
+                  <Typography sx={(theme) => ({ mb: 1, color: "#000", ...theme.applyStyles('dark', { color: "#FFF" })  })}>{comment.text}</Typography>
                 </Box>
               </Box>
               {index < comments.length - 1 && <Divider sx={{ borderColor: "gray", my: 2 }} />}
             </Box>
           ))
         }
-      </Box >
+      </Card >
 
       {/* Share Your Thoughts */}
-      < Box sx={{ bgcolor: "#1E293B", borderRadius: 2, p: 3 }}>
-        <Typography sx={{ fontSize: "1.125rem", fontWeight: "medium", mb: 2 }}>
+      <Card sx={style.card}>
+        <Typography sx={style.cardTitle}>
           Share Your Thoughts
         </Typography>
         <TextField
@@ -76,16 +67,13 @@ const CommunityDiscussions = () => {
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
         />
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
-          <Box sx={{ display: "flex", alignItems: "center", color: "gray" }}>
-            <Checkbox sx={{ color: "gray" }} />
-            <Typography variant="body2">You can post anonymously</Typography>
-          </Box>
-          <Button variant="contained" sx={{ bgcolor: "#38BDF8", textTransform: "none" }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
+          
+        <Button variant="contained">
             Post Comment
           </Button>
         </Box>
-      </Box >
+      </Card >
     </>
   );
 };

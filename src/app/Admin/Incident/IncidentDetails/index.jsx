@@ -1,38 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 
 import { Grid2, Typography, Button, Paper, IconButton, Modal, Tooltip, Box } from "@mui/material";
-
-import { BpLoading, BpForm, BpFormItem, BpHeader, BpImageGallery, BpImageUpload, BpSearchMenuList } from "@components";
-import { useToggle, useForm, useCusMedia } from "@hooks";
-
 import { Add, Save, Cancel } from "@mui/icons-material";
-
-import { GlobalStyles, Models, SampleData } from "@config";
 
 import { useNavigate, useParams } from "react-router-dom";
 
+import { BpLoading, BpForm, BpFormItem, BpInput, BpHeader, BpImageGallery, BpImageUpload } from "@components";
+import { useToggle, useForm } from "@hooks";
+
+import { GlobalStyles, Models, SampleData } from "@config";
+
 import { fetchIncidentGetAdmin, fetchIncidentAdd, fetchIncidentUpdate, fetchIncidentUploadImg, fetchScammerGetAll, fetchIpSeriesGetAll } from "@api";
 
-function useFilterData() {
-    const [data, setData] = useState([]);
-
-    const handleAddData = (_data) => {
-        setData((prevData) => {
-            if (!prevData.includes(_data)) {
-                return [...prevData, _data];
-            }
-            return prevData;
-        });
-    };
-
-    const handleRemoveData = (obj) => {
-        setData((prevData) => prevData.filter((s) => s !== obj));
-    };
-
-    return {
-        data, setData, handleAddData, handleRemoveData
-    }
-}
+import { useWatch } from "react-hook-form";
 
 function Index(props) {
 
@@ -41,25 +21,22 @@ function Index(props) {
     const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
     const { flag: refresh, toggle: toggleRefresh } = useToggle();
 
-    const [imgAsset, setImgAsset] = useState([]);
-
-    const { data: scammer, setData: setScammer,
-        handleAddData: handleAddScammer, handleRemoveData: handleRemoveScammer } = useFilterData();
     const [scammerSelection, setScammerSelection] = useState([]);
-
-    const { data: ipSeries, setData: setIpSeries,
-        handleAddData: handleAddIpSeries, handleRemoveData: handleRemoveIpSeries } = useFilterData();
     const [ipSeriesSelection, setIpSeriesSelection] = useState([]);
 
+    // Fix This for Incident
+    const { control: multiSelControl, loadData: loadMultiSel, isDirty: isMultiDirty } = useForm({});
+
+    const scammer = useWatch({ control: multiSelControl, name: "scammer" });
+    const ipSeries = useWatch({ control: multiSelControl, name: "ipSeries" });
+
     const {
-        key: incKey,
-        data: incData,
         field: incField,
-        updateData: updateIncDataJson,
-        updateDataHtml: updateIncData,
+        control: incControl,
+        handleSubmit: handleIncSubmit,
+        loadData: loadIncData,
         resetData: resetIncData,
-        isChanged: isIncChanged,
-        loadData: loadIncData
+        isDirty: isIncDirty
     } = useForm(Models.Incident);
 
     const navigate = useNavigate();
@@ -87,22 +64,19 @@ function Index(props) {
 
                 const { incident, incidentAsset, scammer, ipSeries } = res;
                 loadIncData(incident);
+
                 setImgAsset(_ => incidentAsset);
-                setScammer(_ => scammer);
-                setIpSeries(_ => ipSeries);
+                
+                loadMultiSel(_ => ({ scammer, ipSeries }));
 
             })
             .catch(err => {
                 setLoadingFalse();
                 console.error(err);
-            })
+            });
     }
 
     const addData = (data) => {
-
-        // Add "Status" to "Pending"
-        data["incident"]["status"] = "Pending";
-
         setLoadingTrue();
         fetchIncidentAdd(data)
             .then(res => {
@@ -112,7 +86,7 @@ function Index(props) {
             .catch(err => {
                 setLoadingFalse();
                 console.error(err);
-            })
+            });
     }
 
     const updateData = (data) => {
@@ -141,7 +115,7 @@ function Index(props) {
                 const { data = [] } = res;
 
                 const _arr = data.map(x => ({
-                    name: x.name,
+                    label: x.name,
                     value: x.PK
                 }));
 
@@ -161,7 +135,8 @@ function Index(props) {
                 const { data = [] } = res;
 
                 const _arr = data.map(x => ({
-                    name: x.name,
+                    image: x.image,
+                    label: x.name,
                     value: x.PK
                 }));
 
@@ -173,9 +148,10 @@ function Index(props) {
     }
     // #endregion
 
-    const onSave = () => {
+    const onSave = (data) => {
+
         const _data = {
-            incident: incData,
+            incident: data,
             incidentAsset: imgAsset,
             scammer,
             ipSeries
@@ -186,6 +162,8 @@ function Index(props) {
     };
 
     // #region Images
+    const [imgAsset, setImgAsset] = useState([]);
+
     const addImgAsset = (item) => {
         setImgAsset((arr) => [...arr, item]);
     }
@@ -201,7 +179,6 @@ function Index(props) {
     }
 
     const uploadImgAsset = () => {
-        // Array of FileName, ContentType and Data
         setLoadingTrue();
         fetchIncidentUploadImg(imgAsset)
             .then(res => {
@@ -216,66 +193,86 @@ function Index(props) {
             })
     }
     // #endregion
+
+    const formatIpSeriesOptionLabel = ({ label, image }) => {
+        return (
+            <Grid2 container spacing={1}>
+                <Box component={"img"} src={image} alt={label} sx={{ width: "20px", height: "20px" }} />
+                <Typography>{label}</Typography>
+            </Grid2>
+        );
+    };
+
     return (
         <>
             <BpLoading loading={loading} />
-            <BpHeader
-                start={<Typography variant={"h2"} sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>{Models.Incident.key}</Typography>}
-                end={
-                    <Grid2 container spacing={1}>
-                        <Button
-                            variant={"contained"}
-                            onClick={resetIncData}
-                            startIcon={<Add />}>New</Button>
-                        <Button
-                            variant={"contained"}
-                            onClick={onSave}
-                            startIcon={<Save />}>Save</Button>
-                    </Grid2>
-                }
-            />
-            <Grid2 container spacing={1}>
-            <Box sx={GlobalStyles.bordered}>
-                    <BpForm
-                        hasLabel={true}
-                        key={incKey} idx={incKey}
-                        data={incData} field={incField}
-                        onUpdate={updateIncData}>
-                        <BpFormItem
+            <Box component={"form"} onSubmit={handleIncSubmit(onSave)}>
+                <BpHeader
+                    start={<Typography variant={"h2"} sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>{Models.Incident.key}</Typography>}
+                    end={
+                        <Grid2 container spacing={1}>
+                            <Button
+                                type={"button"}
+                                variant={"contained"}
+                                onClick={resetIncData}
+                                startIcon={<Add />}>New</Button>
+                            <Button
+                                type={"submit"}
+                                variant={"contained"}
+                                disabled={!isIncDirty && !isMultiDirty}
+                                startIcon={<Save />}>Save</Button>
+                        </Grid2>
+                    }
+                />
+                <Grid2 container spacing={1}>
+                    <Box sx={GlobalStyles.bordered}>
+                        <BpForm
                             hasLabel={true}
-                            type={"dropdown"} placeholder={"Select Platform"}
-                            name={"platform"} value={incData["platform"]}
-                            selection={SampleData.Platform}
-                            onChange={updateIncData}
-                        />
-                    </BpForm>
-                </Box>
+                            field={incField}
+                            control={incControl}
+                        >
+                            <BpFormItem
+                                hasLabel={true}
+                                name={"platform"}
+                                type={"dropdown"}
+                                control={incControl}
+                                selection={SampleData.Platform}
+                            />
+                        </BpForm>
+                    </Box>
 
-                {/* Multiple Scammer */}
-                <BpSearchMenuList searchField={"scammer"} selection={scammerSelection}
-                    data={scammer} handleAddData={handleAddScammer} handleRemoveData={handleRemoveScammer}
-                />
-
-                {/* Multiple Ip Series */}
-                <BpSearchMenuList 
-                    searchField={"ip_series"} selection={ipSeriesSelection}
-                    data={ipSeries} handleAddData={handleAddIpSeries} handleRemoveData={handleRemoveIpSeries}
-                />
-
-                {/* Image Asset */}
-                <Grid2 container spacing={2} flexDirection={"column"} sx={{ width: "100%" }}>
-                    <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
-                        <Typography variant="h4" sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>Image Asset</Typography>
-                        <Button variant={"contained"} onClick={uploadImgAsset} disabled={imgAsset.length == 0}>Upload</Button>
+                    {/* Multiple Scammer */}
+                    <Grid2 sx={{ width: "100%" }}>
+                        <Typography variant="h4" sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>
+                            Scammer
+                        </Typography>
+                        <BpInput name={"scammer"} type={"multi-dropdown"} control={multiSelControl} selection={scammerSelection} />
                     </Grid2>
 
-                    {/* Upload Image */}
-                    <BpImageUpload onAddImage={addImgAsset} sx={{ height: "180px" }} />
+                    {/* Multiple Ip Series */}
+                    <Grid2 sx={{ width: "100%" }}>
+                        <Typography variant="h4" sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>
+                            Ip Series
+                        </Typography>
+                        <BpInput 
+                            name={"ipSeries"} type={"multi-dropdown"} 
+                            control={multiSelControl} selection={ipSeriesSelection}
+                            formatOptionLabel={formatIpSeriesOptionLabel} />
+                    </Grid2>
 
-                    {/* Images */}
-                    <BpImageGallery images={imgAsset} onDelete={deleteImgAsset} />
+                    {/* Image Asset */}
+                    <Grid2 container spacing={2} flexDirection={"column"} sx={{ width: "100%" }}>
+                        <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
+                            <Typography variant="h4" sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>Image Asset</Typography>
+                            <Button variant={"contained"} onClick={uploadImgAsset} disabled={imgAsset.length == 0}>Upload</Button>
+                        </Grid2>
+
+                        {/* Upload Image */}
+                        <BpImageUpload onAdd={addImgAsset} error={null} sx={{ height: "180px" }} />
+                        <BpImageGallery data={imgAsset} onDelete={deleteImgAsset} />
+                    </Grid2>
                 </Grid2>
-            </Grid2>
+            </Box>
         </>
     )
 }

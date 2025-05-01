@@ -33,6 +33,7 @@ export default defineConfig(({command, mode }) => {
         "@components":  path.resolve(__dirname, "./src/components/"),
         "@config":  path.resolve(__dirname, "./src/config/"),
         "@hooks":  path.resolve(__dirname, "./src/hooks/"),
+        "@schema":  path.resolve(__dirname, "./src/schema/"),
         "@app":  path.resolve(__dirname, "./src/app/"),
         "@libs":  path.resolve(__dirname, "./src/libs/"),
         "@utility": path.resolve(__dirname, "./src/utility/"),

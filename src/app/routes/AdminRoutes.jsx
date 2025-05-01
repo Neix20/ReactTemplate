@@ -3,7 +3,7 @@ import DashboardLayout from "@components/layout/Admin";
 
 import { Context } from "@config";
 
-import { Settings, PersonOff, Article, AssignmentTurnedIn, SmartToy } from "@mui/icons-material";
+import { Settings, PersonOff, Article, AssignmentTurnedIn, SmartToy, Group } from "@mui/icons-material";
 
 import Incident from "@app/Admin/Incident";
 import IncidentDetails from "@app/Admin/Incident/IncidentDetails";
@@ -12,10 +12,15 @@ import IpSeries from "@app/Admin/IpSeries";
 import IpSeriesDetails from "@app/Admin/IpSeries/IpSeriesDetails";
 
 import Approve from "@app/Admin/Approve";
+import ApproveIncidentDetails from "@app/Admin/Approve/IncidentDetails";
 
 import Scammer from "@app/Admin/Scammer";
 import ScammerDetails from "@app/Admin/Scammer/ScammerDetails";
 import ScammerAttr from "@app/Admin/Scammer/ScammerAttr";
+
+import User from "@app/Admin/User";
+import UserDetails from "@app/Admin/User/UserDetails";
+
 // import ASample from "@app/Admin/Sample";
 
 import Error from "@app/Error";
@@ -85,8 +90,14 @@ const menuItems = [
                 element: <Approve />
             },
             {
+                id: 'admin-approve-incident-details',
+                show: false,
+                url: '/Admin/Approve/:IncidentId',
+                element: <ApproveIncidentDetails />
+            },
+            {
                 id: 'admin-ip-series',
-                title: 'IP Series',
+                title: 'Ip Series',
                 type: 'item',
                 url: '/Admin/IpSeries',
                 icon: SmartToy,
@@ -97,7 +108,21 @@ const menuItems = [
                 show: false,
                 url: '/Admin/IpSeries/:IpSeriesId',
                 element: <IpSeriesDetails />
-            }
+            },
+            {
+                id: 'admin-user',
+                title: 'User',
+                type: 'item',
+                url: '/Admin/User',
+                icon: Group,
+                element: <User />
+            },
+            {
+                id: 'admin-user-details',
+                show: false,
+                url: '/Admin/User/:UserId',
+                element: <UserDetails />
+            },
         ]
     },
     // {

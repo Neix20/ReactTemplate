@@ -76,16 +76,13 @@ function Index(props) {
             <BpHeader
                 enableBack={false}
                 start={<Typography variant={"h2"} sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem"} }}>{Models.Incident.key}</Typography>}
-                end={
-                    <Button variant={"contained"}
-                        onClick={GoToAddIncident}
-                        startIcon={<Add />}>New</Button>}
+                end={<Button variant={"contained"} onClick={GoToAddIncident} startIcon={<Add />}>New</Button>} 
             />
             <BpDataTable
                 data={data}
                 field={Models.Incident.field}
                 fieldOrder={colOrder}
-                hideField={["description", "social_url", "post_date", "category"]}
+                hideField={["description", "social_url", "post_date", "category", "trade_method", "total_amount"]}
                 enableRowAction={true}
                 enableTopAction={true}
                 onUpdate={onTblUpdate}

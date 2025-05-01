@@ -1,20 +1,17 @@
 import { useState, useEffect } from "react";
 
 import { Container, Grid2, Typography, Button, Paper, IconButton, Box, Tooltip } from "@mui/material";
+import { Add, Save, ArrowBack } from "@mui/icons-material";
+
+import { useNavigate, Link, useParams } from "react-router-dom";
 
 import { BpLoading, BpDataTable, BpTab, BpForm } from "@components";
-
 import { useToggle, useForm } from "@hooks";
 
 import { fetchScammerGetAllAttr, fetchScammerAdd, fetchScammerUpdate, fetchScammerAttrDelete } from "@api";
 
-import { useNavigate, Link, useParams } from "react-router-dom";
-
 import { GlobalStyles, Models } from "@config";
-
 import { clsUtility } from "@utility";
-
-import { Add, Save, ArrowBack } from "@mui/icons-material";
 
 function Index(props) {
 
@@ -26,13 +23,12 @@ function Index(props) {
     const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle(false);
 
     const {
-        key: scammerKey,
-        data: scammerData,
         field: scammerField,
-        updateDataHtml: updateScammerHtml,
+        control: scammerControl,
+        handleSubmit: handleScammerSubmit,
         loadData: loadScammer,
         resetData: resetScammer,
-        isChanged: isScamChanged,
+        isDirty: isScamDirty
     } = useForm(Models.Scammer);
 
     const [scammerAttrData, setScammerAttrData] = useState([]);
@@ -46,12 +42,13 @@ function Index(props) {
     }, [refresh]);
 
     // #region Scammer Actions
-    const addScammer = () => {
+    const addScammer = (data) => {
         setLoadingTrue();
-        fetchScammerAdd(scammerData)
+        fetchScammerAdd(data)
             .then(_ => {
                 setLoadingFalse();
                 toggleRefresh();
+                goBack();
             })
             .catch(err => {
                 setLoadingFalse();
@@ -59,12 +56,13 @@ function Index(props) {
             })
     }
 
-    const updateScammer = () => {
+    const updateScammer = (data) => {
         setLoadingTrue();
-        fetchScammerUpdate(scammerData)
+        fetchScammerUpdate(data)
             .then(_ => {
                 setLoadingFalse();
                 toggleRefresh();
+                goBack();
             })
             .catch(err => {
                 setLoadingFalse();
@@ -123,11 +121,8 @@ function Index(props) {
         }
     }
 
-    const scammerProps = { key: scammerKey, idx: scammerKey, data: scammerData, field: scammerField, onUpdate: updateScammerHtml };
-    const loadingProps = { loading, setLoadingTrue, setLoadingFalse };
-
-    const onSaveScammer = () => {
-        const _func = (ScammerId == "0") ? () => addScammer() : () => updateScammer();
+    const onSaveScammer = (data) => {
+        const _func = (ScammerId == "0") ? () => addScammer(data) : () => updateScammer(data);
         _func();
     }
 
@@ -135,18 +130,16 @@ function Index(props) {
         {
             title: "Details",
             element: (
-                <>
-
+                <Box component={"form"} onSubmit={handleScammerSubmit(onSaveScammer)}>
                     <Grid2 container
                         spacing={1}
                         alignItems={"center"}
                         justifyContent={"flex-end"}>
-                        <Button variant={"outlined"} startIcon={<Add />} onClick={resetScammer}>Reset</Button>
-                        <Button variant={"outlined"} startIcon={<Save />} disabled={isScamChanged} onClick={onSaveScammer}>Save</Button>
+                        <Button type={"button"} variant={"outlined"} startIcon={<Add />} onClick={resetScammer}>Reset</Button>
+                        <Button type={"submit"} variant={"outlined"} startIcon={<Save />} disabled={!isScamDirty}>Save</Button>
                     </Grid2>
-                    <BpForm hasLabel={true} {...scammerProps} />
-
-                </>
+                    <BpForm hasLabel={true} field={scammerField} control={scammerControl} />
+                </Box>
             )
         },
         {
@@ -157,7 +150,8 @@ function Index(props) {
                     field={Models.ScammerAttr.field}
                     enableRowAction={true}
                     enableTopAction={true}
-                    onPreAdd={addScammerAttr}
+                    enableDefaultAdd={true}
+                    onBtnAdd={addScammerAttr}
                     onUpdate={updateScammerAttr}
                     onDelete={deleteScammerAttr}
                 />

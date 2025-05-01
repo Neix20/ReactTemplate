@@ -4,7 +4,7 @@ import { ArrowBack, ArrowForward, Close, Cancel } from "@mui/icons-material";
 
 function Index(props) {
 
-    const { imgName = "", imgData = "" } = props;
+    const { fileName = "", fileData = "" } = props;
     const { onDelete = () => { }, onClick = () => {}, sx={} } = props;
 
     const style = {
@@ -38,7 +38,7 @@ function Index(props) {
     return (
         <Box sx={style.main}>
             <Box component={"img"} onClick={onClick}
-                src={imgData} alt={imgName} sx={style.img} />
+                src={fileData} alt={fileName} sx={style.img} />
             <IconButton size="small" className="remove-btn"
                 onClick={onDelete}
                 sx={style.closeIcon}>

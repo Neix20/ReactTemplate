@@ -1,5 +1,23 @@
 
+import { z } from "zod";
+
 import { SampleData } from "@config";
+
+const schema = z.object({
+    title: z.string(),
+    scammer_type: z.enum(["Seller", "Buyer"]),
+    subtitle: z.string(),
+    description: z.string(),
+    social_url: z.string().startsWith("https://"),
+    post_date: z.string().date("Invalid date"), // If date string, keep as string
+    reported_date: z.string().date("Invalid date"), // If date string, keep as string
+    trade_method: z.enum(["Shipping"]),
+    total_amount: z.number(),
+    category: z.enum(["Scam", "Alert", "Others"]),
+    platform: z.string().min(1, "Platform is required"),
+    status: z.enum(["Active", "Pending", "Inactive"]),
+    tag: z.string()
+});
 
 const obj = {
     key: "Incident",
@@ -13,14 +31,18 @@ const obj = {
             "type": "dropdown",
             "selection": [
                 {
-                    "name": "Seller",
+                    "label": "Seller",
                     "value": "Seller"
                 },
                 {
-                    "name": "Buyer",
+                    "label": "Buyer",
                     "value": "Buyer"
                 }
             ]
+        },
+        {
+            "name": "tag",
+            "type": "text"
         },
         {
             "name": "subtitle",
@@ -47,7 +69,7 @@ const obj = {
             "type": "dropdown",
             "selection": [
                 {
-                    "name": "Shipping",
+                    "label": "Shipping",
                     "value": "Shipping"
                 }
             ]
@@ -61,12 +83,16 @@ const obj = {
             "type": "dropdown",
             "selection": [
                 {
-                    "name": "Scam",
+                    "label": "Scam",
                     "value": "Scam"
                 },
                 {
-                    "name": "Alert",
+                    "label": "Alert",
                     "value": "Alert"
+                },
+                {
+                    "label": "Others",
+                    "value": "Others"
                 }
             ]
         },
@@ -74,8 +100,29 @@ const obj = {
             "name": "platform",
             "type": "dropdown",
             "show": false
-        }
-    ]
+        },
+        {
+            "name": "status",
+            "type": "dropdown",
+            "selection": SampleData.Status
+        },
+    ],
+    initial: {
+        title: "",
+        tag: "",
+        scammer_type: "",
+        subtitle: "",
+        description: "",
+        social_url: "",
+        post_date: "",
+        reported_date: "",
+        trade_method: "",
+        total_amount: "",
+        category: "",
+        platform: "",
+        status: ""
+    },
+    schema
 }
 
 export default obj;

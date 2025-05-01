@@ -8,45 +8,58 @@ import { Box, Grid2, Card, Typography, Button, Avatar } from "@mui/material";
 
 import style from "./style";
 
-const ScamReport = () => {
+import { clsUtility } from "@utility";
+
+import { useNavigate } from "react-router-dom";
+
+const ScamReport = (props) => {
+
+    const { incident = [] } = props;
+
+    const navigate = useNavigate();
+
+    const GoToReport = () => {
+        navigate("/Report");
+    }
+
+    const renderReport = (obj, index) => (
+        <Box sx={{ borderBottom: "1px solid gray", pb: 2, mb: 2 }}>
+            <Box display="flex" alignItems="center" gap={2} mb={2}>
+                <Avatar sx={{ bgcolor: "gray" }}></Avatar>
+                <Box>
+                    <Typography>Anonymous Victim</Typography>
+                    <Typography variant="body2" color="gray">{clsUtility.formatDate(obj.reported_date)}</Typography>
+                </Box>
+                <Typography ml="auto" color={index === 0 ? "#B8860B" : "green"}>
+                    {index === 0 ? "Under Investigation" : "Verified"}
+                </Typography>
+            </Box>
+
+            <Box display={"flex"}>
+                <Typography sx={{ backgroundColor: "rgba(255,0,0,0.2)", color: "red", px: 1, borderRadius: 1 }}>
+                    {clsUtility.formatCurrency(obj.total_amount)} lost
+                </Typography>
+            </Box>
+
+            <Typography mt={2}>
+                {obj.description}
+            </Typography>
+        </Box>
+    );
+
     return (
         <>
             {/* Victim Reports */}
             <Card sx={style.card}>
-            <Typography sx={style.cardTitle}>Victim Reports</Typography>
-                {["2025-03-08", "2025-02-22"].map((date, index) => (
-                    <Box key={index} sx={{ borderBottom: "1px solid gray", pb: 2, mb: 2 }}>
-                        <Box display="flex" alignItems="center" gap={2} mb={2}>
-                            <Avatar sx={{ bgcolor: "gray" }}></Avatar>
-                            <Box>
-                                <Typography>Anonymous Victim</Typography>
-                                <Typography variant="body2" color="gray">{date}</Typography>
-                            </Box>
-                            <Typography ml="auto" color={index === 0 ? "yellow" : "green"}>
-                                {index === 0 ? "Under Investigation" : "Verified"}
-                            </Typography>
-                        </Box>
-
-                        <Box display={"flex"}>
-                            <Typography sx={{ backgroundColor: "rgba(255,0,0,0.2)", color: "red", px: 1, borderRadius: 1 }}>
-                                RM {index === 0 ? "15,000" : "12,000"} lost
-                            </Typography>
-                        </Box>
-
-                        <Typography mt={2}>
-                            {index === 0
-                                ? "He contacted me through Facebook claiming to be a financial advisor. He showed fake certificates and testimonials."
-                                : "Met through a mutual friend who was also scammed. He presented himself as a forex expert."}
-                        </Typography>
-                    </Box>
-                ))}
+                <Typography sx={style.cardTitle}>Victim Reports</Typography>
+                {incident.map(renderReport)}
             </Card>
 
             {/* Submit Report */}
             <Card sx={style.card}>
                 <Typography sx={style.cardTitle}>Submit Your Report</Typography>
                 <Typography color="gray">Have you been affected by this scammer? Share your experience to help protect others.</Typography>
-                <Button variant="contained" sx={{ backgroundColor: "#5096d1", mt: 2 }}>Submit Report</Button>
+                <Button variant="contained" onClick={GoToReport} sx={{ mt: 2 }}>Submit Report</Button>
             </Card>
         </>
     )

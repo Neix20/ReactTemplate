@@ -1,62 +1,69 @@
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
-import { clsUtility } from "@utility";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const useForm = (props = {}) => {
+function processedFormData(field, data) {
 
-    const { key: pKey = "", field = [] } = props;
+    const _data = { ...data };
 
-    const [form, setForm] = useState({});
-    const [initData, setInitData] = useState({});
+    for (const {name: _key, type } of field) {
 
-    const loadData = (data = {}) => {
-        setForm(_ => data);
-        setInitData(_ => data);
+        if (type === "multi-dropdown") {
+            _data[_key] = _data[_key].map(k => k.value);
+        }
+
+        if (type === "file") {
+            _data[_key] = _data[_key].fileData;
+        }
+
+        if (type === "image") {
+            _data[_key] = _data[_key].fileData;
+        }
     }
 
-    const updateData = (key, value) => {
-        setForm((pForm) => (
-            {
-                ...pForm,
-                [key]: value
-            }
-        ));
-    };
-
-    const deleteData = (key) => {
-        setForm((pForm) => {
-            const { [key]: _, ...rest } = pForm;
-            return rest;
-        });
-    };
-
-    const updateDataHtml = (evt) => {
-        const { name = "", value = "" } = evt.target;
-
-        if (!name) return;
-
-        setForm((pForm) => (
-            {
-                ...pForm,
-                [name]: value,
-            }
-        ));
-    };
-
-    const resetData = () => {
-        const _data = clsUtility.genDefaultItem(field);
-        setForm(() => _data);
-        setInitData(() => _data);
-    };
-
-    const isChanged = JSON.stringify(form) === JSON.stringify(initData);
-
-    return {
-        key: pKey, data: form, field, 
-        updateData, updateDataHtml,
-        loadData, deleteData, resetData, isChanged
-    };
+    return _data;
 }
 
-export default useForm;
+function Index(props) {
+
+    const { key = "", field = [], schema = {}, initial = {} } = props;
+
+    const {
+        register,
+        control,
+        handleSubmit,
+        reset: loadData,
+        formState: {
+            errors,
+            isDirty
+        }
+    } = useForm({
+        // mode: "onChange",
+        resolver: zodResolver(schema)
+    });
+
+    // Array or Object
+    const cusHandleSubmit = (onSubmit, onError) => handleSubmit((data, e) => {
+        
+        let transformedData = processedFormData(field, data);
+        return onSubmit(transformedData, e);
+    }, onError);
+
+    const resetData = _ => loadData(initial);
+
+    return {
+        key,
+        field,
+        control,
+        handleSubmit: cusHandleSubmit,
+        loadData,
+        resetData,
+        register,
+        errors,
+        isDirty
+    }
+}
+
+export default Index;

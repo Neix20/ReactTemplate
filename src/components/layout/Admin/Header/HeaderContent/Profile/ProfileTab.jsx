@@ -13,25 +13,32 @@ import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import WalletOutlined from '@ant-design/icons/WalletOutlined';
 
+import { useNavigate } from 'react-router-dom';
+
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
 export default function ProfileTab() {
+
+  const navigate = useNavigate();
+
+  const GoToProfile = () => {
+    navigate('/Profile');
+  }
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
-      <ListItemButton>
+      {/* <ListItemButton>
         <ListItemIcon>
           <EditOutlined />
         </ListItemIcon>
         <ListItemText primary="Edit Profile" />
-      </ListItemButton>
-      <ListItemButton>
+      </ListItemButton> */}
+      <ListItemButton onClick={GoToProfile}>
         <ListItemIcon>
           <UserOutlined />
         </ListItemIcon>
         <ListItemText primary="View Profile" />
       </ListItemButton>
-
-      <ListItemButton>
+      {/* <ListItemButton>
         <ListItemIcon>
           <ProfileOutlined />
         </ListItemIcon>
@@ -42,13 +49,13 @@ export default function ProfileTab() {
           <WalletOutlined />
         </ListItemIcon>
         <ListItemText primary="Billing" />
-      </ListItemButton>
-      <ListItemButton>
+      </ListItemButton> */}
+      {/* <ListItemButton>
         <ListItemIcon>
           <LogoutOutlined />
         </ListItemIcon>
         <ListItemText primary="Logout" />
-      </ListItemButton>
+      </ListItemButton> */}
     </List>
   );
 }

@@ -9,9 +9,9 @@ import ImagePreviewWithDelete from "./components/ImagePreviewWithDelete";
 
 function Index(props) {
 
-    const { images = [], onDelete = () => { }, readOnly = false } = props;
+    const { data = [], onDelete = () => { }, readOnly = false } = props;
 
-    if (images.length == 0) {
+    if (data.length == 0) {
         return (<></>)
     }
 
@@ -29,11 +29,11 @@ function Index(props) {
     };
 
     const handleNext = () => {
-        setCurIdx((prevIdx) => (prevIdx + 1) % images.length);
+        setCurIdx((prevIdx) => (prevIdx + 1) % data.length);
     };
 
     const handlePrevious = () => {
-        setCurIdx((prevIdx) => (prevIdx - 1 + images.length) % images.length);
+        setCurIdx((prevIdx) => (prevIdx - 1 + data.length) % data.length);
     };
 
     const style = {
@@ -115,7 +115,7 @@ function Index(props) {
         <>
             {/* Image Gallery */}
             <Grid2 container flexWrap={"wrap"} spacing={2}>
-                {images.map(renderImg)}
+                {data.map(renderImg)}
             </Grid2>
 
             {/* Modal for Image Viewer */}
@@ -132,7 +132,7 @@ function Index(props) {
                     </IconButton>
 
                     {/* Image Display */}
-                    <Box component="img" src={images[curIdx].imgData} alt={images[curIdx].imgName} sx={style.modalImg} />
+                    <Box component="img" src={data[curIdx]?.fileData} alt={data[curIdx]?.fileName} sx={style.modalImg} />
 
                     {/* Navigation Controls */}
                     <Grid2 container
@@ -152,7 +152,7 @@ function Index(props) {
 
                     {/* Pagination Dots */}
                     <Grid2 container spacing={1}>
-                        {images.map(renderPaginationDots)}
+                        {data.map(renderPaginationDots)}
                     </Grid2>
                 </Grid2>
             </Modal>

@@ -1,22 +1,22 @@
 [
     {
-        "name": "Facebook",
+        "label": "Facebook",
         "value": "Facebook"
     },
     {
-        "name": "Instagram",
+        "label": "Instagram",
         "value": "Instagram"
     },
     {
-        "name": "XiaoHongShu",
-        "value": "XiaoHongShu"
+        "label": "XiaoHongShu",
+        "value": "Xiaohongshu"
     },
     {
-        "name": "Whatsapp",
+        "label": "Whatsapp",
         "value": "Whatsapp"
     },
     {
-        "name": "Telegram",
+        "label": "Telegram",
         "value": "Telegram"
     }
 ]

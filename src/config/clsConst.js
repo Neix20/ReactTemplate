@@ -9,25 +9,25 @@ const COGNITO_CONFIG = {
     Auth: {
         region: import.meta.env.VITE_AWS_PROJECT_REGION,
         userPoolWebClientId: import.meta.env.VITE_AWS_WEB_CLIENT_ID,
-        identityPoolId: import.meta.env.VITE_AWS_COGNITO_IDENTITY_POOL_ID,
-        mandatorySignIn: true,
         Cognito: {
             userPoolId: import.meta.env.VITE_AWS_USER_POOL_ID,
             userPoolClientId: import.meta.env.VITE_AWS_WEB_CLIENT_ID,
-            identityPoolId: import.meta.env.VITE_AWS_COGNITO_IDENTITY_POOL_ID,
             signUpVerificationMethod: 'code',
             loginWith: {
                 oauth: {
                     domain: import.meta.env.VITE_AWS_COGNITO_DOMAINAME,
-                    scopes: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
-                    edirectSignIn: ['http://localhost:3000/', 'https://example.com/'],
-                    redirectSignOut: ['http://localhost:3000/', 'https://example.com/'],
+                    scopes: ['email', 'openid', 'phone', 'profile', 'aws.cognito.signin.user.admin'],
+                    redirectSignIn: [import.meta.env.VITE_HOST_URL + '/Login'],
+                    redirectSignOut: [import.meta.env.VITE_HOST_URL + '/'],
                     responseType: 'code',
                 }
-            },
-        },
+            }
+        }
     }
 }
+
+// const logoutUrl = `https://${process.env.VUE_APP_COGNITO_USER_POOL_DOMAIN}/logout?client_id=${process.env.VUE_APP_COGNITO_CLIENT_ID}&logout_uri=${window.location.origin}`;
+const LOG_OUT_URL = `https://${import.meta.env.VITE_AWS_COGNITO_DOMAINAME}/logout?client_id=${import.meta.env.VITE_AWS_WEB_CLIENT_ID}&logout_uri=${import.meta.env.VITE_HOST_URL}/`;
 
 const TIME_FOR_AUTH = 60 * 60 * 1000;
 
@@ -42,7 +42,8 @@ const data = {
     COGNITO_CONFIG,
     TIME_FOR_AUTH,
     DRAWER_WIDTH,
-    MINI_DRAWER_WIDTH
+    MINI_DRAWER_WIDTH,
+    LOG_OUT_URL
 }
 
 export default data;
