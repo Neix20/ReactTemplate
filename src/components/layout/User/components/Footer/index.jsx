@@ -22,7 +22,7 @@ function Copyright() {
   return (
     <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
       {'Copyright © '}
-      Sitemark
+      BeruPop
       &nbsp;
       {new Date().getFullYear()}
     </Typography>
@@ -35,7 +35,6 @@ function FooterLinks(props) {
       sx={{
         display: 'flex',
         flexDirection: { xs: 'column', sm: 'row' },
-        width: '100%',
         justifyContent: 'space-between',
       }}
     >
@@ -55,140 +54,47 @@ function FooterLinks(props) {
               variant="body2"
               sx={{ fontWeight: 600 }}
             >
-              Join the newsletter
+              BeruPop is here to make blindbox trading safer and smoother.
             </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Subscribe for weekly updates. No spams ever!
+            <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+              Since most trades happen online, there's often no guarantee you'll receive your items or money. That’s why we created BeruPop Search—our first tool to help you verify sellers before making a deal, so you can trade with confidence.
             </Typography>
           </Grid2>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: 600 }}
-            >
-              Email
-            </Typography>
-            <Stack direction="row" spacing={1} useFlexGap>
-              <TextField
-                id="email-newsletter"
-                hiddenLabel
-                size="small"
-                variant="outlined"
-                fullWidth
-                aria-label="Enter your email address"
-                placeholder="Your email address"
-                slotProps={{
-                  htmlInput: {
-                    autoComplete: 'off',
-                    'aria-label': 'Enter your email address',
-                  },
-                }}
-                sx={{ width: '250px' }}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                sx={{ flexShrink: 0 }}
-              >
-                Subscribe
-              </Button>
-            </Stack>
-          </Box>
         </Box>
       </Box>
       <Box
         sx={{
-          display: { xs: 'none', sm: 'flex' },
+          display: 'flex',
           flexDirection: 'column',
           gap: 1,
+          minWidth: { xs: '100%', sm: '60%' },
         }}
       >
-        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-          Product
-        </Typography>
-        <Link color="text.secondary" variant="body2" href="#">
-          Features
-        </Link>
-        <Link color="text.secondary" variant="body2" href="#">
-          Testimonials
-        </Link>
-        <Link color="text.secondary" variant="body2" href="#">
-          Highlights
-        </Link>
-        <Link color="text.secondary" variant="body2" href="#">
-          Pricing
-        </Link>
-        <Link color="text.secondary" variant="body2" href="#">
-          FAQs
-        </Link>
-      </Box>
-      <Box
-        sx={{
-          display: { xs: 'none', sm: 'flex' },
-          flexDirection: 'column',
-          gap: 1,
-        }}
-      >
-        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-          Company
-        </Typography>
-        <Link color="text.secondary" variant="body2" href="#">
-          About us
-        </Link>
-        <Link color="text.secondary" variant="body2" href="#">
-          Careers
-        </Link>
-        <Link color="text.secondary" variant="body2" href="#">
-          Press
-        </Link>
-      </Box>
-      <Box
-        sx={{
-          display: { xs: 'none', sm: 'flex' },
-          flexDirection: 'column',
-          gap: 1,
-        }}
-      >
-        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+        <Typography variant="body2" sx={{ fontWeight: 600 }}>
           Legal
         </Typography>
-        <Link color="text.secondary" variant="body2" href="#">
-          Terms
+        <Link color="text.secondary" variant="body2" href="/terms-and-conditions">
+          Terms & Conditions
         </Link>
-        <Link color="text.secondary" variant="body2" href="#">
-          Privacy
-        </Link>
-        <Link color="text.secondary" variant="body2" href="#">
-          Contact
+        <Link color="text.secondary" variant="body2" href="/privacy-policy">
+          Data Privacy & Security
         </Link>
       </Box>
     </Box>
   )
 }
 
-export const FooterBody = () => {
+export const FooterBody = (props) => {
   return (
     <Box
       sx={{
         display: 'flex',
-        alignItems: "center",
         justifyContent: 'space-between',
         width: '100%',
-        mt: "auto"
       }}
     >
       <Box>
         <div>
-          <Link color="text.secondary" variant="body2" href="#">
-            Privacy Policy
-          </Link>
-          <Typography sx={{ display: 'inline', mx: 0.5, opacity: 0.5 }}>
-            &nbsp;•&nbsp;
-          </Typography>
-          <Link color="text.secondary" variant="body2" href="#">
-            Terms of Service
-          </Link>
           <Copyright />
         </div>
       </Box>
@@ -243,15 +149,7 @@ export const Footer = () => {
           textAlign: "left",
         }}
       >
-        {/* <FooterLinks /> */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', sm: 'row' },
-            width: '100%',
-            justifyContent: 'space-between',
-          }}
-        ></Box>
+        <FooterLinks />
         <FooterBody />
       </Container>
     </React.Fragment>

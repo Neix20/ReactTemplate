@@ -69,52 +69,126 @@ function Temp(props) {
 		setValue(newValue);
 	};
 
-	return (
-		<>
-			<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-				<Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="profile tabs">
-					<Tab
-						sx={{
-							display: 'flex',
-							flexDirection: 'row',
-							justifyContent: 'center',
-							alignItems: 'center',
-							textTransform: 'capitalize',
-							gap: 1.25,
-							'& .MuiTab-icon': {
-								marginBottom: 0
-							}
-						}}
-						icon={<UserOutlined />}
-						label="Profile"
-						{...a11yProps(0)}
-					/>
-					<Tab
-						sx={{
-							display: 'flex',
-							flexDirection: 'row',
-							justifyContent: 'center',
-							alignItems: 'center',
-							textTransform: 'capitalize',
-							gap: 1.25,
-							'& .MuiTab-icon': {
-								marginBottom: 0
-							}
-						}}
-						icon={<SettingOutlined />}
-						label="Setting"
-						{...a11yProps(1)}
-					/>
-				</Tabs>
-			</Box>
-			<TabPanel value={value} index={0} dir={theme.direction}>
-				<ProfileTab />
-			</TabPanel>
-			<TabPanel value={value} index={1} dir={theme.direction}>
-				<SettingTab />
-			</TabPanel>
-		</>
-	)
+  return (
+    <Box sx={{ flexShrink: 0, ml: 0.75 }}>
+      <ButtonBase
+        sx={(theme) => ({
+          p: 0.25,
+          bgcolor: open ? 'grey.100' : 'transparent',
+          borderRadius: 1,
+          '&:hover': { bgcolor: 'secondary.lighter' },
+          '&:focus-visible': { outline: `2px solid ${theme.palette.secondary.dark}`, outlineOffset: 2 },
+          ...theme.applyStyles('dark', { bgcolor: open ? 'background.default' : 'transparent', '&:hover': { bgcolor: 'secondary.light' } })
+        })}
+        aria-label="open profile"
+        ref={anchorRef}
+        aria-controls={open ? 'profile-grow' : undefined}
+        aria-haspopup="true"
+        onClick={handleToggle}
+      >
+        <Stack direction="row" sx={{ gap: 1.25, alignItems: 'center', p: 0.5 }}>
+          <Avatar alt="profile user" src={Images.defaultAvatar} sx={{ width: "32px", height: "32px" }} />
+          <Typography variant="subtitle1" sx={{ textTransform: 'capitalize', color:'var(--template-palette-action-active)' }}>
+            John Doe
+          </Typography>
+        </Stack>
+      </ButtonBase>
+      <Popper
+        placement="bottom-end"
+        open={open}
+        anchorEl={anchorRef.current}
+        role={undefined}
+        transition
+        disablePortal
+        popperOptions={{
+          modifiers: [
+            {
+              name: 'offset',
+              options: {
+                offset: [0, 9]
+              }
+            }
+          ]
+        }}
+      >
+        {({ TransitionProps }) => (
+          <Transitions type="grow" position="top-right" in={open} {...TransitionProps}>
+            <Paper sx={(theme) => ({ boxShadow: theme.shadows.at(-1).z1, width: 290, minWidth: 240, maxWidth: { xs: 250, md: 290 } })}>
+              <ClickAwayListener onClickAway={handleClose}>
+                <MainCard elevation={0} border={false} content={false}>
+                  <CardContent sx={{ px: 2.5, pt: 3 }}>
+                    <Grid container justifyContent="space-between" alignItems="center">
+                      <Grid>
+                        <Stack direction="row" sx={{ gap: 1.25, alignItems: 'center' }}>
+                          <Avatar alt="profile user" src={Images.defaultAvatar} sx={{ width: 32, height: 32 }} />
+                          <Stack>
+                            <Typography variant="h6">John Doe</Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              UI/UX Designer
+                            </Typography>
+                          </Stack>
+                        </Stack>
+                      </Grid>
+                      <Grid>
+                        <Tooltip title="Logout">
+                          <IconButton size="large" sx={{ color: 'text.primary' }} onClick={() => {}}>
+                            <LogoutOutlined />
+                          </IconButton>
+                        </Tooltip>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+
+                  <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="profile tabs">
+                      <Tab
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          textTransform: 'capitalize',
+                          gap: 1.25,
+                          '& .MuiTab-icon': {
+                            marginBottom: 0
+                          }
+                        }}
+                        icon={<UserOutlined />}
+                        label="Profile"
+                        {...a11yProps(0)}
+                      />
+                      <Tab
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          textTransform: 'capitalize',
+                          gap: 1.25,
+                          '& .MuiTab-icon': {
+                            marginBottom: 0
+                          }
+                        }}
+                        icon={<SettingOutlined />}
+                        label="Setting"
+                        {...a11yProps(1)}
+                      />
+                    </Tabs>
+                  </Box>
+                  <TabPanel value={value} index={0} dir={theme.direction}>
+                    <ProfileTab />
+                  </TabPanel>
+                  <TabPanel value={value} index={1} dir={theme.direction}>
+                    <SettingTab />
+                  </TabPanel>
+                </MainCard>
+              </ClickAwayListener>
+            </Paper>
+          </Transitions>
+        )}
+      </Popper>
+    </Box>
+  );
 }
 
 export default function Profile() {

@@ -382,7 +382,11 @@ function Index(props) {
                     <TitleSection />
                 </Container>
             </Box>
-            <Box sx={{ py: 1 }}>
+            <Box sx={(theme) => ({
+                py: 1,
+                // backgroundColor: "#f7fcfc",
+                // ...theme.applyStyles('dark', { backgroundColor: "#1a2332" })
+            })}>
                 <Container maxWidth={"xl"}>
                     <BpTab tabPages={tabPages}
                         sx={{
