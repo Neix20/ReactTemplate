@@ -12,7 +12,7 @@ import { Actions, Selectors } from '@libs/redux';
 function TitleSection() {
     return (
         <Grid2 container flexDirection={"column"} alignItems={"center"} justifyContent={"center"}>
-            <Typography variant={"h1"} sx={{ fontSize: { xs: "1.875rem", sm: "2.5rem" } }}>Is this A Scammer?</Typography>
+            <Typography variant={"h1"} sx={{ fontSize: { xs: "1.875rem", sm: "2.5rem" } }}>Is this a Scammer?</Typography>
             <Typography variant={"body1"} color={"text.secondary"} sx={{ fontSize: { xs: 11, sm: "0.875rem" } }}>
                 Check to see if the person you're dealing with is a scammer
             </Typography>
