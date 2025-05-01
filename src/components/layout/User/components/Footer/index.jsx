@@ -35,7 +35,6 @@ function FooterLinks(props) {
       sx={{
         display: 'flex',
         flexDirection: { xs: 'column', sm: 'row' },
-        width: '80%',
         justifyContent: 'space-between',
       }}
     >
@@ -85,15 +84,13 @@ function FooterLinks(props) {
   )
 }
 
-export const FooterBody = () => {
+export const FooterBody = (props) => {
   return (
     <Box
       sx={{
         display: 'flex',
-        alignItems: "center",
         justifyContent: 'space-between',
-        width: '80%',
-        mt: "auto"
+        width: '100%',
       }}
     >
       <Box>
