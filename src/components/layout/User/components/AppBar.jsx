@@ -47,7 +47,7 @@ function Index(props) {
             case "item":
             default:
                 return (
-                    <Button key={`user-btn-${ind}`} component={NavLink} to={url} variant={"text"} color={"info"} size={"small"}>
+                    <Button key={`user-btn-${ind}`} component={NavLink} to={url} variant={"text"}>
                         {clsUtility.capitalize(title)}
                     </Button>
                 )

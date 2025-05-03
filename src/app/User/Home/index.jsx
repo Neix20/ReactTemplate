@@ -8,6 +8,8 @@ import { clsUtility } from "@utility";
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions, Selectors } from '@libs/redux';
 
+import { CheckCircle, WarningAmber, ArrowForward } from "@mui/icons-material";
+
 // #region Components
 function TitleSection() {
     return (
@@ -92,20 +94,10 @@ function SearchSection(props) {
     }
 
     const style = {
-        success: {
-            background: "radial-gradient(ellipse at 50% 50%, #98c390, #2E7D32)",
-            minHeight: { xs: 0, sm: 100 },
-            p: 2,
-        },
-        error: {
-            background: "radial-gradient(ellipse at 50% 50%, #d96b76, #B71C1C)",
-            minHeight: { xs: 0, sm: 100 },
-            p: 2
-        },
         search: {
             display: "flex",
             gap: 1,
-            width: { xs: "100%", sm: "80%", md: "60%" },
+            width: "100%",
         },
         txtInput: {
             flex: .8,
@@ -115,29 +107,103 @@ function SearchSection(props) {
     }
 
     const SearchSuccess = () => {
+        const style = {
+            main: {
+                p: 3,
+                borderRadius: 2,
+                backgroundColor: '#16a34a',
+                color: "#FFF"
+            },
+            btnSuccess: {
+                color: '#FFF',
+                    borderColor: '#FFF',
+                    '&:hover': {
+                        backgroundColor: '#FFF',
+                        color: '#16a34a',
+                        borderColor: '#FFF'
+                    },
+            }
+        }
+
         return (
-            <Grid2 container alignItems={"center"} justifyContent={"center"} sx={style.success}>
-                <Typography variant={"h2"} sx={{ fontSize: { xs: "1rem", sm: "2.25rem" } }}>This person doesn't exists in our database!</Typography>
+            <Grid2 container
+                flexDirection={"column"}
+                spacing={2}
+                sx={style.main}>
+                <Box>
+                    <Grid2 container spacing={1.5} sx={{ mb: 1 }}>
+                        <CheckCircle sx={{ fontSize: 28 }} />
+                        <Typography variant="h5" fontWeight="bold">
+                            All Clear! No scam reports found
+                        </Typography>
+                    </Grid2>
+
+                    <Typography variant="body1" fontSize="1.125rem">
+                        We haven't received any scam reports matching this identifier. However, always exercise caution when dealing
+                        with unknown parties.
+                    </Typography>
+                </Box>
+
+                <Box>
+                    <Button variant="outlined"
+                        sx={style.btnSuccess}>
+                        Report a Scammer
+                    </Button>
+                </Box>
             </Grid2>
+
         )
     }
 
     const SearchFail = () => {
-
+        const style = {
+            main: {
+                p: 3,
+                borderRadius: 2,
+                backgroundColor: '#dc2626',
+            },
+            btnError: {
+                backgroundColor: '#FFF',
+                color: '#dc2626'
+            },
+            lblError: {
+                p: 1.5,
+                borderRadius: 1,
+                display: 'inline-block',
+                backgroundColor: 'rgba(185, 28, 28, 0.5)'
+            }
+        }
         return (
-            <Grid2 container flexDirection={"column"}
-                spacing={1}
-                alignItems={"center"}
-                justifyContent={"center"} sx={style.error}>
-                <Typography variant={"h2"} sx={{ fontSize: { xs: "1rem", sm: "2.25rem" } }}>Danger! This person is a scammer</Typography>
-                <MuLink href={`/Incident/${inc.PK}`} underline={"hover"} sx={{ color: "inherit" }}>
-                    <Typography variant={"h3"} sx={{ fontSize: { xs: "0.75rem", sm: "1.75rem" } }}>{inc.title}</Typography>
-                </MuLink>
-            </Grid2>
+            <Box sx={style.main}>
+                <Box sx={{ mb: 2 }}>
+                    <Grid2 container alignItems={"center"} justifyContent={"space-between"} sx={{ mb: 1}}>
+                        <Grid2 container spacing={1.5} >
+                            <WarningAmber sx={{ fontSize: 28 }} />
+                            <Typography variant="h5" fontWeight="bold">
+                                Danger! This person is a scammer
+                            </Typography>
+                        </Grid2>
+                        <Button variant={"outlined"} color={"error"}
+                            endIcon={<ArrowForward sx={{ fontSize: 20 }} />}
+                            sx={style.btnError}>
+                            View Details
+                        </Button>
+                    </Grid2>
+                    <Typography variant="body1" fontSize="1.125rem">
+                        This identifier has been reported in crypto scam incidents.
+                    </Typography>
+                </Box>
+                <Box sx={style.lblError}>
+                    <Typography>
+                        <strong>Warning Type:</strong> Crypto Scam
+                    </Typography>
+                </Box>
+            </Box>
         )
     }
 
-    const SearchResult = isScammer ? SearchFail : SearchSuccess;
+    // const SearchResult = isScammer ? SearchFail : SearchSuccess;
+    const SearchResult = isScammer ? SearchFail : SearchFail;
 
     return (
         <>
@@ -161,6 +227,7 @@ function SearchSection(props) {
                         endIcon={<Search />}
                         sx={{ flex: .2, maxWidth: "100px", minWidth: "100px" }}>Search</Button>
                 </Box>
+
             </Grid2>
             <Collapse in={flag} sx={{ display: flag ? "block" : "none" }}>
                 <SearchResult />
@@ -172,8 +239,6 @@ function SearchSection(props) {
 function AnalyticSection(props) {
 
     const { data = {} } = props;
-
-    data["total_amount_scammed"] = clsUtility.formatCurrency(data["total_amount_scammed"]);
 
     const renderItem = ({ key, value }) => (
         <Grid2 container spacing={1} flexDirection={"column"} alignItems={"center"}>
@@ -232,7 +297,7 @@ function SourceSection() {
             sx={{
                 borderTop: '1px solid',
                 borderColor: 'divider',
-                pt: { xs: 4, sm: 4 }
+                py: 4
             }}>
             <Typography variant={"h2"} sx={{ fontSize: { xs: "1.5rem", sm: "2rem" } }}>Collected From: </Typography>
             <Grid2 container sx={{ gap: { xs: 2, sm: 5 } }}>
@@ -253,15 +318,19 @@ function Index(props) {
     const getAnalytics = () => {
         setLoadingTrue();
         fetchUserDashboard()
-        .then(res => {
-            setLoadingFalse();
+            .then(res => {
+                setLoadingFalse();
 
-            const { data = [] } = res;
-            setAnalytics(_ => data);
-        })
-        .catch(err => {
-            setLoadingFalse();
-        })
+                const { data = [] } = res;
+
+                // Update Here
+                data["total_amount_scammed"] = clsUtility.formatCurrency(data["total_amount_scammed"]);
+
+                setAnalytics(_ => data);
+            })
+            .catch(err => {
+                setLoadingFalse();
+            })
     }
 
     useEffect(() => {
@@ -269,7 +338,7 @@ function Index(props) {
     }, [])
 
     return (
-        <Container maxWidth={"xl"} sx={{
+        <Container maxWidth={"lg"} sx={{
             display: "flex",
             flexDirection: "column",
             gap: { xs: 5, sm: 5 },

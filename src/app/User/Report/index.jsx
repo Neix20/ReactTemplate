@@ -396,7 +396,6 @@ function Index(props) {
     const style = {
         reportBody: (theme) => ({
             mb: 2,
-
         }),
         img: {
             width: { xs: "180px", sm: "240px" },
@@ -488,7 +487,7 @@ function Index(props) {
     }
 
     return (
-        <Container maxWidth={"xl"} sx={{
+        <Container maxWidth={"lg"} sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -504,7 +503,11 @@ function Index(props) {
                 <Stepper step={step} />
             </Grid2>
 
-            <Paper sx={{ width: "100%", padding: 2 }}>
+            <Paper sx={(theme) => ({
+                width: "100%", p: 2,
+                backgroundColor: "#f7fcfc",
+                ...theme.applyStyles('dark', { backgroundColor: "#1e2328" })
+            })}>
                 <Box component={"form"} onSubmit={handleSubmit(onSubmit, onError)}>
                     {/* First Page */}
                     <Grid2 hidden={step !== 0} sx={style.reportBody}>

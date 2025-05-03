@@ -52,14 +52,11 @@ const LegalDocs = () => {
     }, [location.pathname, navigate]);
 
     return (
-        <Container maxWidth="lg">
+        <Container maxWidth="xl">
             <Box sx={{ py: { xs: 2, sm: 5 } }}>
                 <Grid2 container spacing={1.5}>
                     {/* Sidebar */}
-                    <Grid2 item size={{
-                        xs: 12,
-                        sm: 3
-                    }}>
+                    <Grid2 item size={{ xs: 12, sm: 3 }}>
                         <Box sx={{ display: { xs: "none", lg: "block" } }}>
                             {/* FEATURE: Fix */}
 

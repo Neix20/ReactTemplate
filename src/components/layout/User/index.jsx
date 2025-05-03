@@ -7,7 +7,10 @@ import { Footer } from "./components/Footer";
 import { Outlet } from "react-router-dom";
 
 const BpContainer = styled(Box)(({ theme }) => ({
-    minHeight: '100%',
+    minHeight: 'calc(100vh - 110px)',
+    display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
     '&::before': {
         content: '""',
         display: 'block',

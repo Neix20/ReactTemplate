@@ -14,6 +14,8 @@ import { BpLoading, BpTab, BpPlatformLogo } from "@components";
 
 import { useToggle } from "@hooks";
 
+// Improve Comments
+
 function TitleSection(props) {
 
     const { name, gender, profile, birthday } = useSelector(Selectors.userSelect);
@@ -62,7 +64,7 @@ function TitleSection(props) {
     )
 }
 
-function PostPanel(props) {
+function ReportPanel(props) {
 
     const data = [
         {
@@ -197,7 +199,7 @@ function PostPanel(props) {
         }
     };
 
-    const renderItem = ({ images, platform, title, subtitle, reported_date, total_amount }) => (
+    const renderItem = ({ images, platform, title, subtitle, reported_date }) => (
         <Card sx={style.main}>
             <Grid2 container spacing={2}>
                 <Box component="img" src={images} alt="Background" sx={style.img} />
@@ -220,19 +222,21 @@ function PostPanel(props) {
 
     return (
         <Grid2 container flexDirection={"column"} spacing={1.5}>
-            <Typography variant={"h4"}>Posts History</Typography>
+            <Typography variant={"h4"}>Report History</Typography>
             {data.map(renderItem)}
         </Grid2>
     )
 }
 
 function CommentPanel(props) {
+
     const data = [
         {
             name: "Sarah L.",
             date: "2025-03-10",
             text: "I almost fell for his scheme too! He used the same investment pitch with me. Thankfully I saw this website first. Stay strong everyone.",
             likes: 12,
+            title: "Crypto Scam Warning",
             images: "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-01.jpg"
         },
         {
@@ -240,6 +244,7 @@ function CommentPanel(props) {
             date: "2025-03-09",
             text: "The authorities have been notified about this scammer. If you've been affected, please file a police report and reference case #25783.",
             likes: 27,
+            title: "Ponzi Scheme Exposed",
             images: "https://order-cart-app-01.s3.us-east-1.amazonaws.com/bg_kl.jpg"
         },
         {
@@ -247,23 +252,49 @@ function CommentPanel(props) {
             date: "2025-03-07",
             text: "I lost money to this person last month. I've joined the victim support group that meets virtually every Tuesday. It's helped me cope with the shame and anger. DM me if you want details.",
             likes: 19,
+            title: "POP MART Scam",
             images: "https://order-cart-app-01.s3.us-east-1.amazonaws.com/inc-det-01.jpg"
         },
     ];
 
+    const style = {
+        main: (theme) => ({
+            p: 2,
+            color: "#000",
+            backgroundColor: theme.palette.primary["A700"],
+            ...theme.applyStyles('dark', {
+                color: "#FFF",
+                backgroundColor: "#1E293B",
+            })
+        }),
+        title: {
+            fontSize: "0.875rem",
+            fontWeight: 600,
+        },
+        img: {
+            width: "80px",
+            height: "80px",
+        }
+    };
 
     const renderItem = (comment, index) => (
-        <Box key={index}>
-            <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
-                <Box component={"img"} src={comment.images} alt={comment.name} sx={{ width: "48px", height: "48px" }} />
-                <Box sx={{ flexGrow: 1 }}>
-                <Typography sx={{ color: "gray", fontSize: "0.875rem" }}>{comment.date}</Typography>
-                    <Typography sx={(theme) => ({ mb: 1, color: "#000", ...theme.applyStyles('dark', { color: "#FFF" }) })}>{comment.text}</Typography>
-                </Box>
-            </Box>
-            {index < data.length - 1 && <Divider sx={{ borderColor: "gray", my: 1 }} />}
-        </Box>
-    )
+        <Card sx={style.main}>
+            <Grid2 container spacing={1.5}>
+                <Box component={"img"} src={comment.images} alt={comment.name} sx={style.img} />
+                <Grid2 container flexDirection={"column"} justifyContent={"space-between"}>
+                    <Grid2 container>
+                        <Typography sx={style.title}>{comment.title}</Typography>
+                    </Grid2>
+                    <Grid2 container flexDirection={"column"} spacing={.5}>
+                        <Typography sx={{ color: "gray", fontSize: "0.875rem" }}>{comment.date}</Typography>
+                        <Typography sx={(theme) => ({ color: "#000", ...theme.applyStyles('dark', { color: "#FFF" }) })}>{comment.text}</Typography>
+                    </Grid2>
+                </Grid2>
+            </Grid2>
+        </Card>
+    );
+
+
     return (
         <Grid2 container flexDirection={"column"} spacing={1.5}>
             <Typography variant={"h4"}>Comment History</Typography>
@@ -361,8 +392,8 @@ function Index(props) {
 
     const tabPages = [
         {
-            title: "POSTS",
-            element: (<PostPanel />)
+            title: "REPORTS",
+            element: (<ReportPanel />)
         },
         {
             title: "COMMENTS",
@@ -382,11 +413,7 @@ function Index(props) {
                     <TitleSection />
                 </Container>
             </Box>
-            <Box sx={(theme) => ({
-                py: 1,
-                // backgroundColor: "#f7fcfc",
-                // ...theme.applyStyles('dark', { backgroundColor: "#1a2332" })
-            })}>
+            <Box sx={{ py: 1 }}>
                 <Container maxWidth={"xl"}>
                     <BpTab tabPages={tabPages}
                         sx={{
