@@ -47,7 +47,7 @@ function Index(props) {
         <Container maxWidth={"xl"} sx={{
             display: "flex",
             flexDirection: "column",
-            gap: { xs: 4, sm: 4 },
+            gap: { xs: 2, sm: 4 },
             pt: { xs: 4, sm: 4 }
         }}>
             <BpLoading loading={loading} />

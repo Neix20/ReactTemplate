@@ -11,6 +11,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
+import { Badge } from '@mui/material';
+
 // project imports
 import IconButton from '@components/mantis/@extended/IconButton';
 
@@ -101,7 +103,9 @@ export default function NavItem({ item, level, isParents = false, setSelectedID 
                 })
               })}
             >
-              {itemIcon}
+              <Badge badgeContent={10} variant={"dot"} color={"primary"}>
+                {itemIcon}
+              </Badge>
             </ListItemIcon>
           )}
           {(drawerOpen || (!drawerOpen && level !== 1)) && (

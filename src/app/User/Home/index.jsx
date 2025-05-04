@@ -10,6 +10,8 @@ import { Actions, Selectors } from '@libs/redux';
 
 import { CheckCircle, WarningAmber, ArrowForward } from "@mui/icons-material";
 
+import { useNavigate } from "react-router-dom";
+
 // #region Components
 function TitleSection() {
     return (
@@ -29,6 +31,7 @@ import { fetchScammerAttrQuery, fetchUserDashboard } from "@api";
 import { Search } from "@mui/icons-material";
 
 import { z } from "zod";
+import { use } from "chai";
 
 const template = {
     Scammer: {
@@ -62,6 +65,8 @@ function SearchSection(props) {
     const { PK: userId } = useSelector(Selectors.userSelect);
 
     const [inc, setInc] = useState({});
+
+    const navigate = useNavigate();
 
     const onSearch = (data) => {
 
@@ -109,7 +114,10 @@ function SearchSection(props) {
     const SearchSuccess = () => {
         const style = {
             main: {
-                p: 3,
+                p: {
+                    xs: 2,
+                    sm: 3
+                },
                 borderRadius: 2,
                 backgroundColor: '#16a34a',
                 color: "#FFF"
@@ -125,20 +133,26 @@ function SearchSection(props) {
             }
         }
 
+        const GoToReport = () => {
+            navigate("/Report");
+        }
+
         return (
             <Grid2 container
                 flexDirection={"column"}
-                spacing={2}
+                spacing={{ xs: 1, sm: 2}}
                 sx={style.main}>
                 <Box>
-                    <Grid2 container spacing={1.5} sx={{ mb: 1 }}>
-                        <CheckCircle sx={{ fontSize: 28 }} />
-                        <Typography variant="h5" fontWeight="bold">
+                    <Grid2 container spacing={{ xs: 1, sm: 1.5 }} 
+                        alignItems={"center"}
+                        sx={{ mb: 1 }}>
+                        <CheckCircle sx={{ fontSize: { xs: 20, sm: 28 } }} />
+                        <Typography variant="h5" fontWeight="bold" sx={{ fontSize: { xs: "1rem"}}}>
                             All Clear! No scam reports found
                         </Typography>
                     </Grid2>
 
-                    <Typography variant="body1" fontSize="1.125rem">
+                    <Typography variant="body1" fontSize={{ xs: "1rem", sm: "1.125rem"}}>
                         We haven't received any scam reports matching this identifier. However, always exercise caution when dealing
                         with unknown parties.
                     </Typography>
@@ -146,6 +160,7 @@ function SearchSection(props) {
 
                 <Box>
                     <Button variant="outlined"
+                        onClick={GoToReport}
                         sx={style.btnSuccess}>
                         Report a Scammer
                     </Button>
@@ -153,12 +168,15 @@ function SearchSection(props) {
             </Grid2>
 
         )
-    }
+    };
 
     const SearchFail = () => {
         const style = {
             main: {
-                p: 3,
+                p: {
+                    xs: 2,
+                    sm: 3
+                },
                 borderRadius: 2,
                 backgroundColor: '#dc2626',
             },
@@ -172,38 +190,43 @@ function SearchSection(props) {
                 display: 'inline-block',
                 backgroundColor: 'rgba(185, 28, 28, 0.5)'
             }
+        };
+
+        const GoToIncident = () => {
+            navigate(`/Incident/${inc.PK}`);
         }
         return (
             <Box sx={style.main}>
                 <Box sx={{ mb: 2 }}>
                     <Grid2 container alignItems={"center"} justifyContent={"space-between"} sx={{ mb: 1}}>
-                        <Grid2 container spacing={1.5} >
+                        <Grid2 container spacing={{ xs: 1, sm: 1.5 }} alignItems={"center"} sx={{ mb: { xs: 1, sm: 0}}}>
                             <WarningAmber sx={{ fontSize: 28 }} />
                             <Typography variant="h5" fontWeight="bold">
-                                Danger! This person is a scammer
+                                Danger! This is a scammer
                             </Typography>
                         </Grid2>
                         <Button variant={"outlined"} color={"error"}
+                            onClick={GoToIncident}
                             endIcon={<ArrowForward sx={{ fontSize: 20 }} />}
                             sx={style.btnError}>
                             View Details
                         </Button>
                     </Grid2>
                     <Typography variant="body1" fontSize="1.125rem">
-                        This identifier has been reported in crypto scam incidents.
+                        This identifier has been reported in some incidents.
                     </Typography>
                 </Box>
                 <Box sx={style.lblError}>
                     <Typography>
-                        <strong>Warning Type:</strong> Crypto Scam
+                        <strong>Warning Type:</strong> {inc.category}
                     </Typography>
                 </Box>
             </Box>
         )
     }
 
-    // const SearchResult = isScammer ? SearchFail : SearchSuccess;
-    const SearchResult = isScammer ? SearchFail : SearchFail;
+    const SearchResult = isScammer ? SearchFail : SearchSuccess;
+    // const SearchResult = isScammer ? SearchFail : SearchFail;
 
     return (
         <>

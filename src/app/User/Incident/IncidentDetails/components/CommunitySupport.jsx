@@ -1,11 +1,28 @@
 import { useState } from "react";
 import { Avatar, Box, Button, Checkbox, Divider, TextField, Typography, Card } from "@mui/material";
-import { ThumbUp } from "@mui/icons-material";
+
+import { useParams } from "react-router-dom";
 
 import style from "./style";
 
+import { BpLoading } from "@components";
+import { useToggle } from "@hooks";
+
+import { useDispatch, useSelector } from 'react-redux';
+import { Actions, Selectors } from '@libs/redux';
+
+import { fetchUserComment, fetchUserGetComment } from "@api";
+
 const CommunityDiscussions = (props) => {
+
+  const { PK: userId } = useSelector(Selectors.userSelect);
+  const { IncidentId = "" } = useParams();
+
   const [commentText, setCommentText] = useState("");
+
+  const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle(false);
+
+  // todo: Add Comment Form
 
   const comments = [
     {
@@ -30,24 +47,25 @@ const CommunityDiscussions = (props) => {
 
   return (
     <>
+      <BpLoading loading={loading} />
       <Card sx={style.card}>
         <Typography sx={style.cardTitle}>
           Community Discussions
         </Typography>
         {
           comments.map((comment, index) => (
-            <Box key={index} sx={{ pb: 2 }}>
+            <Box key={index}>
               <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
                 <Avatar sx={{ bgcolor: "gray" }} />
                 <Box sx={{ flexGrow: 1 }}>
                   <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
-                    <Typography sx={(theme) => ({ color: "#000", ...theme.applyStyles('dark', { color: "#FFF" })})}>{comment.name}</Typography>
+                    <Typography sx={(theme) => ({ color: "#000", ...theme.applyStyles('dark', { color: "#FFF" }) })}>{comment.name}</Typography>
                     <Typography sx={{ color: "gray", fontSize: "0.875rem" }}>{comment.date}</Typography>
                   </Box>
-                  <Typography sx={(theme) => ({ mb: 1, color: "#000", ...theme.applyStyles('dark', { color: "#FFF" })  })}>{comment.text}</Typography>
+                  <Typography sx={(theme) => ({ mb: 1, color: "#000", ...theme.applyStyles('dark', { color: "#FFF" }) })}>{comment.text}</Typography>
                 </Box>
               </Box>
-              {index < comments.length - 1 && <Divider sx={{ borderColor: "gray", my: 2 }} />}
+              {index < comments.length - 1 && <Divider sx={{ borderColor: "gray", my: 1 }} />}
             </Box>
           ))
         }
@@ -63,13 +81,12 @@ const CommunityDiscussions = (props) => {
           multiline
           rows={4}
           placeholder="Share your experience, advice, or support for other victims..."
-          sx={{ borderRadius: 2}}
+          sx={{ borderRadius: 2 }}
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
         />
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
-          
-        <Button variant="contained">
+          <Button variant="contained">
             Post Comment
           </Button>
         </Box>

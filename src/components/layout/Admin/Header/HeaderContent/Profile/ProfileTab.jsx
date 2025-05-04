@@ -19,26 +19,27 @@ import { useNavigate } from 'react-router-dom';
 
 export default function ProfileTab() {
 
-  const navigate = useNavigate();
+	const navigate = useNavigate();
 
-  const GoToProfile = () => {
-    navigate('/Profile');
-  }
-  return (
-    <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
-      {/* <ListItemButton>
+	const GoToProfile = () => {
+		navigate('/Profile');
+	}
+
+	return (
+		<List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
+			{/* <ListItemButton>
         <ListItemIcon>
           <EditOutlined />
         </ListItemIcon>
         <ListItemText primary="Edit Profile" />
       </ListItemButton> */}
-      <ListItemButton onClick={GoToProfile}>
-        <ListItemIcon>
-          <UserOutlined />
-        </ListItemIcon>
-        <ListItemText primary="View Profile" />
-      </ListItemButton>
-      {/* <ListItemButton>
+			<ListItemButton onClick={GoToProfile}>
+				<ListItemIcon>
+					<UserOutlined />
+				</ListItemIcon>
+				<ListItemText primary="View Profile" />
+			</ListItemButton>
+			{/* <ListItemButton>
         <ListItemIcon>
           <ProfileOutlined />
         </ListItemIcon>
@@ -50,14 +51,14 @@ export default function ProfileTab() {
         </ListItemIcon>
         <ListItemText primary="Billing" />
       </ListItemButton> */}
-      {/* <ListItemButton>
+			{/* <ListItemButton>
         <ListItemIcon>
           <LogoutOutlined />
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton> */}
-    </List>
-  );
+		</List>
+	);
 }
 
 ProfileTab.propTypes = { handleLogout: PropTypes.func };

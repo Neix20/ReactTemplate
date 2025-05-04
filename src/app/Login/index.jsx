@@ -331,10 +331,11 @@ function Main(props) {
         setLoadingTrue();
         fetchSignIn(data)
             .then(res => {
-                setLoadingFalse();
 
                 const { data = {} } = res;
                 dispatch(Actions.onChangeUser(data));
+
+                setLoadingFalse();
 
                 const { role = "User" } = data;
 

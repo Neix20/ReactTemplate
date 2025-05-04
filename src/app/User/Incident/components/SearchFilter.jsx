@@ -194,9 +194,10 @@ function App(props) {
                     )}
                     {Object.entries(selectedFilters).map(renderFilterBtn)}
                 </Grid2>
+
                 {/* Mobile Section */}
                 <Box sx={{ display: { xs: "block", sm: "none" } }}>
-                    <Grid2 container spacing={1}>
+                    <Grid2 container spacing={1} sx={{ mb: 1 }}>
                         <Grid2 item size={6}>
                             <Button fullWidth
                                 variant="contained"

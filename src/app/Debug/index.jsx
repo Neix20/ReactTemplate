@@ -9,7 +9,7 @@ import { ColorModeIconDropdown, BpForm, BpInput, BpDataTable } from "@components
 import { clsUtility } from "@utility";
 
 import { useForm, useFormDataLs } from "@hooks";
-import { GlobalStyles, Models, SampleData } from "@config";
+import { GlobalStyles, Models, SampleData, clsConst } from "@config";
 
 import { z } from "zod";
 
@@ -336,6 +336,24 @@ function ExampleFormDataLs(props) {
 function Index(props) {
 
     const user = useSelector(Selectors.userSelect);
+
+    useEffect(() => {
+        const eventSource = new EventSource(clsConst.API_URL + "/notification");
+      
+        eventSource.onmessage = (event) => {
+          console.log("New event:", event.data);
+        };
+      
+        eventSource.onerror = (err) => {
+          console.error("SSE error:", err);
+          eventSource.close();
+        };
+      
+        return () => {
+          eventSource.close();
+        };
+      }, []);
+      
 
     return (
         <Grid2 container flexDirection={"column"} spacing={1} sx={{ padding: 2 }}>

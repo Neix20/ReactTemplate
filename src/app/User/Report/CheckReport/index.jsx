@@ -27,24 +27,45 @@ function ResultCard(props) {
     }
 
     const dict = {
-        success: {
+        approved: {
             borderLeft: "4px solid #22c55e",
-            chipColor: "success"
+            color: "success",
+            chipLabel: "Approved",
+            Elem: _ => (
+                <Box>
+                    <Button variant={"outlined"} color={"#000"}>View Details</Button>
+                </Box>
+            )
         },
         pending: {
             borderLeft: "4px solid #f59e0b",
-            chipColor: "warning"
+            color: "warning",
+            chipLabel: "Pending",
+            Elem: _ => (
+                <Typography sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}>We're currently reviewing your report. Please check back later.</Typography>
+            )
         },
         rejected: {
             borderLeft: "4px solid #ef4444",
-            chipColor: "error"
+            color: "error",
+            chipLabel: "Rejected",
+            Elem: _ => (
+                <Box sx={(theme) => ({
+                    p: 1.5,
+                    borderRadius: 1,
+                    display: 'inline-block',
+                    backgroundColor: theme.palette.grey["A100"],
+                    ...theme.applyStyles('dark', { backgroundColor: "#1e2328" })
+                })}>
+                    <strong>Rejected: </strong> Cause you're Gay
+                </Box>
+            )
         }
     };
 
-    const variant = "pending";
-    const { borderLeft, chipColor } = dict[variant];
+    const variant = "approved";
+    const { borderLeft, color, Elem } = dict[variant];
     
-
     return (
         <Card sx={style.main} >
             <Box sx={{ borderLeft }}>
@@ -55,12 +76,9 @@ function ResultCard(props) {
                                 <Typography variant="h6">Incident INC-SXG4879AD</Typography>
                                 <Typography variant="body2" sx={{ color: 'gray' }}>Submitted on May 1, 2025</Typography>
                             </Box>
-                            <Chip label="Approved" color={chipColor} />
+                            <Chip label="Approved" color={color} />
                         </Grid2>
-                        <Typography sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}>We're currently reviewing your report. Please check back later.</Typography>
-                        {/* <Box>
-                            <Button variant="outlined">View Details</Button>
-                        </Box> */}
+                        <Elem />
                     </Grid2>
                 </CardContent>
             </Box>
@@ -124,7 +142,7 @@ function Index(props) {
             </Grid2>
 
             {/* Report */}
-            <Collapse in={sectionFlag}>
+            <Collapse in={sectionFlag || true}>
                 <ResultCard variant={"success"} />
                 <Paper sx={{ p: 2, py: 4, minWidth: "60%", display: "none" }}>
                     <Grid2 container

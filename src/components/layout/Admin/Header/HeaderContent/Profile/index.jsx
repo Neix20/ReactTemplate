@@ -220,6 +220,8 @@ export default function Profile() {
 			})
 	}
 
+  const isAdmin = location.pathname.startsWith("/Admin");
+
 	return (
 		<Box sx={{ flexShrink: 0, ml: 0.75 }}>
 			<ButtonBase
@@ -289,7 +291,7 @@ export default function Profile() {
 											</Grid>
 										</Grid>
 									</CardContent>
-									<ProfileTab />
+									{isAdmin ? (<></>) : (<ProfileTab />)}
 								</MainCard>
 							</ClickAwayListener>
 						</Paper>
