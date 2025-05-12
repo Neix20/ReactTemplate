@@ -1,12 +1,12 @@
 import { useRef } from "react";
 
-import { Grid2, Typography } from "@mui/material";
+import { Grid2, Typography, FormHelperText } from "@mui/material";
 
 import { FileUpload } from "@mui/icons-material";
 
 function Index(props) {
 
-    const { onAddImage = () => { }, sx = {} } = props;
+    const { onAdd = () => { }, error = null, sx = {} } = props;
 
     const fileUploadRef = useRef(null);
 
@@ -19,7 +19,7 @@ function Index(props) {
 
         const file = e.target.files?.[0]; // Get the first file
 
-        const { name: fileName, type: fileType } = file;
+        const { name: fileName, type: fileType, size: fileSize } = file;
 
         // Create a FileReader to read the file
         const reader = new FileReader();
@@ -29,12 +29,13 @@ function Index(props) {
             const base64String = evt.target.result; // This contains the Base64 string
 
             const item = {
-                imgName: fileName,
-                imgData: base64String,
-                imgType: fileType
+                fileName,
+                fileData: base64String,
+                fileType,
+                fileSize
             }
 
-            onAddImage(item);
+            onAdd(item);
         };
 
         // Read the file as a data URL (Base64)
@@ -45,7 +46,7 @@ function Index(props) {
         modalCnt: {
             cursor: "pointer",
             border: "2px dashed",
-            borderColor: "grey.400",
+            borderColor: error ? "red" : "grey.400",
             borderRadius: 2,
             padding: 3
         }
@@ -66,6 +67,7 @@ function Index(props) {
                 <Typography variant={"body1"}>Drag and drop your images here, or click to browse</Typography>
                 <Typography variant={"body2"}>Maximum file size: 5 MB</Typography>
             </Grid2>
+            <FormHelperText sx={{ color: "error.main" }}>{error?.message}</FormHelperText>
             <input ref={fileUploadRef}
                 hidden
                 type="file"

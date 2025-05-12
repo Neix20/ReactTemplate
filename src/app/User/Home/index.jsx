@@ -5,11 +5,18 @@ import { Container, Grid2, Typography, Button, Paper, Box, Tooltip, Collapse, Te
 import { Images } from "@config";
 import { clsUtility } from "@utility";
 
+import { useDispatch, useSelector } from 'react-redux';
+import { Actions, Selectors } from '@libs/redux';
+
+import { CheckCircle, WarningAmber, ArrowForward } from "@mui/icons-material";
+
+import { useNavigate } from "react-router-dom";
+
 // #region Components
 function TitleSection() {
     return (
         <Grid2 container flexDirection={"column"} alignItems={"center"} justifyContent={"center"}>
-            <Typography variant={"h1"} sx={{ fontSize: { xs: "1.875rem", sm: "2.5rem" } }}>Is this A Scammer?</Typography>
+            <Typography variant={"h1"} sx={{ fontSize: { xs: "1.875rem", sm: "2.5rem" } }}>Is this a Scammer?</Typography>
             <Typography variant={"body1"} color={"text.secondary"} sx={{ fontSize: { xs: 11, sm: "0.875rem" } }}>
                 Check to see if the person you're dealing with is a scammer
             </Typography>
@@ -20,10 +27,11 @@ function TitleSection() {
 import { useToggle, useForm } from "@hooks";
 import { BpLoading, BpInput } from "@components";
 
-import { fetchScammerAttrQuery } from "@api";
+import { fetchScammerAttrQuery, fetchUserDashboard } from "@api";
 import { Search } from "@mui/icons-material";
 
 import { z } from "zod";
+import { use } from "chai";
 
 const template = {
     Scammer: {
@@ -45,25 +53,32 @@ const template = {
 
 function SearchSection(props) {
 
-    const { flag: loadingFlag, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
+    const { loading = {} } = props;
+
+    const { setLoadingTrue, setLoadingFalse } = loading;
 
     const { flag, open, close } = useToggle();
     const { flag: isScammer, open: setScammerTrue, close: setScammerFalse } = useToggle();
 
-    // const flag = true;
-    // const isScammer = true;
+    const { control, handleSubmit, resetData } = useForm(template.Scammer);
 
-    // const { key, data, field, updateDataHtml, resetData } = useForm(template.Scammer);
-
-    const { control, handleSubmit, loadData, resetData } = useForm(template.Scammer);
+    const { PK: userId } = useSelector(Selectors.userSelect);
 
     const [inc, setInc] = useState({});
 
+    const navigate = useNavigate();
+
     const onSearch = (data) => {
+
+        const _data = {
+            userId,
+            ...data
+        }
+
         setLoadingTrue();
         close();
 
-        fetchScammerAttrQuery(data)
+        fetchScammerAttrQuery(_data)
             .then(res => {
                 open();
                 setLoadingFalse();
@@ -84,20 +99,10 @@ function SearchSection(props) {
     }
 
     const style = {
-        success: {
-            background: "radial-gradient(ellipse at 50% 50%, #98c390, #2E7D32)",
-            minHeight: { xs: 0, sm: 100 },
-            p: 2,
-        },
-        error: {
-            background: "radial-gradient(ellipse at 50% 50%, #d96b76, #B71C1C)",
-            minHeight: { xs: 0, sm: 100 },
-            p: 2
-        },
         search: {
             display: "flex",
             gap: 1,
-            width: { xs: "100%", sm: "80%", md: "60%" },
+            width: "100%",
         },
         txtInput: {
             flex: .8,
@@ -107,33 +112,124 @@ function SearchSection(props) {
     }
 
     const SearchSuccess = () => {
+        const style = {
+            main: {
+                p: {
+                    xs: 2,
+                    sm: 3
+                },
+                borderRadius: 2,
+                backgroundColor: '#16a34a',
+                color: "#FFF"
+            },
+            btnSuccess: {
+                color: '#FFF',
+                    borderColor: '#FFF',
+                    '&:hover': {
+                        backgroundColor: '#FFF',
+                        color: '#16a34a',
+                        borderColor: '#FFF'
+                    },
+            }
+        }
+
+        const GoToReport = () => {
+            navigate("/Report");
+        }
+
         return (
-            <Grid2 container alignItems={"center"} justifyContent={"center"} sx={style.success}>
-                <Typography variant={"h2"} sx={{ fontSize: { xs: "1rem", sm: "2.25rem" } }}>This person doesn't exists in our database!</Typography>
+            <Grid2 container
+                flexDirection={"column"}
+                spacing={{ xs: 1, sm: 2}}
+                sx={style.main}>
+                <Box>
+                    <Grid2 container spacing={{ xs: 1, sm: 1.5 }} 
+                        alignItems={"center"}
+                        sx={{ mb: 1 }}>
+                        <CheckCircle sx={{ fontSize: { xs: 20, sm: 28 } }} />
+                        <Typography variant="h5" fontWeight="bold" sx={{ fontSize: { xs: "1rem"}}}>
+                            All Clear! No scam reports found
+                        </Typography>
+                    </Grid2>
+
+                    <Typography variant="body1" fontSize={{ xs: "1rem", sm: "1.125rem"}}>
+                        We haven't received any scam reports matching this identifier. However, always exercise caution when dealing
+                        with unknown parties.
+                    </Typography>
+                </Box>
+
+                <Box>
+                    <Button variant="outlined"
+                        onClick={GoToReport}
+                        sx={style.btnSuccess}>
+                        Report a Scammer
+                    </Button>
+                </Box>
             </Grid2>
+
         )
-    }
+    };
 
     const SearchFail = () => {
+        const style = {
+            main: {
+                p: {
+                    xs: 2,
+                    sm: 3
+                },
+                borderRadius: 2,
+                backgroundColor: '#dc2626',
+            },
+            btnError: {
+                backgroundColor: '#FFF',
+                color: '#dc2626'
+            },
+            lblError: {
+                p: 1.5,
+                borderRadius: 1,
+                display: 'inline-block',
+                backgroundColor: 'rgba(185, 28, 28, 0.5)'
+            }
+        };
 
+        const GoToIncident = () => {
+            navigate(`/Incident/${inc.PK}`);
+        }
         return (
-            <Grid2 container flexDirection={"column"}
-                spacing={1}
-                alignItems={"center"}
-                justifyContent={"center"} sx={style.error}>
-                <Typography variant={"h2"} sx={{ fontSize: { xs: "1rem", sm: "2.25rem" } }}>Danger! This person is a scammer</Typography>
-                <MuLink href={`/Incident/${inc.PK}`} underline={"hover"} sx={{ color: "inherit" }}>
-                    <Typography variant={"h3"} sx={{ fontSize: { xs: "0.75rem", sm: "1.75rem" } }}>{inc.title}</Typography>
-                </MuLink>
-            </Grid2>
+            <Box sx={style.main}>
+                <Box sx={{ mb: 2 }}>
+                    <Grid2 container alignItems={"center"} justifyContent={"space-between"} sx={{ mb: 1}}>
+                        <Grid2 container spacing={{ xs: 1, sm: 1.5 }} alignItems={"center"} sx={{ mb: { xs: 1, sm: 0}}}>
+                            <WarningAmber sx={{ fontSize: 28 }} />
+                            <Typography variant="h5" fontWeight="bold">
+                                Danger! This is a scammer
+                            </Typography>
+                        </Grid2>
+                        <Button variant={"outlined"} color={"error"}
+                            onClick={GoToIncident}
+                            endIcon={<ArrowForward sx={{ fontSize: 20 }} />}
+                            sx={style.btnError}>
+                            View Details
+                        </Button>
+                    </Grid2>
+                    <Typography variant="body1" fontSize="1.125rem">
+                        This identifier has been reported in some incidents.
+                    </Typography>
+                </Box>
+                <Box sx={style.lblError}>
+                    <Typography>
+                        <strong>Warning Type:</strong> {inc.category}
+                    </Typography>
+                </Box>
+            </Box>
         )
     }
 
     const SearchResult = isScammer ? SearchFail : SearchSuccess;
+    // const SearchResult = isScammer ? SearchFail : SearchFail;
 
     return (
         <>
-            <BpLoading loading={loadingFlag} />
             <Grid2 container alignItems={"center"} justifyContent={"center"}
                 sx={{
                     borderTop: '1px solid',
@@ -154,6 +250,7 @@ function SearchSection(props) {
                         endIcon={<Search />}
                         sx={{ flex: .2, maxWidth: "100px", minWidth: "100px" }}>Search</Button>
                 </Box>
+
             </Grid2>
             <Collapse in={flag} sx={{ display: flag ? "block" : "none" }}>
                 <SearchResult />
@@ -162,29 +259,18 @@ function SearchSection(props) {
     )
 }
 
-function AnalyticSection() {
+function AnalyticSection(props) {
 
-    const data = [
-        {
-            "name": "no._scammer",
-            "value": "215"
-        },
-        {
-            "name": "no._incidents",
-            "value": "666"
-        },
-        {
-            "name": "amount_being_scammed",
-            "value": "812.83"
-        }
-    ]
+    const { data = {} } = props;
 
-    const renderItem = ({ name, value }) => (
+    const renderItem = ({ key, value }) => (
         <Grid2 container spacing={1} flexDirection={"column"} alignItems={"center"}>
             <Typography variant={"h2"} sx={{ fontSize: { xs: "1.5rem", sm: "2rem" } }}>{value}</Typography>
-            <Typography variant={"body"} color={"text.secondary"} sx={{ fontSize: { xs: "0.6rem", sm: "1rem" } }}>{clsUtility.capitalize(name)}</Typography>
+            <Typography variant={"body"} color={"text.secondary"} sx={{ fontSize: { xs: "0.6rem", sm: "1rem" } }}>{clsUtility.capitalize(key)}</Typography>
         </Grid2>
-    )
+    );
+
+    const arr = Object.entries(data).map(([key, value]) => ({ key, value }));
 
     return (
         <Grid2 container alignItems={"center"} justifyContent={"center"}
@@ -194,7 +280,7 @@ function AnalyticSection() {
                 borderColor: 'divider',
                 pt: { xs: 4, sm: 4 }
             }}>
-            {data.map(renderItem)}
+            {arr.map(renderItem)}
         </Grid2>
     )
 }
@@ -234,7 +320,7 @@ function SourceSection() {
             sx={{
                 borderTop: '1px solid',
                 borderColor: 'divider',
-                pt: { xs: 4, sm: 4 }
+                py: 4
             }}>
             <Typography variant={"h2"} sx={{ fontSize: { xs: "1.5rem", sm: "2rem" } }}>Collected From: </Typography>
             <Grid2 container sx={{ gap: { xs: 2, sm: 5 } }}>
@@ -244,35 +330,48 @@ function SourceSection() {
     )
 }
 
-import Chart from "./components/Chart";
-
-function ChartSection() {
-    return (
-        <Paper sx={{ p: 2 }}>
-            <Chart />
-        </Paper>
-    )
-}
 // #endregion
 
 function Index(props) {
 
+    const { flag: loadingFlag, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
+
+    const [analytics, setAnalytics] = useState([]);
+
+    const getAnalytics = () => {
+        setLoadingTrue();
+        fetchUserDashboard()
+            .then(res => {
+                setLoadingFalse();
+
+                const { data = [] } = res;
+
+                // Update Here
+                data["total_amount_scammed"] = clsUtility.formatCurrency(data["total_amount_scammed"]);
+
+                setAnalytics(_ => data);
+            })
+            .catch(err => {
+                setLoadingFalse();
+            })
+    }
+
     useEffect(() => {
-        console.log(window.location.href);
-    }, [window.location.href]);
+        getAnalytics();
+    }, [])
 
     return (
-        <Container maxWidth={"xl"} sx={{
+        <Container maxWidth={"lg"} sx={{
             display: "flex",
             flexDirection: "column",
             gap: { xs: 5, sm: 5 },
             pt: { xs: 4, sm: 8 },
         }}>
+            <BpLoading loading={loadingFlag} />
             <TitleSection />
-            <SearchSection />
-            <AnalyticSection />
+            <SearchSection loading={{ setLoadingTrue, setLoadingFalse }} />
+            <AnalyticSection data={analytics} />
             <SourceSection />
-            {/* <ChartSection /> */}
         </Container>
     )
 }

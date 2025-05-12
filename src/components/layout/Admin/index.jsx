@@ -18,23 +18,28 @@ import { styled } from '@mui/material';
 // ==============================|| MAIN LAYOUT ||============================== //
 
 const BxContainer = styled(Box)(({ theme }) => ({
-  minHeight: '100%',
+  minHeight: 'calc(100vh - 110px)',
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
   '&::before': {
-      content: '""',
-      display: 'block',
-      position: "absolute",
-      zIndex: -1,
-      inset: 0,
-      // backgroundImage: 'radial-gradient(at 25% 100%, rgba(244,238,255,1), rgba(255,255,255,1))',
-      backgroundRepeat: 'no-repeat',
-      ...theme.applyStyles('dark', {
-          // backgroundImage: 'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
-      }),
+    content: '""',
+    display: 'block',
+    position: "absolute",
+    zIndex: -1,
+    inset: 0,
+    // backgroundImage: 'radial-gradient(at 25% 100%, rgba(244,238,255,1), rgba(255,255,255,1))',
+    backgroundRepeat: 'no-repeat',
+    ...theme.applyStyles('dark', {
+      // backgroundImage: 'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+    }),
   },
 }));
 
+import { BpSessionChecker } from "@components";
+
 export default function DashboardLayout(props) {
-  
+
   const { pathname } = useLocation();
   const { menuMasterLoading } = useGetMenuMaster();
   const downXL = useMediaQuery((theme) => theme.breakpoints.down('xl'));
@@ -50,22 +55,17 @@ export default function DashboardLayout(props) {
     <Box sx={{ display: 'flex', width: '100%' }}>
       <Header />
       <Drawer />
+      <BpSessionChecker />
 
-      <Box component="main" sx={{ width: 'calc(100% - 260px)', flexGrow: 1, 
-          p: { xs: 2, sm: 3 } 
-          }}>
+      <Box component="main" sx={{
+        flexGrow: 1,
+        p: { xs: 2, sm: 3 }
+      }}>
         <Toolbar sx={{ mt: 'inherit' }} />
-        <BxContainer
-          sx={{
-            // ...{ px: { xs: 0, sm: 2 } },
-            position: 'relative',
-            minHeight: 'calc(100vh - 110px)',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          {/* <Breadcrumbs /> */}
-          <Outlet />
+        <BxContainer>
+        <Box>
+        <Outlet />
+        </Box>
           <Footer />
         </BxContainer>
       </Box>

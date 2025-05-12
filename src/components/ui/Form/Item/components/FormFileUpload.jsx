@@ -40,7 +40,7 @@ function Index(props) {
 
         const file = e.target.files?.[0]; // Get the first file
 
-        const { name: fileName } = file;
+        const { name: fileName, type: fileType, size: fileSize } = file;
 
         // Create a FileReader to read the file
         const reader = new FileReader();
@@ -50,7 +50,15 @@ function Index(props) {
             const base64String = evt.target.result; // This contains the Base64 string
 
             setFileData(_ => fileName);
-            onChange(base64String);
+            
+            const item = {
+                fileName,
+                fileData: base64String,
+                fileType,
+                fileSize
+            };
+
+            onChange(item);
         };
 
         // Read the file as a data URL (Base64)

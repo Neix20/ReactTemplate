@@ -82,7 +82,7 @@ function Index(props) {
                 data={data}
                 field={Models.Incident.field}
                 fieldOrder={colOrder}
-                hideField={["description", "social_url", "post_date", "category"]}
+                hideField={["description", "social_url", "post_date", "category", "trade_method", "total_amount"]}
                 enableRowAction={true}
                 enableTopAction={true}
                 onUpdate={onTblUpdate}

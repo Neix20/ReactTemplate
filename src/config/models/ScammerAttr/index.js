@@ -4,7 +4,7 @@ import { z } from "zod";
 const schema = z.object({
     name: z.string().min(1, "Name is required"),
     value: z.string().min(1, "Value is required"),
-    category: z.enum(["social_media", "platform", "nickname", "others"]),
+    category: z.enum(["social_media", "payment_methods", "others"]),
     type: z.enum(["string", "file", "others"]),
 });
 
@@ -24,21 +24,17 @@ const obj = {
             "type": "dropdown",
             "selection": [
                 {
-                    "name": "social_media",
+                    "label": "social_media",
                     "value": "social_media"
                 },
                 {
-                    "name": "platform",
-                    "value": "platform"
+                    "label": "payment_methods",
+                    "value": "payment_methods"
                 },
                 {
-                    "name": "nickname",
-                    "value": "nickname"
-                },
-                {
-                    "name": "others",
+                    "label": "others",
                     "value": "others"
-                },
+                }
             ]
         },
         {
@@ -46,15 +42,15 @@ const obj = {
             "type": "dropdown",
             "selection": [
                 {
-                    "name": "string",
+                    "label": "string",
                     "value": "string"
                 },
                 {
-                    "name": "file",
+                    "label": "file",
                     "value": "file"
                 },
                 {
-                    "name": "others",
+                    "label": "others",
                     "value": "others"
                 }
             ]
@@ -67,7 +63,6 @@ const obj = {
         "type": ""
     },
     schema
-
 }
 
 export default obj;

@@ -1,14 +1,15 @@
 
-import { InputLabel, Select, MenuItem } from "@mui/material";
+import { Select, MenuItem } from "@mui/material";
 
-const FormDropdown = (props = {}) => {
+import { clsUtility } from "@utility";
+
+const Index = (props = {}) => {
 
     const { placeholder = "", selection = [], value = "", ..._props } = props;
 
-    const renderItem = ({ name = "", value = "" }) => (<MenuItem value={value}>{name}</MenuItem>);
+    const renderItem = ({ label = "", value = "" }) => (<MenuItem value={value}>{clsUtility.capitalize(label)}</MenuItem>);
 
     return (
-        // <Select displayEmpty {..._props}>
         <Select displayEmpty value={value} {..._props}>
             <MenuItem value="" disabled>
                 {placeholder}
@@ -18,4 +19,4 @@ const FormDropdown = (props = {}) => {
     )
 }
 
-export default FormDropdown;
+export default Index;

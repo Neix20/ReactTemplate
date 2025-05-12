@@ -8,27 +8,49 @@ import InfoCard from "./components/InfoCard";
 
 import { SampleData } from "@config";
 
-import { BpGridMasonry } from "@components";
+import { BpGridMasonry, BpLoading } from "@components";
 
-import { useCusMedia } from "@hooks";
+import { useCusMedia, useToggle } from "@hooks";
+
+import { fetchIncidentActive } from "@api";
 
 function Index(props) {
 
-    const [data, setData] = useState([]);
+    const [incident, setIncident] = useState([]);
 
     const { value: colSize, setValue: setColSize } = useCusMedia({ xs: 1, sm: 2, md: 3, lg: 3 });
+    const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle(false);
+
+    const getAllIncident = () => {
+        setLoadingTrue();
+        fetchIncidentActive()
+        .then(res => {
+            setLoadingFalse();
+            const { data = {} } = res;
+            setIncident(_ => data);
+        })
+        .catch(err => {
+            setLoadingFalse();
+            console.error(err);
+        });
+    }
 
     useEffect(() => {
-        setData(_ => SampleData.Incident);
+        getAllIncident();
     }, []);
+
+    const onChangeIncident = (data) => {
+        setIncident(_ => data);
+    }
 
     return (
         <Container maxWidth={"xl"} sx={{
             display: "flex",
             flexDirection: "column",
-            gap: { xs: 4, sm: 4 },
+            gap: { xs: 2, sm: 4 },
             pt: { xs: 4, sm: 4 }
         }}>
+            <BpLoading loading={loading} />
             {/* Title Section */}
             <Grid2>
                 <Typography variant="h1" sx={{ fontSize: { xs: "1.875rem", sm: "2.5rem" } }}>Incident Reports</Typography>
@@ -36,11 +58,11 @@ function Index(props) {
             </Grid2>
 
             {/* Search System */}
-            <SearchFilter />
+            <SearchFilter updateIncident={onChangeIncident} />
 
             {/* Card System */}
             <BpGridMasonry key={`grid-masonry-${colSize}`} numCols={colSize}>
-                {data.map((item, index) => (
+                {incident.map((item, index) => (
                     <InfoCard key={item.PK || index} {...item} />
                 ))}
             </BpGridMasonry>

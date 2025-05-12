@@ -84,6 +84,7 @@ function Index(props) {
             <BpDataTable
                 data={data}
                 field={Models.IpSeries.field}
+                hideField={["link", "parent"]}
                 enableRowAction={true}
                 enableTopAction={true}
                 onUpdate={onTblUpdate}

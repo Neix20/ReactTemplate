@@ -3,12 +3,12 @@ import { Box } from "@mui/material";
 
 function Index(props) {
 
-    const { imgName = "", imgData = "", onClick = () => {}, sx = {} } = props;
+    const { fileName = "", fileData = "", onClick = () => {}, sx = {} } = props;
 
     const style = {
         main: {
-            width: 40,
-            height: 40,
+            width: 128,
+            height: 128,
             borderRadius: 2,
             transition: "transform 0.2s",
             cursor: "pointer",
@@ -20,7 +20,7 @@ function Index(props) {
     }
 
     return (
-        <Box component={"img"} onClick={onClick} src={imgData} alt={imgName} sx={style.main} />
+        <Box component={"img"} onClick={onClick} src={fileData} alt={fileName} sx={style.main} />
     )
 }
 

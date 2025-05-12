@@ -5,7 +5,9 @@ import { FormControl, FormLabel, FormHelperText } from "@mui/material";
 
 import { clsUtility } from "@utility";
 
-import FormDropdown from "./components/FormDropdown";
+import MultiDropdown from "./components/Dropdown/Multi";
+import SingleDropdown from "./components/Dropdown/Single";
+
 import FormColor from "./components/FormColor";
 import FormImage from "./components/FormImage";
 import FormFileUpload from "./components/FormFileUpload";
@@ -39,7 +41,7 @@ function Index(props) {
 
     const { name = "", type = "text", control = null } = props;
     const { label = "", placeholder = "" } = props;
-    const { selection = [], rows = 3, sx = {} } = props;
+    const { selection = [], rows = 3, formatOptionLabel, sx = {} } = props;
 
     // We Should Make This Flexible to be able to customize our own Form Item
     const elemDict = {
@@ -73,7 +75,10 @@ function Index(props) {
             />
         ),
         "dropdown": ({ field = {}, error = null }) => (
-            <FormDropdown selection={selection} placeholder={placeholder} error={error} {...field} />
+            <SingleDropdown selection={selection} placeholder={placeholder} error={error} {...field} />
+        ),
+        "multi-dropdown": ({ field = {}, error = null }) => (
+            <MultiDropdown selection={selection} placeholder={placeholder} error={error} formatOptionLabel={formatOptionLabel} {...field} />
         ),
         "color": ({ field = {}, error = null }) => (
             <FormColor placeholder={placeholder} error={error} {...field} />

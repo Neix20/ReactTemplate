@@ -40,7 +40,7 @@ function Index(props) {
 
     return (
         <>
-            <Button onClick={handleMouseEnter} variant={"text"} color={"info"} size={"small"} endIcon={<ArrowDropDown />}>
+            <Button onClick={handleMouseEnter} variant={"text"} endIcon={<ArrowDropDown />}>
                 {children}
             </Button>
             <Menu

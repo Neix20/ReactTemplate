@@ -1,9 +1,6 @@
 
 const initialState = {
-    user: {
-        lastSession: ""
-    }
-
+    user: {}
 };
 
 function setReducer(state = initialState, action = {}) {

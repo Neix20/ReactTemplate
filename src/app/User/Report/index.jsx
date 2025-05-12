@@ -1,15 +1,22 @@
 import { useState, useEffect, useRef } from "react";
 
-import { Container, Grid2, Typography, Button, IconButton, Box, Tooltip, Paper, Card } from "@mui/material";
+import { Container, Grid2, Typography, Button, IconButton, Box, Tooltip, Paper, TextField, Card, getCollapseUtilityClass } from "@mui/material";
 import { GlobalStyles, SampleData } from "@config";
 
 import Stepper from "./components/Stepper";
 
-import { BpFormItem, BpInput, BpImageGallery, BpImageUpload, BpSearchMenuList } from "@components";
+import { BpForm, BpInput, BpImageGallery, BpImageUpload, BpLoading } from "@components";
 
-import { useForm, useFormDataLs } from "@hooks";
+import { useForm, useFormDataLs, useToggle } from "@hooks";
 
-import { Delete, Add } from "@mui/icons-material";
+import { Delete, Add, CheckCircle, ContentCopy } from "@mui/icons-material";
+
+import { fetchIpSeriesGetAll, fetchIncidentUploadImg, fetchUserReport } from "@api";
+
+import { useDispatch, useSelector } from 'react-redux';
+import { Actions, Selectors } from '@libs/redux';
+
+import { clsUtility } from "@utility";
 
 function useStep() {
     const [step, setStep] = useState(0);
@@ -34,30 +41,37 @@ const template = {
         schema: z.object({
             name: z.string(),
             social_media: z.array(z.object({
-                platform: z.string().min(1, "Platform is required"),
-                post_url: z.string().min(1, "Post URL is required"),
-            })),
+                name: z.string().min(1, "Platform is required"),
+                value: z.string().min(1, "Post URL is required"),
+            })).optional(),
             payment_method: z.array(z.object({
-                platform: z.string().min(1, "Platform is required"),
-                post_url: z.string().min(1, "Post URL is required"),
-            })),
+                name: z.string().min(1, "Platform is required"),
+                value: z.string().min(1, "Post URL is required"),
+            })).optional(),
             nickname: z.array(z.object({
                 value: z.string().min(1, "Nickname is required"),
-            })),
+            })).optional(),
             phone_number: z.array(z.object({
-                value: z.string().min(1, "Nickname is required"),
-            })),
+                value: z.string().min(1, "Phone Number is required"),
+            })).optional(),
             pretend_to_be: z.string().min(1, "Pretend to be is required"),
             pretend_to_sell: z.array(z.object({
-                platform: z.string().min(1, "Platform is required"),
-                post_url: z.string().min(1, "Post URL is required"),
+                label: z.any(),
+                value: z.string()
             })),
             total_amount: z.number(),
             transaction_date: z.string().date("Invalid date"),
             post: z.object({
                 platform: z.string().optional(),
                 post_url: z.string().optional(),
-            })
+            }),
+            images: z.array(z.object({
+                fileName: z.string(),
+                fileData: z.string(),
+                fileType: z.string(),
+                fileSize: z.number()
+            })).min(1),
+            comments: z.string().optional()
         }),
         initial: {
             name: "",
@@ -65,7 +79,7 @@ const template = {
             nickname: [],
             payment_method: [],
             phone_number: [],
-            pretend_to_sell: [],
+            pretend_to_sell: null,
             pretend_to_be: "",
             total_amount: 0,
             transaction_date: "",
@@ -73,9 +87,11 @@ const template = {
                 platform: "",
                 post_url: ""
             },
-            comments: ""
+            comments: "",
+            images: []
         }
-    }
+    },
+
 }
 
 function NickNameSection(props) {
@@ -133,12 +149,12 @@ function SocialMediaSection(props) {
             <>
                 <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Grid2 item size={3} sx={{ display: "flex" }}>
-                        <BpInput name={`${term}.${ind}.platform`} type={"dropdown"}
+                        <BpInput name={`${term}.${ind}.name`} type={"dropdown"}
                             placeholder={"Platform"} selection={SampleData.Platform}
                             control={control} />
                     </Grid2>
                     <Grid2 item size={9} sx={{ display: "flex", gap: 1 }}>
-                        <BpInput name={`${term}.${ind}.post_url`} type={"text"}
+                        <BpInput name={`${term}.${ind}.value`} type={"text"}
                             placeholder={"Enter username / Profile URL"}
                             control={control} />
                         <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
@@ -149,11 +165,11 @@ function SocialMediaSection(props) {
                 <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
                     <Grid2 item size={10} container spacing={1}>
                         <BpInput
-                            name={`${term}.${ind}.platform`} type={"dropdown"}
+                            name={`${term}.${ind}.name`} type={"dropdown"}
                             placeholder={"Platform"} selection={SampleData.Platform}
                             control={control} />
                         <BpInput
-                            name={`${term}.${ind}.post_url`} type={"text"}
+                            name={`${term}.${ind}.value`} type={"text"}
                             placeholder={"Enter username / Profile URL"}
                             control={control} />
                     </Grid2>
@@ -190,12 +206,12 @@ function PaymentMethodSection(props) {
             <>
                 <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
                     <Grid2 item size={3} sx={{ display: "flex" }}>
-                        <BpInput name={`${term}.${ind}.platform`} type={"dropdown"}
+                        <BpInput name={`${term}.${ind}.name`} type={"dropdown"}
                             placeholder={"Platform"} selection={SampleData.Platform}
                             control={control} />
                     </Grid2>
                     <Grid2 item size={9} sx={{ display: "flex", gap: 1 }}>
-                        <BpInput name={`${term}.${ind}.post_url`} type={"text"}
+                        <BpInput name={`${term}.${ind}.value`} type={"text"}
                             placeholder={"Enter username / Profile URL"}
                             control={control} />
                         <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
@@ -206,11 +222,11 @@ function PaymentMethodSection(props) {
                 <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
                     <Grid2 item size={10} container spacing={1}>
                         <BpInput
-                            name={`${term}.${ind}.platform`} type={"dropdown"}
+                            name={`${term}.${ind}.name`} type={"dropdown"}
                             placeholder={"Platform"} selection={SampleData.Platform}
                             control={control} />
                         <BpInput
-                            name={`${term}.${ind}.post_url`} type={"text"}
+                            name={`${term}.${ind}.value`} type={"text"}
                             placeholder={"Enter username / Profile URL"}
                             control={control} />
                     </Grid2>
@@ -281,100 +297,91 @@ function PhoneNumberSection(props) {
     )
 }
 
-function PretendToSellSection(props) {
-    const { term = "", control = null } = props;
-    const { data, append: onAdd, remove: onDelete } = useFormDataLs({ key: term, control });
+import { Controller } from "react-hook-form";
 
-    const renderItem = (item, ind) => {
-        const onDeleteItem = () => onDelete(ind);
+import { FormControl, FormLabel, FormHelperText } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+
+import ReactSelect from "@components/ui/Form/Item/components/Dropdown/Multi";
+
+function CuIpSeriesSelect(props) {
+
+    const { name = "", control = null } = props;
+    const { label = "", placeholder = "", selection = [], onAdd = _ => { } } = props;
+
+    const formatOptionLabel = ({ label, image }) => {
         return (
-            <>
-                <Grid2 container spacing={1} sx={{ display: { xs: "none", sm: "flex" } }}>
-                    <Grid2 item size={3} sx={{ display: "flex" }}>
-                        <BpInput name={`${term}.${ind}.platform`} type={"dropdown"}
-                            placeholder={"Platform"} selection={SampleData.Platform}
-                            control={control} />
-                    </Grid2>
-                    <Grid2 item size={9} sx={{ display: "flex", gap: 1 }}>
-                        <BpInput name={`${term}.${ind}.post_url`} type={"text"}
-                            placeholder={"Enter username / Profile URL"}
-                            control={control} />
-                        <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
-                            <Delete />
-                        </IconButton>
-                    </Grid2>
-                </Grid2>
-                <Grid2 container spacing={1} sx={{ display: { xs: "flex", sm: "none" } }}>
-                    <Grid2 item size={10} container spacing={1}>
-                        <BpInput
-                            name={`${term}.${ind}.platform`} type={"dropdown"}
-                            placeholder={"Platform"} selection={SampleData.Platform}
-                            control={control} />
-                        <BpInput
-                            name={`${term}.${ind}.post_url`} type={"text"}
-                            placeholder={"Enter username / Profile URL"}
-                            control={control} />
-                    </Grid2>
-                    <Grid2 item size={2}>
-                        <IconButton onClick={onDeleteItem} sx={{ backgroundColor: "error.main" }}>
-                            <Delete />
-                        </IconButton>
-                    </Grid2>
-                </Grid2>
-            </>
-        )
+            <Grid2 container spacing={1}>
+                <Box component={"img"} src={image} alt={label} sx={{ width: "20px", height: "20px" }} />
+                <Typography>{label}</Typography>
+            </Grid2>
+        );
+    };
+
+    const { flag: cuForm, open: setCuFormTrue, close: setCuFormFalse } = useToggle();
+
+    const { field, control: cuControl, getValues, resetData } = useForm({
+        field: [
+            {
+                "name": "name",
+                "type": "text"
+            },
+            {
+                "name": "image",
+                "type": "image"
+            }
+        ],
+        initial: {
+            name: "",
+            image: ""
+        }
+    });
+
+    const onSubmit = () => {
+        const { name, image: { fileName, fileData, fileType } } = getValues();
+        const _data = {
+            label: name,
+            value: fileData,
+            image: fileData
+        }
+        onAdd(_data);
+        resetData();
+        setCuFormFalse();
     }
 
-    const _onAdd = _ => onAdd({});
-
-    return (
-        <Grid2 container flexDirection={"column"} spacing={1}>
-            <Typography>Pretend To Sell</Typography>
-            {data.map(renderItem)}
-            <Grid2 container>
-                <Button startIcon={<Add />} onClick={_onAdd} variant={"contained"}>Add Sellee</Button>
-            </Grid2>
-        </Grid2>
-    )
-}
-
-function Term(props) {
     return (
         <>
-            {/* Second Page */}
-            <Grid2 hidden={step !== 1} sx={style.reportBody}>
-                <Grid2 container flexDirection={"column"} spacing={2}>
-                    <Grid2 container justifyContent={"center"}>
-                        <Box component={"img"} src={Page2} sx={style.img} />
-                    </Grid2>
-                    <BpInput name={"pretend_to_be"} type={"dropdown"} control={control} placeholder={"What did they pretend to be?"} label={"Pretend To Be"} hasLabel={true} />
-                    <PretendToSellSection term={"pretend_to_sell"} control={control} />
+            <Controller
+                name={name}
+                control={control}
+                render={({ field, fieldState: { error } }) => {
+                    return (
+                        <FormControl fullWidth errors={error}>
+                            <FormLabel>{label}</FormLabel>
+                            <ReactSelect
+                                placeholder={placeholder}
+                                selection={selection}
+                                error={error}
+                                {...field}
+                                formatOptionLabel={formatOptionLabel} />
+                            <FormHelperText sx={{ color: "error.main" }}>{error?.message}</FormHelperText>
+                        </FormControl>
+                    )
+                }}
+            />
 
-                    <BpInput name={"total_amount"} type={"decimal"} control={control} placeholder={"Enter Amount"} label={"Total Amount Scammed (RM)"} hasLabel={true} />
-                    <BpInput name={"transaction_date"} type={"date"} control={control} placeholder={"Enter Date"} label={"Transaction Date"} hasLabel={true} />
-                    <Grid2 container flexDirection={"column"} spacing={1}>
-                        <Typography>(Optional) Have you ever posted this on your social media?</Typography>
-                        <Grid2 container>
-                            <BpInput name={"post.platform"} type={"dropdown"} placeholder={"Select Platform"} selection={SampleData.Platform} />
-                            <BpInput name={"post.post_url"} type={"text"} placeholder={"https://www.facebook.com/username"} />
-                        </Grid2>
-                    </Grid2>
-                </Grid2>
-            </Grid2>
+            <Dialog open={cuForm} onClose={setCuFormFalse}>
+                <DialogTitle>Add IP Series</DialogTitle>
+                <DialogContent>
+                    <BpForm hasLabel={true} field={field} control={cuControl} size={{ xs: 1, sm: 1 }} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={onSubmit} variant={"contained"}>Submit</Button>
+                </DialogActions>
+            </Dialog>
 
-            {/* Third Page */}
-            <Grid2 hidden={step !== 2} sx={style.reportBody}>
-                <Grid2 container flexDirection={"column"} spacing={2}>
-                    <Grid2 container justifyContent={"center"}>
-                        <Box component={"img"} src={Page3} sx={style.img} />
-                    </Grid2>
-                    <BpInput name={"comments"} type={"textarea"} control={control} placeholder={"Do you have anything to comment about this incident?"} label={"Comments"} hasLabel={true} />
-                    <Grid2 container flexDirection={"column"} spacing={1}>
-                        <Typography>Upload Screenshots</Typography>
-                        <BpImageUpload onAddImage={addImgAsset} />
-                        <BpImageGallery images={imgAsset} onDelete={deleteImgAsset} />
-                    </Grid2>
-                </Grid2>
+            <Grid2 container>
+                <Button startIcon={<Add />} onClick={setCuFormTrue} variant={"contained"}>IP Series</Button>
             </Grid2>
         </>
     )
@@ -382,46 +389,107 @@ function Term(props) {
 
 function Index(props) {
 
-    const { step, add, minus } = useStep();
+    const { step, add: addStep, minus: minusStep } = useStep();
+
+    const { PK: userId } = useSelector(Selectors.userSelect);
 
     const style = {
         reportBody: (theme) => ({
             mb: 2,
-
         }),
         img: {
             width: { xs: "180px", sm: "240px" },
             height: { xs: "180px", sm: "240px" }
         }
+    };
+
+    const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
+    const { control, handleSubmit, isDirty } = useForm(template.report);
+
+    const [incTag, setIncTag] = useState("Error");
+
+    // #region Ip Series Actions
+    const [ipSeriesSelection, setIpSeriesSelection] = useState([]);
+
+    const addSelection = (obj) => {
+        const _arr = [...ipSeriesSelection, obj];
+        setIpSeriesSelection(_ => _arr);
     }
 
-    // #region Image Asset
-    const [imgAsset, setImgAsset] = useState([]);
+    const getAllIpSeries = () => {
+        setLoadingTrue();
+        fetchIpSeriesGetAll()
+            .then(res => {
+                setLoadingFalse();
 
-    const addImgAsset = (item) => {
-        setImgAsset((arr) => [...arr, item]);
-    }
+                const { data = [] } = res;
 
-    const deleteImgAsset = (idx) => {
-        let arr = [...imgAsset];
+                const _arr = data.map(x => ({
+                    image: x.image,
+                    label: x.name,
+                    value: x.PK
+                }));
 
-        if (idx > -1) {
-            arr.splice(idx, 1)
-        }
-
-        setImgAsset(_ => arr);
+                setIpSeriesSelection(_ => _arr);
+            })
+            .catch(() => {
+                setLoadingFalse();
+            })
     }
     // #endregion
 
-    const { control, handleSubmit, isDirty } = useForm(template.report);
+    // #region Image Asset
+    const { data: imgAsset, append: onAdd, remove: onDelete } = useFormDataLs({ key: "images", control });
+
+    const addImgAsset = (item) => onAdd(item);
+    const deleteImgAsset = (idx) => onDelete(idx);
+    // #endregion
+
+    const uploadUserReport = (data) => {
+        setLoadingTrue();
+        fetchUserReport(data)
+            .then(res => {
+                setLoadingFalse();
+
+                const { tag = "" } = res;
+                setIncTag(_ => tag);
+
+                addStep();
+            })
+            .catch(err => {
+                setLoadingFalse();
+                console.error(err);
+            })
+    }
+
+    useEffect(() => {
+        getAllIpSeries();
+    }, []);
 
     const onSubmit = (data) => {
-        alert("Success!");
-        console.log(data);
+
+        // Processing of Data
+        const paramData = {
+            userId,
+            ...data,
+        }
+
+        // console.log(paramData);
+
+        uploadUserReport(paramData);
+    }
+
+    const onError = (error) => {
+        alert("Please check if all required fields have been filled up!");
+        console.error(error);
+    }
+
+    const copyIncTag = () => {
+        clsUtility.copyToClipboard(incTag);
     }
 
     return (
-        <Container maxWidth={"xl"} sx={{
+        <Container maxWidth={"lg"} sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -429,14 +497,20 @@ function Index(props) {
             pt: { xs: 4, sm: 4 }
         }}>
 
+            <BpLoading loading={loading} />
+
             {/* Header */}
             <Grid2 container flexDirection={"column"} spacing={2}>
                 <Typography variant={"h2"} sx={{ fontSize: { xs: "1.875rem", sm: "2.5rem" } }}>Report A Scammer</Typography>
                 <Stepper step={step} />
             </Grid2>
 
-            <Paper sx={{ width: "100%", padding: 2 }}>
-                <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+            <Paper sx={(theme) => ({
+                width: "100%", p: 2,
+                backgroundColor: "#f7fcfc",
+                ...theme.applyStyles('dark', { backgroundColor: "#1e2328" })
+            })}>
+                <Box component={"form"} onSubmit={handleSubmit(onSubmit, onError)}>
                     {/* First Page */}
                     <Grid2 hidden={step !== 0} sx={style.reportBody}>
                         <Grid2 container flexDirection={"column"} spacing={2}>
@@ -447,9 +521,9 @@ function Index(props) {
                                 label={"Name"} placeholder={"Name"}
                                 control={control} hasLabel={true} />
                             <NickNameSection term={"nickname"} control={control} />
+                            <PhoneNumberSection term={"phone_number"} control={control} />
                             <SocialMediaSection term={"social_media"} control={control} />
                             <PaymentMethodSection term={"payment_method"} control={control} />
-                            <PhoneNumberSection term={"phone_number"} control={control} />
                         </Grid2>
                     </Grid2>
 
@@ -459,8 +533,21 @@ function Index(props) {
                             <Grid2 container justifyContent={"center"}>
                                 <Box component={"img"} src={Page2} sx={style.img} />
                             </Grid2>
-                            <BpInput name={"pretend_to_be"} type={"text"} control={control} placeholder={"What did they pretend to be?"} label={"Pretend To Be"} hasLabel={true} />
-                            <PretendToSellSection term={"pretend_to_sell"} control={control} />
+                            <BpInput
+                                name={"pretend_to_be"}
+                                type={"dropdown"}
+                                control={control}
+                                label={"Pretend To Be"}
+                                placeholder={"What did they pretend to be?"}
+                                selection={SampleData.Seller} />
+                            <CuIpSeriesSelect
+                                name={"pretend_to_sell"}
+                                control={control}
+                                label={"Pretend To Sell"}
+                                placeholder={"Labubu"}
+                                selection={ipSeriesSelection}
+                                onAdd={addSelection}
+                            />
 
                             <BpInput name={"total_amount"} type={"decimal"} control={control} placeholder={"Enter Amount"} label={"Total Amount Scammed (RM)"} hasLabel={true} />
                             <BpInput name={"transaction_date"} type={"date"} control={control} placeholder={"Enter Date"} label={"Transaction Date"} hasLabel={true} />
@@ -484,20 +571,62 @@ function Index(props) {
                             <Grid2 container justifyContent={"center"}>
                                 <Box component={"img"} src={Page3} sx={style.img} />
                             </Grid2>
-                            <BpInput name={"comments"} type={"textarea"} control={control} placeholder={"Do you have anything to comment about this incident?"} label={"Comments"} hasLabel={true} />
+                            <BpInput name={"comments"} type={"textarea"} control={control} placeholder={"Do you have anything to comment about this incident?"} label={"(Optional) Comments"} hasLabel={true} />
                             <Grid2 container flexDirection={"column"} spacing={1}>
                                 <Typography>Upload Screenshots</Typography>
-                                <BpImageUpload onAddImage={addImgAsset} />
-                                <BpImageGallery images={imgAsset} onDelete={deleteImgAsset} />
+                                <Controller
+                                    name={"images"}
+                                    control={control}
+                                    render={({ fieldState }) => {
+                                        return (
+                                            <>
+                                                <BpImageUpload onAdd={addImgAsset} error={fieldState.error} />
+                                                <BpImageGallery data={imgAsset} onDelete={deleteImgAsset} />
+                                            </>
+                                        )
+                                    }}
+                                />
                             </Grid2>
                         </Grid2>
                     </Grid2>
 
+                    {/* Last Page */}
+                    <Grid2 hidden={step !== 3} sx={style.reportBody}>
+                        <Grid2 container
+                            flexDirection={"column"}
+                            alignItems={"center"}
+                            spacing={2}>
+                            <Typography variant="h2">Success!</Typography>
+                            <CheckCircle sx={{ fontSize: 120, color: 'success.main' }} />
+                            <Typography variant="h4">Your incident tag is</Typography>
+                            <TextField
+                                value={incTag}
+                                slotProps={{
+                                    input: {
+                                        readOnly: true,
+                                        endAdornment: (incTag && (
+                                            <IconButton onClick={copyIncTag}>
+                                                <ContentCopy />
+                                            </IconButton>
+                                        ))
+                                    }
+                                }}
+                                sx={{
+                                    width: "280px",
+                                    input: {
+                                        textAlign: "center",
+                                        px: 3,
+                                    }
+                                }}
+                            />
+                        </Grid2>
+                    </Grid2>
+
                     {/* Button */}
-                    <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
-                        <Button type={"button"} variant={"outlined"} onClick={minus} sx={{ visibility: step < 1 ? "hidden" : "visible" }}>Previous</Button>
-                        <Button type={"submit"} variant={"outlined"} disabled={!isDirty} sx={{ display: step == 2 ? "block" : "none" }}>Submit</Button>
-                        <Button type={"button"} variant={"contained"} onClick={add} sx={{ display: step < 2 ? "block" : "none" }}>Next</Button>
+                    <Grid2 container alignItems={"center"} justifyContent={"space-between"} sx={{ display: step < 3 ? "flex" : "none" }}>
+                        <Button type={"button"} variant={"contained"} onClick={minusStep} sx={{ visibility: step < 1 ? "hidden" : "visible" }}>Previous</Button>
+                        <Button type={"submit"} variant={"contained"} disabled={!isDirty} sx={{ display: step == 2 ? "block" : "none" }}>Submit</Button>
+                        <Button type={"button"} variant={"contained"} onClick={addStep} sx={{ display: step < 2 ? "block" : "none" }}>Next</Button>
                     </Grid2>
                 </Box>
             </Paper>

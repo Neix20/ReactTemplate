@@ -9,11 +9,12 @@ import '@aws-amplify/ui-react/styles.css';
 
 import { styled } from "@mui/material";
 
-import { ColorModeIconDropdown, BpInput } from "@components";
-import { useForm } from "@hooks";
-import { Images } from "@config";
+import { ColorModeIconDropdown, BpInput, BpLoading } from "@components";
+import { useForm, useToggle } from "@hooks";
 
 import { Controller } from "react-hook-form";
+import { FormControl, FormLabel, FormHelperText } from "@mui/material";
+import ReactSelect from "@components/ui/Form/Item/components/Dropdown/Multi";
 
 const BpContainer = styled(Container)(({ theme }) => ({
     height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
@@ -56,12 +57,8 @@ const formFields = {
 }
 
 const Card = styled(MuiCard)(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    alignSelf: 'center',
     width: '100%',
     padding: theme.spacing(4),
-    gap: theme.spacing(2),
     margin: 'auto',
     [theme.breakpoints.up('sm')]: {
         maxWidth: '450px',
@@ -101,8 +98,61 @@ function ProfilePhotoPage(props) {
     )
 };
 
+import { Male, Female } from "@mui/icons-material";
+
+function CuGenderSelect(props) {
+
+    const { name = "", control = null } = props;
+    const { label = "", placeholder = "", selection = [], sx = {} } = props;
+
+    const formatOptionLabel = ({ label, icon }) => {
+        return (
+            <Grid2 container spacing={1}>
+                {icon}
+                <Typography>{label}</Typography>
+            </Grid2>
+        );
+    };
+
+    return (
+        <Controller
+            name={name}
+            control={control}
+            render={({ field, fieldState: { error } }) => {
+                return (
+                    <FormControl fullWidth errors={error} sx={sx}>
+                        <FormLabel>{label}</FormLabel>
+                        <ReactSelect
+                            isMulti={false}
+                            placeholder={placeholder}
+                            selection={selection}
+                            error={error}
+                            {...field}
+                            formatOptionLabel={formatOptionLabel} />
+                        <FormHelperText sx={{ color: "error.main" }}>{error?.message}</FormHelperText>
+                    </FormControl>
+                )
+            }}
+        />
+    )
+}
+
 function NamePage(props) {
     const { control = null } = props;
+
+    const gender = [
+        {
+            "label": "Male",
+            "value": "Male",
+            "icon": <Male sx={{ color: "lightblue" }} />
+        },
+        {
+            "label": "Female",
+            "value": "Female",
+            "icon": <Female sx={{ color: "pink" }} />
+        }
+    ];
+
     return (
         <>
             <Box sx={{ mb: 2 }}>
@@ -117,7 +167,20 @@ function NamePage(props) {
                 name={"name"} type={"text"}
                 hasLabel={true} label={"Name"}
                 control={control}
-                placeholder={"Enter Your Name"} 
+                placeholder={"Enter Your Name"}
+                sx={{ mt: 1 }}
+            />
+            <CuGenderSelect
+                name={"gender"} label={"Gender"}
+                control={control} selection={gender}
+                placeholder={"Select Gender"}
+                sx={{ mt: 1 }}
+            />
+            <BpInput
+                name={"birthday"} type={"date"}
+                hasLabel={true} label={"Birthday"}
+                control={control}
+                sx={{ mt: 1 }}
             />
         </>
     )
@@ -174,20 +237,44 @@ const template = {
         key: "login",
         field: [
             {
+                "name": "profile",
+                "type": "image"
+            },
+            {
                 "name": "name",
                 "type": "text"
-            }
+            },
+            {
+                "name": "gender",
+                "type": "dropdown"
+            },
+            {
+                "name": "birthday",
+                "type": "date"
+            },
         ],
         initial: {
+            profile: {},
             name: "",
-            profile: ""
+            gender: null,
+            birthday: ""
         },
         schema: z.object({
+            profile: z.any().optional(),
             name: z.string(),
-            profile: z.any().optional()
+            gender: z.object({
+                label: z.string(),
+                value: z.string()
+            }),
+            birthday: z.string().date("Invalid Date")
         })
     }
-}
+};
+
+import { fetchSignIn, fetchSignUp } from "@api";
+
+import { useDispatch, useSelector } from 'react-redux';
+import { Actions, Selectors } from '@libs/redux';
 
 function Main(props) {
 
@@ -202,70 +289,120 @@ function Main(props) {
     const onTimerDone = () => {
         navigate("/");
     }
+
     const { value: seconds, setValue: setSeconds } = useTimer(onTimerDone);
 
-    const { control, handleSubmit } = useForm(template.login);
+    const { control, handleSubmit, resetData } = useForm(template.login);
 
     // Not New Login
-    const user_arr = [];
+    // const user_arr = [];
 
-    // const user_arr = [
-    //     "a4b8d468-b051-7090-8a28-95797c783991"
-    // ];
-
+    // Get List of User Ids from Here?
+    // Make an API to check if it exists
     const images = [
         {
-            "imgName": "bgStock01",
-            "imgData": Images.bgStock01
+            "fileName": "bgStock01",
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/user/default/stock-01.jpg"
         },
         {
-            "imgName": "bgStock02",
-            "imgData": Images.bgStock02
+            "fileName": "bgStock02",
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/user/default/stock-02.jpg"
         },
         {
-            "imgName": "bgStock03",
-            "imgData": Images.bgStock03
+            "fileName": "bgStock03",
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/user/default/stock-03.jpg"
         },
         {
-            "imgName": "bgStock04",
-            "imgData": Images.bgStock04
+            "fileName": "bgStock04",
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/user/default/stock-04.jpg"
         },
         {
-            "imgName": "bgStock05",
-            "imgData": Images.bgStock05
+            "fileName": "bgStock05",
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/user/default/stock-05.jpg"
         }
-    ]
+    ];
 
-    useEffect(() => {
-        if (user_arr.includes(userId)) {
-            navigate("/");
-        }
-    }, [userId]);
+    const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle(false);
+    const { flag: firstTime, open: setFirstTimeTrue, close: setFirstTimeFalse } = useToggle(false);
 
-    const onSubmit = (data) => {
-        alert("Success!");
+    const dispatch = useDispatch();
 
-        const { name, profile: { imgData } } = data;
-        
-        const _data = {
-            id: userId,
-            name,
-            // Update This to Base64 or S3 URL
-            profile: imgData
-        };
+    const signIn = (data) => {
+        setLoadingTrue();
+        fetchSignIn(data)
+            .then(res => {
 
-        console.log(_data);
-        // add();
-        // setSeconds(_ => 3);
+                const { data = {} } = res;
+                dispatch(Actions.onChangeUser(data));
+
+                setLoadingFalse();
+
+                const { role = "User" } = data;
+
+                if (role === "User") {
+                    navigate("/");
+                } else {
+                    navigate("/Admin");
+                }
+            })
+            .catch(err => {
+                setLoadingFalse();
+                setFirstTimeTrue();
+            })
     }
 
-    if (user_arr.includes(userId)) {
-        return (<></>)
+
+    const signUp = (data) => {
+        setLoadingTrue();
+        fetchSignUp(data)
+            .then(res => {
+                setLoadingFalse();
+
+                // Set In Redux
+                const { data = {} } = res;
+                dispatch(Actions.onChangeUser(data));
+
+                add();
+                setSeconds(_ => 3);
+            })
+            .catch(err => {
+                setLoadingFalse();
+                console.error(err);
+            })
+    }
+
+    const onSubmit = (data) => {
+
+        const _data = {
+            id: userId,
+            ...data,
+            gender: data["gender"].value
+        };
+
+        signUp(_data);
+    }
+
+    useEffect(() => {
+        signIn({ id: userId });
+    }, [userId]);
+
+
+    // Looks Cool When User is expected to login, but looks shit when not
+    if (!firstTime) {
+        return (
+            <CompletePage seconds={seconds} />
+        );
     }
 
     return (
         <Card sx={{ padding: 2 }}>
-            <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+            <BpLoading loading={loading} />
+            <Box component={"form"} onSubmit={handleSubmit(onSubmit)} sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between"
+            }}>
                 <Box hidden={step !== 0}>
                     <ProfilePhotoPage images={images}
                         name={"profile"} control={control} />
@@ -277,9 +414,12 @@ function Main(props) {
                     <CompletePage seconds={seconds} />
                 </Box>
                 <Grid2 container alignItems={"center"} justifyContent={"space-between"}
-                    sx={{ display: step < 2 ? "flex" : "none", mt: 1 }}>
+                    sx={{ display: step < 2 ? "flex" : "none", mt: 2 }}>
                     <Button type={"button"} variant={"outlined"} onClick={minus} sx={{ visibility: step < 1 ? "hidden" : "visible" }}>Previous</Button>
-                    <Button type={"submit"} variant={"contained"} sx={{ display: step == 1 ? "block" : "none" }}>Submit</Button>
+                    <Grid2 container spacing={1} sx={{ display: step == 1 ? "flex" : "none" }}>
+                        <Button type={"button"} onClick={resetData} variant={"contained"} color={"error"}>Reset</Button>
+                        <Button type={"submit"} variant={"contained"}>Submit</Button>
+                    </Grid2>
                     <Button type={"button"} variant={"contained"} onClick={add} sx={{ display: step < 1 ? "block" : "none" }}>Next</Button>
                 </Grid2>
             </Box>

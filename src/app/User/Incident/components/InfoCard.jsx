@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 
-import { Grid2, Typography, Box } from "@mui/material";
+import { Grid2, Typography, Box, Card, CardActionArea } from "@mui/material";
 
 import { Link } from "react-router-dom";
 
 import { Images } from "@config";
 
-import { Card, CardContent, CardActionArea } from "@mui/material";
+import { BpPlatformLogo } from "@components";
 
 import { clsUtility } from "@utility";
 
 function ImageWithText(props) {
+
     const { children, imgProps = {} } = props;
 
     const style = {
@@ -68,10 +69,7 @@ function ImageWithText(props) {
 
 function InfoCard(props) {
     
-    const { PK = "", title = "", subtitle = "" } = props;
-
-    const imgIdx = clsUtility.genRandNum(0, 4);
-    const imgArr = [Images.bgStock01, Images.bgStock02, Images.bgStock03, Images.bgStock04, Images.bgStock05];
+    const { PK = "", title = "", total_amount = "", reported_date = "", images = "", platform = "Facebook" } = props;
 
     const style = {
         card: {
@@ -82,18 +80,8 @@ function InfoCard(props) {
                 boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
             }
         },
-        platformIcon: {
-            height: 24,
-            width: 24,
-            marginRight: 1.5
-        },
         contentWrapper: {
             padding: 2
-        },
-        header: {
-            display: 'flex',
-            alignItems: 'center',
-            marginBottom: 2
         },
         detailRow: {
             display: 'flex',
@@ -124,28 +112,18 @@ function InfoCard(props) {
     return (
         <Card sx={style.card}>
             <CardActionArea component={Link} to={`/Incident/${PK}`}>
-                <ImageWithText 
-                    imgProps={{
-                        src: imgArr[imgIdx],
-                        alt: title
-                    }}
-                >
+                <ImageWithText imgProps={{ src: images, alt: title }}>
                     Fake Seller
                 </ImageWithText>
                 
                 <Box sx={style.contentWrapper}>
                     {/* Header - Platform Icon & Name */}
-                    <Box sx={style.header}>
-                        <Box
-                            component="img"
-                            src={Images.facebook}
-                            alt="Facebook"
-                            sx={style.platformIcon}
-                        />
+                    <Grid2 container spacing={1} sx={{ mb: 1 }}>
+                    <BpPlatformLogo term={platform} />
                         <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                            Madge Santos
+                            {title}
                         </Typography>
-                    </Box>
+                    </Grid2>
 
                     {/* Amount Row */}
                     <Box sx={style.detailRow}>
@@ -153,7 +131,7 @@ function InfoCard(props) {
                             Amount Scammed
                         </Typography>
                         <Typography sx={style.amount}>
-                            RM 9,999.99
+                            {clsUtility.formatCurrency(total_amount)}
                         </Typography>
                     </Box>
 
@@ -163,7 +141,7 @@ function InfoCard(props) {
                             Date
                         </Typography>
                         <Typography sx={style.value}>
-                            Feb 2, 2025
+                            {clsUtility.formatDate(reported_date)}
                         </Typography>
                     </Box>
                 </Box>

@@ -6,11 +6,19 @@ import { FileUpload } from "@mui/icons-material";
 
 import { Images } from "@config";
 
+import { BpLoading } from "@components";
+import { useToggle } from "@hooks";
+import { fetchUserProfilePhoto } from "@api";
+
+import { v4 as uuidv4 } from 'uuid';
+
 function Index(props) {
 
-    const { name = "", value = "", onChange = () => { }, images = [], sx = {} } = props;
+    const { name = "", value = {}, onChange = () => { }, images = [], sx = {} } = props;
 
-    const { imgName = "Profile", imgData = Images.defaultAvatar } = value;
+    const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle(false);
+
+    const { fileName = "Profile", fileData = Images.defaultAvatar } = value;
 
     const fileUploadRef = useRef(null);
 
@@ -23,7 +31,7 @@ function Index(props) {
 
         const file = e.target.files?.[0]; // Get the first file
 
-        const { name: fileName, type: fileType } = file;
+        const { type: fileType, size: fileSize } = file;
 
         // Create a FileReader to read the file
         const reader = new FileReader();
@@ -32,14 +40,29 @@ function Index(props) {
         reader.onload = (evt) => {
             const base64String = evt.target.result; // This contains the Base64 string
 
+            // temp: Generate UUID Here
             const item = {
-                imgName: fileName,
-                imgData: base64String,
-                imgType: fileType
+                fileName: "img-" + uuidv4(),
+                fileData: base64String,
+                fileType,
+                fileSize
             };
 
+            setLoadingTrue();
+            fetchUserProfilePhoto(item)
+            .then(res => {
 
-            onChange(_ => item);
+                setLoadingFalse();
+
+                const { data = "" } = res;
+                item["fileData"] = data;
+
+                onChange(item);
+            })
+            .catch(err => {
+                setLoadingFalse();
+                console.error(err);
+            })
         };
 
         // Read the file as a data URL (Base64)
@@ -62,17 +85,17 @@ function Index(props) {
         ...sx
     };
 
-    const renderItem = ({ imgName = "", imgData = "" }, ind) => {
+    const renderItem = ({ fileName = "", fileData = "" }, ind) => {
         const _onClick = () => {
             if (fileUploadRef?.current) {
                 fileUploadRef.current.value = null;
             }
-            onChange({ imgName, imgData });
+            onChange({ fileName, fileData });
         };
         return (
             <ButtonBase onClick={_onClick}>
                 <Tooltip title={`Profile-${ind}`}>
-                    <Box component={"img"} src={imgData} alt={imgName} sx={style.item} />
+                    <Box component={"img"} src={fileData} alt={fileName} sx={style.item} />
                 </Tooltip>
             </ButtonBase>
         )
@@ -81,9 +104,10 @@ function Index(props) {
 
     return (
         <Grid2 container flexDirection={"column"} alignItems={"center"} spacing={2}>
+            <BpLoading loading={loading} />
             <Grid2 container spacing={1} justifyContent={"center"}>
                 <ButtonBase onClick={onImgClick}>
-                <Box component={"img"} src={imgData} alt={imgName} sx={style.main} />
+                <Box component={"img"} src={fileData} alt={fileName} sx={style.main} />
                 </ButtonBase>
             </Grid2>
             <Grid2 container spacing={2}

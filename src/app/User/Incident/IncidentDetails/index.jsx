@@ -19,128 +19,14 @@ import ScamReport from "./components/ScamReport";
 import CommunitySupport from "./components/CommunitySupport";
 import HelpResource from "./components/HelpResource";
 
-const sampleData = {
-    incident: [
-        {
-            "reported_date": "2025-03-09",
-            "entity_type": "INCIDENT",
-            "status": "Pending",
-            "social_url": "https://www.facebook.com/share/p/GAqBde3Tv5eAv6pk",
-            "trade_method": "Shipping",
-            "post_date": "2025-03-15",
-            "subtitle": "Testing Subtitle",
-            "platform": "XiaoHongShu",
-            "category": "Scam",
-            "SK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "scammer_type": "Seller",
-            "description": "Minim nulla id fugiat ut amet fugiat sit mollit aute do fugiat amet.",
-            "PK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "total_amount": 12000,
-            "title": "Test"
-        },
-        {
-            "reported_date": "2025-03-09",
-            "entity_type": "INCIDENT",
-            "status": "Pending",
-            "social_url": "https://www.facebook.com/share/p/GAqBde3Tv5eAv6pk",
-            "trade_method": "Shipping",
-            "post_date": "2025-01-15",
-            "subtitle": "Testing Subtitle",
-            "platform": "XiaoHongShu",
-            "category": "Scam",
-            "SK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "scammer_type": "Seller",
-            "description": "Fuck This",
-            "PK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "total_amount": 12000,
-            "title": "Test"
-        },
-        {
-            "reported_date": "2025-03-09",
-            "entity_type": "INCIDENT",
-            "status": "Pending",
-            "social_url": "https://www.facebook.com/share/p/GAqBde3Tv5eAv6pk",
-            "trade_method": "Shipping",
-            "post_date": "2025-02-15",
-            "subtitle": "Testing Subtitle",
-            "platform": "XiaoHongShu",
-            "category": "Scam",
-            "SK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "scammer_type": "Seller",
-            "description": "Test",
-            "PK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "total_amount": 12000,
-            "title": "Test"
-        }
-    ],
-    ip_series: [
-        {
-            "title": "Crying For Love Series",
-            "image": "https://i.imgur.com/lGEPhaA.jpeg",
-            "parent": "CRYBABY",
-            "type": "Vinyl Plush Hanging Card"
-        }
-    ],
-    scammer: {
-        "name": "James Rodriguez",
-        "platform": [
-            "Facebook",
-            "Instagram",
-            "WhatsApp",
-            "Xiao Hong Shu"
-        ]
-    },
-    scammerAttr: [
-        {
-            "value": "Jimmy Investments",
-            "name": "name",
-            "category": "name",
-            "type": "string"
-        },
-        {
-            "value": "Jay Rod",
-            "name": "name",
-            "category": "name",
-            "type": "string"
-        },
-        {
-            "value": "@eliz.parker88",
-            "name": "Facebook",
-            "category": "social_media",
-            "type": "string"
-        },
-        {
-            "value": "@eliz_investments",
-            "name": "Instagram",
-            "category": "social_media",
-            "type": "string"
-        },
-        {
-            "name": "GXbank",
-            "value": "8888004154126",
-            "category": "payment_methods",
-            "type": "string"
-        },
-        {
-            "name": "BigPay",
-            "value": "83047584153125",
-            "category": "payment_methods",
-            "type": "string"
-        },
-        {
-            "name": "Public Bank",
-            "value": "6420013123",
-            "category": "payment_methods",
-            "type": "string"
-        }
-    ]
-};
+import { fetchIncidentGetUser, fetchUserComment } from "@api";
 
 function Index(props) {
 
     const { IncidentId = "" } = useParams();
-
+    
     const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
+    const { flag: refresh, toggle: toggleRefresh } = useToggle();
 
     const style = {
         img: {
@@ -162,15 +48,37 @@ function Index(props) {
         }
     }
 
-    const { incident, ip_series: ipSeries, scammer, scammer_attr: scammerAttr } = sampleData;
+    const [data, setData] = useState({});
+
+    const { header = {}, scammer_details, ipSeries, otherIncidents, scam_statistic, comments, incidentAssets } = data;
+
+    const getIncidentDetails = () => {
+        setLoadingTrue();
+        fetchIncidentGetUser({ PK: IncidentId })
+            .then(res => {
+                setLoadingFalse();
+                setData(_ => res);
+            })
+            .catch(err => {
+                setLoadingFalse();
+                console.error(err);
+            })
+    }
+
+    useEffect(() => {
+        if (IncidentId.length > 0) {
+            getIncidentDetails();
+        }
+    }, [IncidentId, refresh])
 
     const renderPlatformItem = (item, ind) => (
         <Typography key={`platform-item-${ind}`} sx={(theme) => ({
-            backgroundColor: theme.palette.grey[400],
+            backgroundColor: theme.palette.grey[200],
             px: 1,
             borderRadius: .5,
-            fontWeight: "bold"
-        })}>{item}</Typography>
+            fontWeight: "bold",
+            color: "#000"
+        })}>{clsUtility.capitalize(item)}</Typography>
     );
 
     const TitleSection = () => (
@@ -184,7 +92,7 @@ function Index(props) {
                 gap: 1
             }}>
                 <Grid2 container alignItems={"center"} spacing={1}>
-                    <Typography sx={style.scammerTitle}>{scammer.name}</Typography>
+                    <Typography sx={style.scammerTitle}>{header.scammer_name}</Typography>
                     <Typography sx={{
                         backgroundColor: "error.main",
                         p: .5,
@@ -193,56 +101,70 @@ function Index(props) {
                         fontSize: {
                             xs: "0.75rem",
                             sm: "1rem"
-                        }
+                        },
+                        color: "#FFF"
                     }}>High Risk</Typography>
                 </Grid2>
                 <Typography sx={{
-                    fontWeight: "600",
-                    color: "#d3d3d3"
-                }}>Reported by 15 people</Typography>
+                    fontWeight: "600"
+                }}>Reported by {header.no_reported} people</Typography>
                 {/* Platform Lists */}
                 <Grid2 container spacing={1}>
-                    {scammer.platform.map(renderPlatformItem)}
+                    {header.scammer_platform?.map(renderPlatformItem)}
                 </Grid2>
             </Box>
         </Grid2>
-    )
+    );
+
+    const addComment = (data) => {
+        setLoadingTrue();
+        fetchUserComment(data)
+            .then((res) => {
+                setLoadingFalse();
+                toggleRefresh();
+            })
+            .catch((err) => {
+                setLoadingFalse();
+                console.log(err);
+            });
+    }
 
     const tabPages = [
         {
             title: "SCAM REPORTS",
-            element: (<BodyWrapper>
-                <ScamReport />
+            element: (
+            <BodyWrapper details={scammer_details} statistic={scam_statistic} ipSeries={ipSeries} incidentAssets={incidentAssets}>
+                <ScamReport incident={otherIncidents} />
             </BodyWrapper>)
         },
         {
             title: "COMMUNITY SUPPORT",
             element: (
-                <BodyWrapper>
-                    <CommunitySupport />
+                <BodyWrapper details={scammer_details} statistic={scam_statistic} ipSeries={ipSeries} incidentAssets={incidentAssets}>
+                    <CommunitySupport comments={comments} onComment={addComment} />
                 </BodyWrapper>
             )
         },
         {
             title: "HELP RESOURCES",
             element: (
-                <BodyWrapper>
+                <BodyWrapper details={scammer_details} statistic={scam_statistic} ipSeries={ipSeries} incidentAssets={incidentAssets}>
                     <HelpResource />
                 </BodyWrapper>
             )
-        },
+        }
     ];
 
     return (
         <>
             <BpLoading loading={loading} />
-            <Box sx={{ py: 4 }}>
+            <Box sx={{ py: 3 }}>
                 <Container maxWidth={"xl"}>
                     {/* Title */}
                     <TitleSection />
                 </Container>
             </Box>
-            <Box sx={{ backgroundColor: "#1a2332", py: 1 }}>
+            <Box>
                 <Container maxWidth={"xl"}>
                     <BpTab
                         tabPages={tabPages}

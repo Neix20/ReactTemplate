@@ -9,7 +9,7 @@ import { ColorModeIconDropdown, BpForm, BpInput, BpDataTable } from "@components
 import { clsUtility } from "@utility";
 
 import { useForm, useFormDataLs } from "@hooks";
-import { GlobalStyles, Models, SampleData } from "@config";
+import { GlobalStyles, Models, SampleData, clsConst } from "@config";
 
 import { z } from "zod";
 
@@ -32,6 +32,20 @@ const template = {
             {
                 "name": "total_amount",
                 "type": "decimal"
+            },
+            {
+                "name": "scammer_type",
+                "type": "dropdown",
+                "selection": [
+                    {
+                        "label": "Seller",
+                        "value": "Seller"
+                    },
+                    {
+                        "label": "Buyer",
+                        "value": "Buyer"
+                    }
+                ]
             }
         ],
         initial: {
@@ -42,7 +56,11 @@ const template = {
                 name: z.string().min(1, "Name is required"),
                 description: z.string().min(1, "Description is required"),
                 quantity: z.number().min(1, "Quantity is required"),
-                total_amount: z.number().min(1, "Total Amount is required")
+                total_amount: z.number().min(1, "Total Amount is required"),
+                scammer_type: z.object({
+                    label: z.any(),
+                    value: z.enum(["Seller", "Buyer"])
+                }),
             }))
         })
     },
@@ -50,37 +68,61 @@ const template = {
         key: "report",
         field: [
             {
-                "name": "platform",
+                "name": "name",
                 "type": "text"
             },
             {
-                "name": "post_url",
-                "type": "text"
+                "name": "scammer_type",
+                "type": "multi-dropdown",
+                "selection": [
+                    {
+                        "label": "Seller",
+                        "value": "Seller"
+                    },
+                    {
+                        "label": "Buyer",
+                        "value": "Buyer"
+                    }
+                ]
             }
         ],
         initial: {
-            post: {}
+            name: "",
+            scammer_type: null,
+            payment: null
         },
         schema: z.object({
-            post: z.object({
-                platform: z.string().min(1, "Platform is required"),
-                post_url: z.string().min(1, "Post URL is required"),
-            })
+            name: z.string().min(1, "Name is required"),
+            scammer_type: z.object({
+                label: z.any(),
+                value: z.enum(["Seller", "Buyer"])
+            }),
+            payment: z.object({
+                label: z.any(),
+                value: z.enum(["Seller", "Buyer"])
+            }),
         })
     }
 }
 
 function ExampleForm(props) {
 
-    const { field, control, handleSubmit, resetData, loadData, isDirty } = useForm(Models.Sample);
+    const { key, field, control, handleSubmit, resetData, isDirty } = useForm(Models.Sample);
 
     const onSubmit = (data) => {
-        console.log(data);
+
+        // const _data = { ...data };
+
+        // for (const { name: _key } of field.filter(x => x.type === "dropdown")) {
+        //     _data[_key] = _data[_key].value;
+        // }
+
+        alert("For Real: " + JSON.stringify(data));
     };
 
     return (
         <Box component={"form"} onSubmit={handleSubmit(onSubmit)} sx={GlobalStyles.bordered}>
-            <BpForm hasLabel={true} control={control} field={field} />
+            <BpForm hasLabel={true} field={field} control={control} />
             <Grid2 container spacing={2} sx={{ mt: 1 }}>
                 <Button type="submit" variant="contained" color="primary" disabled={!isDirty}>
                     Submit New
@@ -118,7 +160,7 @@ function ExampleDataTable(props) {
 
     return (
         <Grid2 container flexDirection={"column"} spacing={1} sx={{ mt: 1 }}>
-            <BpDataTable 
+            <BpDataTable
                 idx={key}
                 data={data}
                 field={field}
@@ -139,18 +181,32 @@ function MultipleForm(props) {
     const { key, field, control, handleSubmit, resetData, isDirty } = useForm(template.standard);
     const { data, append, remove } = useFormDataLs({ key, control });
 
+    // Function Chaining
     const onSubmit = (data) => {
-        console.log(data);
+
+        // const _data = {
+        //     [key]: data[key].map(x => {
+        //         const _obj = { ...x };
+
+        //         for (const { name: _key } of field.filter(x => x.type === "dropdown")) {
+        //             _obj[_key] = _obj[_key].value;
+        //         }
+
+        //         return _obj;
+        //     })
+        // };
+
+        alert(JSON.stringify(data));
     };
 
     const onAdd = () => (append({}));
 
     const renderItem = (item, ind) => (
-        <BpForm 
-            control={control} 
-            preHeader={`${key}.${ind}`} 
-            hasLabel={false} 
-            field={field} 
+        <BpForm
+            control={control}
+            preHeader={`${key}.${ind}`}
+            hasLabel={false}
+            field={field}
         />
     )
 
@@ -170,60 +226,144 @@ function MultipleForm(props) {
             </Grid2>
         </Box>
     )
-
 }
 
-// Code Example for Report
-function ExampleReport(props) {
-
-    const { key, field, control, handleSubmit, resetData, isDirty } = useForm(template.report);
-
-    const onSubmit = (data) => {
-        console.log(data);
-    };
+function CuSelect(props) {
 
     const selection = [
         {
-            "name": "Tan Xuan Qing",
-            "value": "SCAMMER-0c3535ad-b583-4fa4-b6a8-e7b243f64777"
+            "label": "Seller",
+            "value": "Seller"
         },
         {
-            "name": "Tan Xi En",
-            "value": "SCAMMER-5fd8eb8f-a9ce-4f26-bf3b-452001133295"
-        },
-        {
-            "name": "Pang Siang Cheng",
-            "value": "SCAMMER-7db83672-c528-4baf-97d9-bd67d5c55ecf"
-        },
-        {
-            "name": "Captain America",
-            "value": "SCAMMER-fba6f1b4-8535-444d-93b5-0f2a99b4c187"
+            "label": "Buyer",
+            "value": "Buyer"
         }
     ];
 
+    const template = {
+        key: "custom",
+        field: [
+            {
+                "name": "custom",
+                "type": "multi-dropdown",
+                "selection": selection
+            }
+        ],
+        schema: z.object({
+            custom: z.array(z.object({
+                label: z.any(),
+                value: z.enum(["Seller", "Buyer"])
+            })).min(1)
+        })
+    }
+
+    const { field, control, handleSubmit } = useForm(template);
+
+    const onSubmit = (data) => {
+        alert(JSON.stringify(data));
+    }
+
     return (
-        <Box component={"form"} onSubmit={handleSubmit(onSubmit)} sx={GlobalStyles.bordered}>
-            <BpForm preHeader={"post"} control={control} field={field} />
-            <Grid2 container spacing={2} sx={{ mt: 1 }}>
-                <Button type="submit" variant="contained" color="primary" disabled={!isDirty}>
-                    Submit New
-                </Button>
-                <Button onClick={resetData} variant={"contained"} color={"error"}>Reset</Button>
+        <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+            <BpForm hasLabel={true} field={field} control={control} />
+            <Button type={"submit"} variant={"contained"}>Kill the Demon Lord</Button>
+        </Box>
+    )
+}
+
+import { useDispatch, useSelector } from 'react-redux';
+import { Actions, Selectors } from '@libs/redux';
+
+import { FormControl, FormLabel, FormHelperText } from "@mui/material";
+import { Controller } from "react-hook-form";
+
+import { BpImageUpload, BpImageGallery } from "@components";
+
+function ExampleFormDataLs(props) {
+
+    const templ = {
+        report: {
+            key: "images",
+            schema: z.object({
+                images: z.array(z.object({
+                    fileName: z.string(),
+                    fileData: z.string(),
+                    fileType: z.string(),
+                    fileSize: z.number()
+                })).min(1),
+            }),
+            initial: {
+                images: []
+            }
+        }
+    }
+
+    const { key: term, control, handleSubmit, resetData } = useForm(templ.report);
+    const { data: imgAsset, append: onAdd, remove: onDelete } = useFormDataLs({ key: term, control });
+
+    const addImgAsset = (item) => onAdd(item);
+    const deleteImgAsset = (idx) => onDelete(idx);
+
+    const onSubmit = (data) => {
+        alert("Success");
+    }
+
+    return (
+        <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+            <Grid2 container flexDirection={"column"} spacing={1}>
+                <Controller
+                    name={term}
+                    control={control}
+                    render={({ fieldState: { error } }) => {
+                        return (
+                            <>
+                                <BpImageUpload onAdd={addImgAsset} error={error} />
+                                <BpImageGallery data={imgAsset} onDelete={deleteImgAsset} />
+                            </>
+                        )
+                    }}
+                />
+                <Grid2 container>
+                    <Button variant={"contained"} onClick={resetData}>Reset</Button>
+                    <Button type={"submit"} variant={"contained"}>Submit</Button>
+                </Grid2>
             </Grid2>
         </Box>
     )
-
 }
 
 function Index(props) {
+
+    const user = useSelector(Selectors.userSelect);
+
+    useEffect(() => {
+        const eventSource = new EventSource(clsConst.API_URL + "/notification");
+      
+        eventSource.onmessage = (event) => {
+          console.log("New event:", event.data);
+        };
+      
+        eventSource.onerror = (err) => {
+          console.error("SSE error:", err);
+          eventSource.close();
+        };
+      
+        return () => {
+          eventSource.close();
+        };
+      }, []);
+      
+
     return (
         <Grid2 container flexDirection={"column"} spacing={1} sx={{ padding: 2 }}>
             <ColorModeIconDropdown />
-            {/* <ExampleFormDataLs /> */}
+            <Typography>{JSON.stringify(user)}</Typography>
+            {/* <CuSelect /> */}
             {/* <ExampleForm /> */}
             {/* <ExampleDataTable /> */}
             {/* <MultipleForm /> */}
-            <ExampleReport />
+            <ExampleFormDataLs />
         </Grid2>
     )
 }

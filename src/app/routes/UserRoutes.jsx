@@ -6,9 +6,15 @@ import Home from "@app/User/Home";
 import Incident from "@app/User/Incident";
 import IncidentDetails from "@app/User/Incident/IncidentDetails";
 
+import PrivacyPolicy from "@app/User/LegalDocuments";
+import TermsAndConditions from "@app/User/LegalDocuments";
+
 import Report from "@app/User/Report";
+import CheckReport from "@app/User/Report/CheckReport";
 
 import Error from "@app/Error";
+
+import Profile from "@app/User/Profile";
 
 import { Context } from "@config";
 
@@ -37,10 +43,14 @@ const menuItems = [
     {
         id: "user-incident-details",
 		url: "/Incident/:IncidentId",
-		text: "incident_details",
-		type: "item",
 		show: false,
 		element: <IncidentDetails />
+	},
+    {
+        id: "user-profile",
+		url: "/Profile",
+		show: false,
+		element: <Profile />
 	},
     {
         id: "user-report",
@@ -48,6 +58,29 @@ const menuItems = [
         url: '/Report',
         type: "item",
         element: <Report />
+    },
+    {
+        id: "user-privacy-policy",
+        title: "privacy_policy",
+        show: false,
+        url: '/privacy-policy',
+        type: "item",
+        element: <PrivacyPolicy />
+    },
+    {
+        id: "user-terms-and-conditions",
+        title: "terms-and-conditions",
+        show: false,
+        url: '/terms-and-conditions',
+        type: "item",
+        element: <TermsAndConditions />
+    },
+    {
+        id: "user-check-report",
+        title: "check_report",
+        url: '/CheckReport',
+        type: "item",
+        element: <CheckReport />
     },
     {
         id: "user-error",

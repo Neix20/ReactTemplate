@@ -65,6 +65,7 @@ export {
 }
 
 import fetchIncidentGetAll from "./Incident/getAll";
+import fetchIncidentGet from "./Incident/get";
 import fetchIncidentGetAdmin from "./Incident/getAdmin";
 import fetchIncidentGetUser from "./Incident/getUser";
 import fetchIncidentActive from "./Incident/active";
@@ -73,9 +74,13 @@ import fetchIncidentAdd from "./Incident/add";
 import fetchIncidentUpdate from "./Incident/update";
 import fetchIncidentDelete from "./Incident/delete";
 import fetchIncidentUploadImg from "./Incident/uploadImg";
+import fetchIncidentQuery from "./Incident/query";
+import fetchIncidentUpdateStatus from "./Incident/updateStatus";
+import fetchIncidentCheckStatus from "./Incident/checkStatus";
 
 export {
     fetchIncidentGetAll,
+    fetchIncidentGet,
     fetchIncidentGetAdmin,
     fetchIncidentGetUser,
     fetchIncidentActive,
@@ -83,7 +88,10 @@ export {
     fetchIncidentAdd,
     fetchIncidentUpdate,
     fetchIncidentDelete,
-    fetchIncidentUploadImg
+    fetchIncidentUploadImg,
+    fetchIncidentQuery,
+    fetchIncidentUpdateStatus,
+    fetchIncidentCheckStatus
 }
 
 import fetchIpSeriesGetAll from "./IpSeries/getAll";
@@ -92,6 +100,7 @@ import fetchIpSeriesGetIncident from "./IpSeries/getIncident";
 import fetchIpSeriesAdd from "./IpSeries/add";
 import fetchIpSeriesUpdate from "./IpSeries/update";
 import fetchIpSeriesDelete from "./IpSeries/delete";
+import fetchIpSeriesPending from "./IpSeries/pending";
 
 export {
     fetchIpSeriesGetAll,
@@ -99,5 +108,39 @@ export {
     fetchIpSeriesGetIncident,
     fetchIpSeriesAdd,
     fetchIpSeriesUpdate,
-    fetchIpSeriesDelete
+    fetchIpSeriesDelete,
+    fetchIpSeriesPending
+}
+
+import fetchSignIn from "./User/signIn";
+import fetchSignUp from "./User/signUp";
+import fetchUserReport from "./User/report";
+import fetchUserComment from "./User/comment";
+import fetchUserGetComment from "./User/getComment";
+import fetchUserDashboard from "./User/dashboard";
+import fetchUserProfilePhoto from "./User/uploadProfilePhoto";
+
+import fetchUserGetAll from "./User/getAll";
+import fetchUserGet from "./User/get";
+import fetchUserAdd from "./User/add";
+import fetchUserUpdate from "./User/update";
+import fetchUserDelete from "./User/delete";
+import fetchUserProfile from "./User/profile";
+import fetchUserCheckAdmin from "./User/checkAdmin";
+
+export {
+    fetchSignIn,
+    fetchSignUp,
+    fetchUserReport,
+    fetchUserCheckAdmin,
+    fetchUserComment,
+    fetchUserGetComment,
+    fetchUserDashboard,
+    fetchUserProfilePhoto,
+    fetchUserGetAll,
+    fetchUserGet,
+    fetchUserAdd,
+    fetchUserUpdate,
+    fetchUserDelete,
+    fetchUserProfile
 }

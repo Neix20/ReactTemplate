@@ -6,7 +6,7 @@ const App = () => {
     const renderScamReports = () => (
         <div className="max-w-7xl mx-auto p-8 grid grid-cols-3 gap-8">
             <div className="space-y-6">
-                <div className="bg-[#1E293B] rounded-lg p-6">
+                <div className="bg-[#0f172a] rounded-lg p-6">
                     <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Scammer Details</h2>
                     <div className="space-y-4">
                         <div>
@@ -26,7 +26,7 @@ const App = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-[#1E293B] rounded-lg p-6">
+                <div className="bg-[#0f172a] rounded-lg p-6">
                     <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Scam Statistics</h2>
                     <div className="space-y-4">
                         <div className="space-y-6">
@@ -48,7 +48,7 @@ const App = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-[#1E293B] rounded-lg p-6">
+                <div className="bg-[#0f172a] rounded-lg p-6">
                     <h2 className="text-[#38BDF8] text-lg font-medium mb-4">IP Series Involved</h2>
                     <div className="flex items-center gap-4 p-3 bg-[#243757] rounded-lg">
                         <img
@@ -62,7 +62,7 @@ const App = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-[#1E293B] rounded-lg p-6">
+                <div className="bg-[#0f172a] rounded-lg p-6">
                     <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Related Photos</h2>
                     <div className="grid grid-cols-3 gap-3">
                         <img
@@ -84,7 +84,7 @@ const App = () => {
                 </div>
             </div>
             <div className="col-span-2 space-y-6">
-                <div className="bg-[#1E293B] rounded-lg p-6">
+                <div className="bg-[#0f172a] rounded-lg p-6">
                     <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Victim Reports</h2>
                     <div className="space-y-6">
                         <div className="border-b border-gray-700 pb-6">
@@ -117,7 +117,7 @@ const App = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-[#1E293B] rounded-lg p-6">
+                <div className="bg-[#0f172a] rounded-lg p-6">
                     <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Submit Your Report</h2>
                     <p className="text-gray-400 mb-4">Have you been affected by this scammer? Share your experience to help protect others.</p>
                     <button className="bg-[#38BDF8] text-white px-6 py-2 !rounded-button whitespace-nowrap cursor-pointer">
@@ -130,7 +130,7 @@ const App = () => {
     const renderCommunitySupport = () => (
         <div className="max-w-7xl mx-auto p-8 grid grid-cols-3 gap-8">
             <div className="space-y-6">
-                <div className="bg-[#1E293B] rounded-lg p-6">
+                <div className="bg-[#0f172a] rounded-lg p-6">
                     <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Scammer Details</h2>
                     <div className="space-y-4">
                         <div>
@@ -150,7 +150,7 @@ const App = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-[#1E293B] rounded-lg p-6">
+                <div className="bg-[#0f172a] rounded-lg p-6">
                     <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Scam Statistics</h2>
                     <div className="space-y-4">
                         <div className="space-y-6">
@@ -172,7 +172,7 @@ const App = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-[#1E293B] rounded-lg p-6">
+                <div className="bg-[#0f172a] rounded-lg p-6">
                     <h2 className="text-[#38BDF8] text-lg font-medium mb-4">IP Series Involved</h2>
                     <div className="flex items-center gap-4 p-3 bg-[#243757] rounded-lg">
                         <img
@@ -186,7 +186,7 @@ const App = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-[#1E293B] rounded-lg p-6">
+                <div className="bg-[#0f172a] rounded-lg p-6">
                     <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Related Photos</h2>
                     <div className="grid grid-cols-3 gap-3">
                         <img
@@ -208,7 +208,7 @@ const App = () => {
                 </div>
             </div>
             <div className="col-span-2 space-y-6">
-                <div className="bg-[#1E293B] rounded-lg p-6">
+                <div className="bg-[#0f172a] rounded-lg p-6">
                     <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Community Discussions</h2>
                     <div className="space-y-6">
                         <div className="border-b border-gray-700 pb-6">
@@ -261,7 +261,7 @@ const App = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-[#1E293B] rounded-lg p-6">
+                <div className="bg-[#0f172a] rounded-lg p-6">
                     <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Share Your Thoughts</h2>
                     <textarea
                         className="w-full bg-[#243757] text-white border-none rounded-lg p-4 mb-4 resize-none"
@@ -351,7 +351,7 @@ const App = () => {
             {activeTab === 'HELP RESOURCES' && (
                 <div className="max-w-7xl mx-auto p-8 grid grid-cols-3 gap-8">
                     <div className="space-y-6">
-                        <div className="bg-[#1E293B] rounded-lg p-6">
+                        <div className="bg-[#0f172a] rounded-lg p-6">
                             <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Scammer Details</h2>
                             <div className="space-y-4">
                                 <div>
@@ -371,7 +371,7 @@ const App = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-[#1E293B] rounded-lg p-6">
+                        <div className="bg-[#0f172a] rounded-lg p-6">
                             <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Scam Statistics</h2>
                             <div className="space-y-4">
                                 <div className="space-y-6">
@@ -393,7 +393,7 @@ const App = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-[#1E293B] rounded-lg p-6">
+                        <div className="bg-[#0f172a] rounded-lg p-6">
                             <h2 className="text-[#38BDF8] text-lg font-medium mb-4">IP Series Involved</h2>
                             <div className="flex items-center gap-4 p-3 bg-[#243757] rounded-lg">
                                 <img
@@ -407,7 +407,7 @@ const App = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-[#1E293B] rounded-lg p-6">
+                        <div className="bg-[#0f172a] rounded-lg p-6">
                             <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Related Photos</h2>
                             <div className="grid grid-cols-3 gap-3">
                                 <img
@@ -429,7 +429,7 @@ const App = () => {
                         </div>
                     </div>
                     <div className="col-span-2 space-y-6">
-                        <div className="bg-[#1E293B] rounded-lg p-6">
+                        <div className="bg-[#0f172a] rounded-lg p-6">
                             <h2 className="text-[#38BDF8] text-lg font-medium mb-4">Help & Support Resources</h2>
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="bg-[#243757] rounded-lg p-6">
@@ -478,7 +478,7 @@ const App = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-[#1E293B] rounded-lg p-6 relative overflow-hidden">
+                        <div className="bg-[#0f172a] rounded-lg p-6 relative overflow-hidden">
                             <div className="relative z-10">
                                 <h2 className="text-[#38BDF8] text-lg font-medium mb-2">Need Immediate Help?</h2>
                                 <p className="text-gray-400 mb-6">Don't face this alone. Reach out to our community.</p>

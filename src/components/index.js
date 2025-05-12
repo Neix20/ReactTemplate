@@ -2,8 +2,10 @@
 import ColorModeIconDropdown from "./ui/ColorMode/ColorModeIconDropdown";
 import ColorModeSelect from "./ui/ColorMode/ColorModeSelect";
 
-// import BpLogo from "./ui/Logo/BeruPop";
-import BpLogo from "./ui/Logo";
+import BpLogo from "./ui/Logo/BeruPop";
+// import BpLogo from "./ui/Logo";
+import BpPlatformLogo from "./ui/Logo/Platform/index.jsx";
+
 import BpLoading from "./ui/Loading";
 
 export {
@@ -27,8 +29,6 @@ import BpImageUpload from "./ui/Image/ImageUpload";
 import BpSessionChecker from "./ui/SessionChecker";
 
 import BpHeader from "./ui/Header";
-
-import BpSearchMenuList from "./ui/SearchMenuList";
 
 import UserLayout from "./layout/User";
 import AdminLayout from "./layout/Admin";
@@ -58,9 +58,9 @@ export {
     BpLoading,
     BpHeader,
     BpLogo,
+    BpPlatformLogo,
     BpGridMasonry,
     BpTab,
-    BpSessionChecker,
-    BpSearchMenuList
+    BpSessionChecker
 }
 

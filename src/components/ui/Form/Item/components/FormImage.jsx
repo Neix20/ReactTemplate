@@ -42,9 +42,8 @@ function ImagePreview(props) {
             alignItems={"center"}
             sx={{ padding: 1 }}>
             <Box sx={style.btn}>
-                <Box component={"img"}
-                    src={value} alt={name} sx={style.img} />
-                <IconButton size="small" className="remove-btn"
+                <Box component={"img"} src={value} alt={name} sx={style.img} /> 
+                    <IconButton size="small" className="remove-btn"
                     onClick={onDelete}
                     sx={style.closeIcon}>
                     <Cancel fontSize="small" />
@@ -88,14 +87,24 @@ function Index(props) {
 
         const file = e.target.files?.[0]; // Get the first file
 
+        const { name: fileName, type: fileType, size: fileSize } = file;
+
         // Create a FileReader to read the file
         const reader = new FileReader();
 
         // Set up the onload event to handle the Base64 result
         reader.onload = (evt) => {
+
             const base64String = evt.target.result; // This contains the Base64 string
 
-            onChange(base64String)
+            const item = {
+                fileName,
+                fileData: base64String,
+                fileType,
+                fileSize
+            };
+
+            onChange(item);
         };
 
         // Read the file as a data URL (Base64)
@@ -127,7 +136,7 @@ function Index(props) {
                         <EmptyPreview onClick={onAddImg} />
                     ) : (
 
-                        <ImagePreview name={name} value={value} onDelete={onDelete} />
+                        <ImagePreview name={name} value={value?.fileData} onDelete={onDelete} />
                     )
                 }
             </Box>

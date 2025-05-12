@@ -23,14 +23,7 @@ function Index(props) {
 
     const navigate = useNavigate();
 
-    const {
-        field,
-        control,
-        handleSubmit,
-        loadData,
-        resetData,
-        isDirty
-    } = useForm(Models.ScammerAttr);
+    const { field, control, handleSubmit, loadData, resetData, isDirty } = useForm(Models.ScammerAttr);
 
     const goBack = () => {
         navigate(-1);
