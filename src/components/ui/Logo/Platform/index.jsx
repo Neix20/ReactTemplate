@@ -7,7 +7,7 @@ import { Images } from "@config";
 
 function Index(props) {
 
-    const { term = "Facebook", sx = {} } = props;
+    const { term = "Berupop", sx = {} } = props;
 
     const style = {
         main: {
@@ -18,6 +18,10 @@ function Index(props) {
     }
 
     const dict = {
+        "Berupop": {
+            src: Images.BeruPopDark,
+            alt: "Berupop"
+        },
         "Facebook": {
             src: Images.facebook,
             alt: "Facebook"
@@ -26,7 +30,7 @@ function Index(props) {
             src: Images.instagram,
             alt: "Instagram"
         },
-        "Xiaohongshu": {
+        "XHS": {
             src: Images.xiaohongshu,
             alt: "Xiaohongshu"
         }
@@ -34,7 +38,7 @@ function Index(props) {
     
     if (!(term in dict)) {
         return (
-            <Box component="img" src={Images.facebook} alt="Facebook" sx={style.main} />
+            <Box component="img" src={Images.BeruPopDark} alt="Berupop" sx={style.main} />
         )
     }
 

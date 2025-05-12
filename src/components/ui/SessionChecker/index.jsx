@@ -11,7 +11,6 @@ const Index = (props) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // todo: Pull From Website
     const { role = "User" } = useSelector(Selectors.userSelect);
 
     useEffect(() => {

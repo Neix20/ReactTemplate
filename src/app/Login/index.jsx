@@ -302,23 +302,23 @@ function Main(props) {
     const images = [
         {
             "fileName": "bgStock01",
-            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-01.jpg"
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/user/default/stock-01.jpg"
         },
         {
             "fileName": "bgStock02",
-            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-02.jpg"
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/user/default/stock-02.jpg"
         },
         {
             "fileName": "bgStock03",
-            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-03.jpg"
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/user/default/stock-03.jpg"
         },
         {
             "fileName": "bgStock04",
-            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-04.jpg"
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/user/default/stock-04.jpg"
         },
         {
             "fileName": "bgStock05",
-            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-05.jpg"
+            "fileData": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/user/default/stock-05.jpg"
         }
     ];
 
@@ -359,6 +359,7 @@ function Main(props) {
                 setLoadingFalse();
 
                 // Set In Redux
+                const { data = {} } = res;
                 dispatch(Actions.onChangeUser(data));
 
                 add();
@@ -385,6 +386,8 @@ function Main(props) {
         signIn({ id: userId });
     }, [userId]);
 
+
+    // Looks Cool When User is expected to login, but looks shit when not
     if (!firstTime) {
         return (
             <CompletePage seconds={seconds} />

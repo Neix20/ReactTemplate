@@ -254,8 +254,7 @@ function Index(props) {
                         <Typography variant="h4" sx={{ fontSize: { xs: "1.3rem", sm: "1.75rem" } }}>
                             Ip Series
                         </Typography>
-                        <BpInput 
-                            name={"ipSeries"} type={"multi-dropdown"} 
+                        <BpInput name={"ipSeries"} type={"multi-dropdown"} 
                             control={multiSelControl} selection={ipSeriesSelection}
                             formatOptionLabel={formatIpSeriesOptionLabel} />
                     </Grid2>

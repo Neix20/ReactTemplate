@@ -19,13 +19,14 @@ import ScamReport from "./components/ScamReport";
 import CommunitySupport from "./components/CommunitySupport";
 import HelpResource from "./components/HelpResource";
 
-import { fetchIncidentGetUser } from "@api";
+import { fetchIncidentGetUser, fetchUserComment } from "@api";
 
 function Index(props) {
 
     const { IncidentId = "" } = useParams();
     
     const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
+    const { flag: refresh, toggle: toggleRefresh } = useToggle();
 
     const style = {
         img: {
@@ -49,7 +50,7 @@ function Index(props) {
 
     const [data, setData] = useState({});
 
-    const { header = {}, scammer_details, ipSeries, otherIncidents, scam_statistic, comment } = data;
+    const { header = {}, scammer_details, ipSeries, otherIncidents, scam_statistic, comments, incidentAssets } = data;
 
     const getIncidentDetails = () => {
         setLoadingTrue();
@@ -68,7 +69,7 @@ function Index(props) {
         if (IncidentId.length > 0) {
             getIncidentDetails();
         }
-    }, [IncidentId])
+    }, [IncidentId, refresh])
 
     const renderPlatformItem = (item, ind) => (
         <Typography key={`platform-item-${ind}`} sx={(theme) => ({
@@ -113,32 +114,45 @@ function Index(props) {
                 </Grid2>
             </Box>
         </Grid2>
-    )
+    );
+
+    const addComment = (data) => {
+        setLoadingTrue();
+        fetchUserComment(data)
+            .then((res) => {
+                setLoadingFalse();
+                toggleRefresh();
+            })
+            .catch((err) => {
+                setLoadingFalse();
+                console.log(err);
+            });
+    }
 
     const tabPages = [
         {
             title: "SCAM REPORTS",
             element: (
-            <BodyWrapper details={scammer_details} statistic={scam_statistic} ipSeries={ipSeries}>
+            <BodyWrapper details={scammer_details} statistic={scam_statistic} ipSeries={ipSeries} incidentAssets={incidentAssets}>
                 <ScamReport incident={otherIncidents} />
             </BodyWrapper>)
         },
         {
             title: "COMMUNITY SUPPORT",
             element: (
-                <BodyWrapper details={scammer_details} statistic={scam_statistic} ipSeries={ipSeries}>
-                    <CommunitySupport comment={comment} />
+                <BodyWrapper details={scammer_details} statistic={scam_statistic} ipSeries={ipSeries} incidentAssets={incidentAssets}>
+                    <CommunitySupport comments={comments} onComment={addComment} />
                 </BodyWrapper>
             )
         },
         {
             title: "HELP RESOURCES",
             element: (
-                <BodyWrapper details={scammer_details} statistic={scam_statistic} ipSeries={ipSeries}>
+                <BodyWrapper details={scammer_details} statistic={scam_statistic} ipSeries={ipSeries} incidentAssets={incidentAssets}>
                     <HelpResource />
                 </BodyWrapper>
             )
-        },
+        }
     ];
 
     return (
@@ -150,7 +164,7 @@ function Index(props) {
                     <TitleSection />
                 </Container>
             </Box>
-            <Box sx={{ py: 1 }}>
+            <Box>
                 <Container maxWidth={"xl"}>
                     <BpTab
                         tabPages={tabPages}

@@ -10,6 +10,8 @@ import { BpLoading } from "@components";
 import { useToggle } from "@hooks";
 import { fetchUserProfilePhoto } from "@api";
 
+import { v4 as uuidv4 } from 'uuid';
+
 function Index(props) {
 
     const { name = "", value = {}, onChange = () => { }, images = [], sx = {} } = props;
@@ -29,7 +31,7 @@ function Index(props) {
 
         const file = e.target.files?.[0]; // Get the first file
 
-        const { name: fileName, type: fileType, size: fileSize } = file;
+        const { type: fileType, size: fileSize } = file;
 
         // Create a FileReader to read the file
         const reader = new FileReader();
@@ -38,14 +40,14 @@ function Index(props) {
         reader.onload = (evt) => {
             const base64String = evt.target.result; // This contains the Base64 string
 
+            // temp: Generate UUID Here
             const item = {
-                fileName,
+                fileName: "img-" + uuidv4(),
                 fileData: base64String,
                 fileType,
                 fileSize
             };
 
-            // todo: Add Logic Here
             setLoadingTrue();
             fetchUserProfilePhoto(item)
             .then(res => {

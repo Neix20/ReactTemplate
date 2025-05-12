@@ -1,4 +1,5 @@
-import * as React from 'react';
+
+import { useState, useEffect } from "react";
 
 import { RouterProvider } from 'react-router-dom';
 
@@ -10,12 +11,45 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "@libs/redux";
 
+import { useDispatch, useSelector } from 'react-redux';
+import { Actions, Selectors } from '@libs/redux';
+
+import { fetchSignIn } from "@api";
+
+function App(props) {
+
+    const dispatch = useDispatch();
+
+    const user = useSelector(Selectors.userSelect);
+
+    const signIn = (data) => {
+        fetchSignIn(data)
+            .then(res => {
+
+                const { data = {} } = res;
+                dispatch(Actions.onChangeUser(data));
+
+            })
+            .catch(err => {
+            })
+    }
+
+    useEffect(() => {
+        const userId = user.PK.slice(5);
+        signIn({ id: userId })
+    }, []);
+
+    return (
+        <RouterProvider router={router} />
+    )
+}
+
 function Index() {
     return (
         <ThemeCustomization>
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
-                    <RouterProvider router={router} />
+                    <App />
                 </PersistGate>
             </Provider>
         </ThemeCustomization>

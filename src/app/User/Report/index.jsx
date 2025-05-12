@@ -474,6 +474,8 @@ function Index(props) {
             ...data,
         }
 
+        // console.log(paramData);
+
         uploadUserReport(paramData);
     }
 
@@ -622,8 +624,8 @@ function Index(props) {
 
                     {/* Button */}
                     <Grid2 container alignItems={"center"} justifyContent={"space-between"} sx={{ display: step < 3 ? "flex" : "none" }}>
-                        <Button type={"button"} variant={"outlined"} onClick={minusStep} sx={{ visibility: step < 1 ? "hidden" : "visible" }}>Previous</Button>
-                        <Button type={"submit"} variant={"outlined"} disabled={!isDirty} sx={{ display: step == 2 ? "block" : "none" }}>Submit</Button>
+                        <Button type={"button"} variant={"contained"} onClick={minusStep} sx={{ visibility: step < 1 ? "hidden" : "visible" }}>Previous</Button>
+                        <Button type={"submit"} variant={"contained"} disabled={!isDirty} sx={{ display: step == 2 ? "block" : "none" }}>Submit</Button>
                         <Button type={"button"} variant={"contained"} onClick={addStep} sx={{ display: step < 2 ? "block" : "none" }}>Next</Button>
                     </Grid2>
                 </Box>

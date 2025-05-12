@@ -5,7 +5,6 @@ import { SampleData } from "@config";
 
 const schema = z.object({
     title: z.string(),
-    scammer_type: z.enum(["Seller", "Buyer"]),
     subtitle: z.string(),
     description: z.string(),
     social_url: z.string().startsWith("https://"),
@@ -14,6 +13,7 @@ const schema = z.object({
     trade_method: z.enum(["Shipping"]),
     total_amount: z.number(),
     category: z.enum(["Scam", "Alert", "Others"]),
+    subcategory: z.enum(["Seller", "Buyer"]),
     platform: z.string().min(1, "Platform is required"),
     status: z.enum(["Active", "Pending", "Inactive"]),
     tag: z.string()
@@ -25,20 +25,6 @@ const obj = {
         {
             "name": "title",
             "type": "text"
-        },
-        {
-            "name": "scammer_type",
-            "type": "dropdown",
-            "selection": [
-                {
-                    "label": "Seller",
-                    "value": "Seller"
-                },
-                {
-                    "label": "Buyer",
-                    "value": "Buyer"
-                }
-            ]
         },
         {
             "name": "tag",
@@ -97,6 +83,20 @@ const obj = {
             ]
         },
         {
+            "name": "subcategory",
+            "type": "dropdown",
+            "selection": [
+                {
+                    "label": "Seller",
+                    "value": "Seller"
+                },
+                {
+                    "label": "Buyer",
+                    "value": "Buyer"
+                }
+            ]
+        },
+        {
             "name": "platform",
             "type": "dropdown",
             "show": false
@@ -110,7 +110,6 @@ const obj = {
     initial: {
         title: "",
         tag: "",
-        scammer_type: "",
         subtitle: "",
         description: "",
         social_url: "",
@@ -119,6 +118,7 @@ const obj = {
         trade_method: "",
         total_amount: "",
         category: "",
+        subcategory: "",
         platform: "",
         status: ""
     },

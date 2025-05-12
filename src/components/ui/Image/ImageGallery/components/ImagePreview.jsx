@@ -7,8 +7,8 @@ function Index(props) {
 
     const style = {
         main: {
-            width: 40,
-            height: 40,
+            width: 128,
+            height: 128,
             borderRadius: 2,
             transition: "transform 0.2s",
             cursor: "pointer",

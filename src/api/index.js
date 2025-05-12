@@ -65,6 +65,7 @@ export {
 }
 
 import fetchIncidentGetAll from "./Incident/getAll";
+import fetchIncidentGet from "./Incident/get";
 import fetchIncidentGetAdmin from "./Incident/getAdmin";
 import fetchIncidentGetUser from "./Incident/getUser";
 import fetchIncidentActive from "./Incident/active";
@@ -79,6 +80,7 @@ import fetchIncidentCheckStatus from "./Incident/checkStatus";
 
 export {
     fetchIncidentGetAll,
+    fetchIncidentGet,
     fetchIncidentGetAdmin,
     fetchIncidentGetUser,
     fetchIncidentActive,
@@ -124,11 +126,13 @@ import fetchUserAdd from "./User/add";
 import fetchUserUpdate from "./User/update";
 import fetchUserDelete from "./User/delete";
 import fetchUserProfile from "./User/profile";
+import fetchUserCheckAdmin from "./User/checkAdmin";
 
 export {
     fetchSignIn,
     fetchSignUp,
     fetchUserReport,
+    fetchUserCheckAdmin,
     fetchUserComment,
     fetchUserGetComment,
     fetchUserDashboard,

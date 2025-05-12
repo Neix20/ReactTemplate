@@ -5,16 +5,18 @@ import { Menu, MenuItem } from "@mui/material";
 
 import { CheckCircle, Cancel } from "@mui/icons-material";
 
-import { BpHeader, BpLoading, BpInput } from "@components";
+import { BpHeader, BpLoading, BpInput, BpTab } from "@components";
 import { useToggle, useForm } from "@hooks";
 
 import IncidentDetails from "@app/User/Incident/IncidentDetails";
 
 import { useNavigate, useParams } from "react-router-dom";
 
-import { fetchIncidentUpdateStatus } from "@api";
+import { fetchIncidentUpdateStatus, fetchIncidentGet } from "@api";
 
-import { z } from "zod";
+import { set, z } from "zod";
+
+import InfoCard from "@app/User/Incident/components/InfoCard";
 
 const template = {
     reason: {
@@ -36,11 +38,36 @@ function Index(props) {
 
     const [anchorEl, setAnchorEl] = useState(null);
 
+    const [incident, setIncident] = useState({});
+
     const { control, handleSubmit, resetData } = useForm(template.reason);
+
+    useEffect(() => {
+        if (IncidentId) {
+            getIncident();
+        }
+    }, [IncidentId]);
 
     // #region Actions
     const goBack = () => {
         navigate(-1);
+    }
+
+    const getIncident = () => {
+        setLoadingTrue();
+        fetchIncidentGet({
+            PK: IncidentId
+        })
+            .then(res => {
+
+                const { data = {} } = res;
+                setLoadingFalse();
+                setIncident(_ => data);
+            })
+            .catch(err => {
+                setLoadingFalse();
+                console.error(err);
+            })
     }
 
     const approveIncident = () => {
@@ -113,7 +140,7 @@ function Index(props) {
                         >
                             <Box component={"form"} onSubmit={handleSubmit(onCancelIncident)} sx={{ px: 3, py: 1 }}>
                                 <Typography variant={"h6"}>Reasons: </Typography>
-                                <BpInput type={"textarea"} name={"reason"} placeholder={"Enter your reason..."} control={control} sx={{ mb: 2}} />
+                                <BpInput type={"textarea"} name={"reason"} placeholder={"Enter your reason..."} control={control} sx={{ mb: 2 }} />
                                 <Button type={"submit"} variant={"contained"} color={"error"}>Submit</Button>
                             </Box>
                         </Menu>
@@ -122,6 +149,11 @@ function Index(props) {
                 sx={{ main: {} }}
             />
             <Box sx={{ mb: 2 }}>
+                <Grid2 container sx={{ mt: 1 }}>
+                    <Grid2 size={4}>
+                        <InfoCard {...incident} />
+                    </Grid2>
+                </Grid2>
                 <IncidentDetails />
             </Box>
         </>

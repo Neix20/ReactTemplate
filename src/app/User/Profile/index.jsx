@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { Avatar, Divider, Container, Grid2, Typography, Button, Paper, IconButton, Box, Tooltip, Card } from "@mui/material";
+import { Avatar, Divider, Container, Grid2, Typography, Chip, Box, Card } from "@mui/material";
 import { GlobalStyles, Images } from "@config";
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,13 +12,16 @@ import { Person, CalendarMonth } from "@mui/icons-material";
 
 import { BpLoading, BpTab, BpPlatformLogo } from "@components";
 
-import { useToggle } from "@hooks";
+import { useNavigate } from "react-router-dom";
 
-// Improve Comments
+import { useToggle } from "@hooks";
+import { fetchUserProfile } from "@api";
 
 function TitleSection(props) {
 
-    const { name, gender, profile, birthday } = useSelector(Selectors.userSelect);
+    const { user = {} } = props;
+
+    const { name, gender, profile, birthday } = user;
 
     const style = {
         img: {
@@ -29,7 +32,7 @@ function TitleSection(props) {
             height: {
                 xs: "64px",
                 sm: "96px"
-            }
+            },
         },
         title: {
             fontSize: {
@@ -66,114 +69,7 @@ function TitleSection(props) {
 
 function ReportPanel(props) {
 
-    const data = [
-        {
-            "reported_date": "2025-04-02",
-            "entity_type": "INCIDENT",
-            "status": "Active",
-            "trade_method": "Shipping",
-            "post_date": "2025-04-03",
-            "social_url": "https://www.facebook.com/share/p/GAqBde3Tv5eAv6pk",
-            "subtitle": "Fake crypto investment promising 10x returns.",
-            "platform": "Facebook",
-            "category": "Scam",
-            "SK": "INCIDENT-520d33e3-8653-4bd9-8abc-7ac52d8072d9",
-            "scammer_type": "Seller",
-            "description": "Fake crypto investment promising 10x returns.",
-            "PK": "INCIDENT-520d33e3-8653-4bd9-8abc-7ac52d8072d9",
-            "total_amount": 12000,
-            "title": "Crypto Scam Warning",
-            "images": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-01.jpg"
-        },
-        {
-            "reported_date": "2025-04-06",
-            "entity_type": "INCIDENT",
-            "status": "Active",
-            "trade_method": "Shipping",
-            "post_date": "2025-04-06",
-            "social_url": "https://www.facebook.com/share/p/GAqBde3Tv5eAv6pk",
-            "subtitle": "Ponzi scheme disguised as an investment opportunity.",
-            "platform": "Instagram",
-            "category": "Alert",
-            "SK": "INCIDENT-ad96c8ba-dca7-4006-b8ad-757bfcfedb12",
-            "scammer_type": "Buyer",
-            "description": "Ponzi scheme disguised as an investment opportunity.",
-            "PK": "INCIDENT-ad96c8ba-dca7-4006-b8ad-757bfcfedb12",
-            "total_amount": 45000,
-            "title": "Ponzi Scheme Exposed",
-            "images": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-01.jpg"
-        },
-        {
-            "reported_date": "2025-04-27",
-            "entity_type": "INCIDENT",
-            "status": "Active",
-            "social_url": "https://www.facebook.com/JohnGreen",
-            "post_date": "2025-04-26",
-            "platform": "Facebook",
-            "category": "Scam",
-            "SK": "INCIDENT-be1a3802-acf8-4b39-be62-641bab6dbcb4",
-            "scammer_type": "Seller",
-            "description": "asdfasdf",
-            "PK": "INCIDENT-be1a3802-acf8-4b39-be62-641bab6dbcb4",
-            "total_amount": 123,
-            "title": "POP MART Scam",
-            "images": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/bg_kl.jpg"
-        },
-        {
-            "reported_date": "2025-03-09",
-            "entity_type": "INCIDENT",
-            "status": "Active",
-            "social_url": "https://www.facebook.com/share/p/GAqBde3Tv5eAv6pk",
-            "trade_method": "Shipping",
-            "post_date": "2025-03-15",
-            "subtitle": "Testing Subtitle",
-            "platform": "Xiaohongshu",
-            "category": "Scam",
-            "SK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "scammer_type": "Seller",
-            "description": "Test",
-            "PK": "INCIDENT-d497e57f-1a64-4173-af8f-56ef3dc27669",
-            "total_amount": 12000,
-            "title": "PopMart Scam",
-            "images": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/inc-det-01.jpg"
-        },
-        {
-            "reported_date": "2025-04-04",
-            "entity_type": "INCIDENT",
-            "status": "Active",
-            "trade_method": "Shipping",
-            "post_date": "2025-04-18",
-            "social_url": "https://www.facebook.com/share/p/GAqBde3Tv5eAv6pk",
-            "subtitle": "Ordered an item, never received it.",
-            "platform": "Telegram",
-            "category": "Alert",
-            "SK": "INCIDENT-d692f78f-f944-4d3b-aeb9-bd567f0ed0ad",
-            "scammer_type": "Seller",
-            "description": "Ordered an item, never received it.",
-            "PK": "INCIDENT-d692f78f-f944-4d3b-aeb9-bd567f0ed0ad",
-            "total_amount": 34000,
-            "title": "Fake Online Store Alert",
-            "images": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-01.jpg"
-        },
-        {
-            "reported_date": "2025-03-22",
-            "entity_type": "INCIDENT",
-            "status": "Active",
-            "social_url": "https://www.facebook.com/share/p/GAqBde3Tv5eAv6pk",
-            "trade_method": "Shipping",
-            "post_date": "2025-03-15",
-            "subtitle": "A fake company promising high salary.",
-            "platform": "Instagram",
-            "category": "Alert",
-            "SK": "INCIDENT-ed2c7b05-810e-4b1e-a8a8-e0db1fdd899b",
-            "scammer_type": "Buyer",
-            "description": "A fake company promising high salary.",
-            "PK": "INCIDENT-ed2c7b05-810e-4b1e-a8a8-e0db1fdd899b",
-            "total_amount": 36000,
-            "title": "Job Scam Alert",
-            "images": "https://order-cart-app-01.s3.us-east-1.amazonaws.com/Tan-Xi-En.jpg"
-        }
-    ];
+    const { data = [] } = props;
 
     const style = {
         main: (theme) => ({
@@ -182,7 +78,7 @@ function ReportPanel(props) {
             backgroundColor: theme.palette.primary["A700"],
             ...theme.applyStyles('dark', {
                 color: "#FFF",
-                backgroundColor: "#1E293B",
+                backgroundColor: "#0f172a",
             })
         }),
         title: {
@@ -199,15 +95,31 @@ function ReportPanel(props) {
         }
     };
 
-    const renderItem = ({ images, platform, title, subtitle, reported_date }) => (
+    const chipDict = {
+        Active: {
+            label: "Verified",
+            color: "success"
+        },
+        Pending: {
+            label: "Pending",
+            color: "warning"
+        },
+        Inactive: {
+            label: "Rejected",
+            color: "error"
+        }
+    }
+
+    const renderItem = ({ images, platform, tag, status, rejected_reason, reported_date }) => (
         <Card sx={style.main}>
             <Grid2 container spacing={2}>
                 <Box component="img" src={images} alt="Background" sx={style.img} />
                 <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                    <Grid2 container flexDirection={"column"} spacing={0.5}>
-                        <Typography sx={style.title}>{title}</Typography>
-                        <Typography variant={"body1"}>{subtitle}</Typography>
+                    <Grid2 container flexDirection={"row"} spacing={1}>
+                        <Typography sx={style.title}>{tag}</Typography>
+                        <Chip {...chipDict[status]} />
                     </Grid2>
+
                     <Grid2 container alignItems={"center"} justifyContent={"space-between"}>
                         <Grid2 container alignItems={"center"} spacing={1}>
                             <CalendarMonth />
@@ -230,32 +142,9 @@ function ReportPanel(props) {
 
 function CommentPanel(props) {
 
-    const data = [
-        {
-            name: "Sarah L.",
-            date: "2025-03-10",
-            text: "I almost fell for his scheme too! He used the same investment pitch with me. Thankfully I saw this website first. Stay strong everyone.",
-            likes: 12,
-            title: "Crypto Scam Warning",
-            images: "https://order-cart-app-01.s3.us-east-1.amazonaws.com/stock-01.jpg"
-        },
-        {
-            name: "David K.",
-            date: "2025-03-09",
-            text: "The authorities have been notified about this scammer. If you've been affected, please file a police report and reference case #25783.",
-            likes: 27,
-            title: "Ponzi Scheme Exposed",
-            images: "https://order-cart-app-01.s3.us-east-1.amazonaws.com/bg_kl.jpg"
-        },
-        {
-            name: "Michelle T.",
-            date: "2025-03-07",
-            text: "I lost money to this person last month. I've joined the victim support group that meets virtually every Tuesday. It's helped me cope with the shame and anger. DM me if you want details.",
-            likes: 19,
-            title: "POP MART Scam",
-            images: "https://order-cart-app-01.s3.us-east-1.amazonaws.com/inc-det-01.jpg"
-        },
-    ];
+    const { data = [] } = props;
+
+    const navigate = useNavigate();
 
     const style = {
         main: (theme) => ({
@@ -264,8 +153,9 @@ function CommentPanel(props) {
             backgroundColor: theme.palette.primary["A700"],
             ...theme.applyStyles('dark', {
                 color: "#FFF",
-                backgroundColor: "#1E293B",
-            })
+                backgroundColor: "#0f172a",
+            }),
+            cursor: "pointer"
         }),
         title: {
             fontSize: "0.875rem",
@@ -277,22 +167,27 @@ function CommentPanel(props) {
         }
     };
 
-    const renderItem = (comment, index) => (
-        <Card sx={style.main}>
-            <Grid2 container spacing={1.5}>
-                <Box component={"img"} src={comment.images} alt={comment.name} sx={style.img} />
-                <Grid2 container flexDirection={"column"} justifyContent={"space-between"}>
-                    <Grid2 container>
-                        <Typography sx={style.title}>{comment.title}</Typography>
-                    </Grid2>
-                    <Grid2 container flexDirection={"column"} spacing={.5}>
-                        <Typography sx={{ color: "gray", fontSize: "0.875rem" }}>{comment.date}</Typography>
-                        <Typography sx={(theme) => ({ color: "#000", ...theme.applyStyles('dark', { color: "#FFF" }) })}>{comment.text}</Typography>
+    const renderItem = ({ title, date, comment, images, reported_by, incident}, index) => {
+
+        const GoToInc = _ => navigate(`/incident/${incident}`);
+
+        return (
+            <Card sx={style.main} onClick={GoToInc}>
+                <Grid2 container spacing={1.5}>
+                    <Box component={"img"} src={images} alt={reported_by} sx={style.img} />
+                    <Grid2 container flexDirection={"column"} justifyContent={"space-between"}>
+                        <Grid2 container>
+                            <Typography sx={style.title}>{title}</Typography>
+                        </Grid2>
+                        <Grid2 container flexDirection={"column"} spacing={.5}>
+                            <Typography sx={{ color: "gray", fontSize: "0.875rem" }}>{date}</Typography>
+                            <Typography sx={(theme) => ({ color: "#000", ...theme.applyStyles('dark', { color: "#FFF" }) })}>{comment}</Typography>
+                        </Grid2>
                     </Grid2>
                 </Grid2>
-            </Grid2>
-        </Card>
-    );
+            </Card>
+        );
+    };
 
 
     return (
@@ -305,48 +200,7 @@ function CommentPanel(props) {
 
 function HistoryPanel(props) {
 
-    const data = [
-        {
-            "search": "Magna cillum aute nisi nisi culpa adipisicing.",
-            "date": "2025-02-18"
-        },
-        {
-            "search": "Do eu magna aliqua dolore enim elit.",
-            "date": "2025-11-11"
-        },
-        {
-            "search": "Amet sunt non occaecat sunt sint aliqua.",
-            "date": "2025-04-24"
-        },
-        {
-            "search": "Reprehenderit culpa officia exercitation ex sit dolore nisi sit.",
-            "date": "2025-02-08"
-        },
-        {
-            "search": "Cillum non et irure cillum minim commodo ex.",
-            "date": "2025-07-14"
-        },
-        {
-            "search": "Do ullamco ipsum id cupidatat deserunt eiusmod irure ut ut nulla aliqua voluptate sint dolore.",
-            "date": "2025-10-07"
-        },
-        {
-            "search": "Ea velit occaecat enim fugiat elit laboris dolor.",
-            "date": "2025-09-24"
-        },
-        {
-            "search": "Officia nulla irure duis veniam do.",
-            "date": "2025-08-18"
-        },
-        {
-            "search": "Exercitation ex quis incididunt labore ipsum id in culpa ut officia adipisicing aliquip voluptate.",
-            "date": "2025-09-27"
-        },
-        {
-            "search": "Elit tempor excepteur aliquip elit cupidatat non dolore adipisicing non ullamco anim.",
-            "date": "2025-06-09"
-        }
-    ];
+    const { data = [] } = props;
 
     const style = {
         main: (theme) => ({
@@ -358,7 +212,7 @@ function HistoryPanel(props) {
             backgroundColor: theme.palette.primary["A700"],
             ...theme.applyStyles('dark', {
                 color: "#FFF",
-                backgroundColor: "#1E293B",
+                backgroundColor: "#0f172a",
             })
         }),
         title: {
@@ -367,9 +221,9 @@ function HistoryPanel(props) {
         }
     }
 
-    const renderItem = ({ search, date }) => (
+    const renderItem = ({ query, date }) => (
         <Card sx={style.main}>
-            <Typography sx={style.title}>{search}</Typography>
+            <Typography sx={style.title}>{query}</Typography>
             <Grid2 container alignItems={"center"} spacing={1}>
                 <CalendarMonth />
                 <Typography>{clsUtility.formatDate(date)}</Typography>
@@ -390,41 +244,67 @@ function Index(props) {
 
     const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
 
+    const { PK: userId } = useSelector(Selectors.userSelect);
+
+    const [data, setData] = useState({});
+
+    const { user = {}, reports = [], comments = [], history = [] } = data;
+
+    const getUserProfile = () => {
+        setLoadingTrue();
+        fetchUserProfile({ userId: userId })
+            .then((res) => {
+                setLoadingFalse();
+
+                setData(_ => res);
+            })
+            .catch((err) => {
+                setLoadingFalse();
+                console.log(err);
+            });
+    }
+
+    useEffect(() => {
+        getUserProfile();
+    }, []);
+
     const tabPages = [
         {
             title: "REPORTS",
-            element: (<ReportPanel />)
+            element: (<ReportPanel data={reports} />)
         },
         {
             title: "COMMENTS",
-            element: (<CommentPanel />)
+            element: (<CommentPanel data={comments} />)
         },
         {
             title: "HISTORY",
-            element: (<HistoryPanel />)
+            element: (<HistoryPanel data={history} />)
         }
-    ]
+    ];
 
     return (
         <>
             <BpLoading loading={loading} />
-            <Box sx={{ py: 3 }}>
-                <Container maxWidth={"xl"}>
-                    <TitleSection />
-                </Container>
-            </Box>
-            <Box sx={{ py: 1 }}>
-                <Container maxWidth={"xl"}>
-                    <BpTab tabPages={tabPages}
-                        sx={{
-                            tabHeadItem: {
-                                mr: 2
-                            },
-                            tabBody: {
-                                py: 2
-                            }
-                        }} />
-                </Container>
+            <Box>
+                <Box sx={{ py: 3 }}>
+                    <Container maxWidth={"xl"}>
+                        <TitleSection user={user} />
+                    </Container>
+                </Box>
+                <Box sx={{ py: 1 }}>
+                    <Container maxWidth={"xl"}>
+                        <BpTab tabPages={tabPages}
+                            sx={{
+                                tabHeadItem: {
+                                    mr: 2
+                                },
+                                tabBody: {
+                                    py: 2
+                                }
+                            }} />
+                    </Container>
+                </Box>
             </Box>
         </>
     )

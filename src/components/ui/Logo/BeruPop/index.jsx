@@ -8,7 +8,7 @@ function Index(props) {
 
     const theme = useTheme();
 
-    const imgSrc = theme.palette.mode == "dark" ? Images.BeruPopLogoLight : Images.BeruPopLogoDark;
+    const imgSrc = theme.palette.mode == "dark" ? Images.BeruPopLogoDark : Images.BeruPopLogoDark;
 
     const style = {
         main: {

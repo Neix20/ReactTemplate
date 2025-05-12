@@ -1,7 +1,7 @@
-import { Box, Grid2, Card, Typography, Button, Avatar } from "@mui/material";
+import { Box, Grid2, Card, Typography, Button, Avatar, Chip } from "@mui/material";
 
 // #1a2332
-// #1E293B
+// #0f172a
 
 // #38BDF8
 // #5096d1
@@ -22,6 +22,21 @@ const ScamReport = (props) => {
         navigate("/Report");
     }
 
+    const chipDict = {
+        Active: {
+            label: "Verified",
+            color: "success"
+        },
+        Pending: {
+            label: "Pending",
+            color: "warning"
+        },
+        Inactive: {
+            label: "Rejected",
+            color: "error"
+        }
+    }
+
     const renderReport = (obj, index) => (
         <Box sx={{ borderBottom: "1px solid gray", pb: 2, mb: 2 }}>
             <Box display="flex" alignItems="center" gap={2} mb={2}>
@@ -30,9 +45,7 @@ const ScamReport = (props) => {
                     <Typography>Anonymous Victim</Typography>
                     <Typography variant="body2" color="gray">{clsUtility.formatDate(obj.reported_date)}</Typography>
                 </Box>
-                <Typography ml="auto" color={index === 0 ? "#B8860B" : "green"}>
-                    {index === 0 ? "Under Investigation" : "Verified"}
-                </Typography>
+                <Chip {...chipDict[obj.status]} sx={{ ml: "auto" }} />
             </Box>
 
             <Box display={"flex"}>

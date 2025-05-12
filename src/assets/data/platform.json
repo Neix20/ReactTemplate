@@ -1,5 +1,9 @@
 [
     {
+        "label": "Berupop",
+        "value": "Berupop"
+    },
+    {
         "label": "Facebook",
         "value": "Facebook"
     },
@@ -8,15 +12,27 @@
         "value": "Instagram"
     },
     {
-        "label": "XiaoHongShu",
-        "value": "Xiaohongshu"
+        "label": "Shopee",
+        "value": "Shopee"
+    },
+    {
+        "label": "Telegram",
+        "value": "Telegram"
+    },
+    {
+        "label": "TikTok",
+        "value": "TikTok"
+    },
+    {
+        "label": "Wechat",
+        "value": "Wechat"
     },
     {
         "label": "Whatsapp",
         "value": "Whatsapp"
     },
     {
-        "label": "Telegram",
-        "value": "Telegram"
+        "label": "XHS",
+        "value": "XHS"
     }
 ]

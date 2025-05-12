@@ -2,8 +2,8 @@
 import ColorModeIconDropdown from "./ui/ColorMode/ColorModeIconDropdown";
 import ColorModeSelect from "./ui/ColorMode/ColorModeSelect";
 
-// import BpLogo from "./ui/Logo/BeruPop";
-import BpLogo from "./ui/Logo";
+import BpLogo from "./ui/Logo/BeruPop";
+// import BpLogo from "./ui/Logo";
 import BpPlatformLogo from "./ui/Logo/Platform/index.jsx";
 
 import BpLoading from "./ui/Loading";

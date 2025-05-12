@@ -2,7 +2,7 @@ import { axiosRequest, genLogUrl, genServerUrl, requestObj } from "@libs/api/Axi
 
 const Index = async (param = {}) => {
 
-    const action = "user/profile";
+    const action = "/user/checkAdmin";
     const url = genServerUrl(action);
 
     // Static Data

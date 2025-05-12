@@ -11,41 +11,67 @@ import { clsUtility } from "@utility";
 
 import { Search, CheckCircle, Cancel, Help } from "@mui/icons-material";
 
+import { useNavigate } from "react-router-dom";
+
 import { BpLoading, BpInput } from "@components";
 
 import { useToggle, useForm } from "@hooks";
 
+import { fetchIncidentCheckStatus } from "@api";
+
+import { z } from "zod";
+
+import Rules from "./components/rules";
+
+const template = {
+    form: {
+        initial: {
+            tag: ""
+        },
+        schema: z.object({
+            tag: z.string().min(1, "Tag is required")
+        })
+    }
+}
+
 function ResultCard(props) {
 
-    // const { variant = "success" } = props;
+    const { incident = {} } = props;
 
     const style = {
         main: (theme) => ({
             backgroundColor: "#f7fcfc",
             ...theme.applyStyles('dark', { backgroundColor: "#1e2328" })
         })
+    };
+
+    const navigate = useNavigate();
+
+    const GoToIncident = _ => {
+        navigate(`/Incident/${incident.PK}`);
     }
 
+
     const dict = {
-        approved: {
+        Active: {
             borderLeft: "4px solid #22c55e",
             color: "success",
             chipLabel: "Approved",
             Elem: _ => (
                 <Box>
-                    <Button variant={"outlined"} color={"#000"}>View Details</Button>
+                    <Button variant={"outlined"} color={"#000"} onClick={GoToIncident}>View Details</Button>
                 </Box>
             )
         },
-        pending: {
+        Pending: {
             borderLeft: "4px solid #f59e0b",
             color: "warning",
             chipLabel: "Pending",
             Elem: _ => (
-                <Typography sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}>We're currently reviewing your report. Please check back later.</Typography>
+                <Typography variant={"body1"}>We're currently reviewing your report. Please check back later.</Typography>
             )
         },
-        rejected: {
+        Inactive: {
             borderLeft: "4px solid #ef4444",
             color: "error",
             chipLabel: "Rejected",
@@ -57,15 +83,14 @@ function ResultCard(props) {
                     backgroundColor: theme.palette.grey["A100"],
                     ...theme.applyStyles('dark', { backgroundColor: "#1e2328" })
                 })}>
-                    <strong>Rejected: </strong> Cause you're Gay
+                    <strong>Rejected: </strong> {incident?.rejected_reason}
                 </Box>
             )
         }
     };
 
-    const variant = "approved";
-    const { borderLeft, color, Elem } = dict[variant];
-    
+    const { borderLeft, color, Elem, chipLabel } = dict[incident?.status || "Pending"];
+
     return (
         <Card sx={style.main} >
             <Box sx={{ borderLeft }}>
@@ -73,10 +98,10 @@ function ResultCard(props) {
                     <Grid2 container flexDirection={"column"} spacing={2}>
                         <Grid2 container justifyContent={"space-between"}>
                             <Box>
-                                <Typography variant="h6">Incident INC-SXG4879AD</Typography>
-                                <Typography variant="body2" sx={{ color: 'gray' }}>Submitted on May 1, 2025</Typography>
+                                <Typography variant="h6">Incident {incident.tag}</Typography>
+                                <Typography variant="body2" sx={{ color: 'gray' }}>Submitted on {clsUtility.formatDate(incident.post_date)}</Typography>
                             </Box>
-                            <Chip label="Approved" color={color} />
+                            <Chip label={chipLabel} color={color} />
                         </Grid2>
                         <Elem />
                     </Grid2>
@@ -90,9 +115,11 @@ function Index(props) {
 
     const { flag: loading, open: setLoadingTrue, close: setLoadingFalse } = useToggle();
 
-    const { flag: sectionFlag, toggle: toggleSection } = useToggle(false);
+    const { flag: sectionFlag, toggle: toggleSection, open: openSection, close: closeSection } = useToggle(false);
 
-    const { control, handleSubmit } = useForm({});
+    const [incident, setIncident] = useState({});
+
+    const { control, handleSubmit } = useForm(template.form);
 
     const style = {
         search: {
@@ -103,8 +130,28 @@ function Index(props) {
         sectionBorder: {
             borderTop: '1px solid',
             borderColor: 'divider',
-            py: 4
+            pt: 4,
         }
+    }
+
+    const checkIncidentStatus = (data) => {
+        closeSection();
+        setLoadingTrue();
+        fetchIncidentCheckStatus(data)
+            .then(res => {
+                openSection();
+                setLoadingFalse();
+                const { data = {} } = res;
+                setIncident(_ => data);
+            })
+            .catch(err => {
+                setLoadingFalse();
+                console.error(err);
+            })
+    }
+
+    const onSubmit = (data) => {
+        checkIncidentStatus(data);
     }
 
     return (
@@ -125,48 +172,27 @@ function Index(props) {
 
             {/* Search */}
             <Grid2 container alignItems={"center"} justifyContent={"center"} sx={style.sectionBorder}>
-                <Box component={"form"} sx={style.search}>
+                <Box component={"form"} onSubmit={handleSubmit(onSubmit)} sx={style.search}>
                     <BpInput
-                        name={"query"} type={"text"}
+                        name={"tag"} type={"text"}
                         placeholder={"Social Media Ids, Bank Account..."}
                         control={control}
                         sx={{ flex: .8, flexGrow: 1 }} />
                     <Button
-                        type={"button"}
+                        type={"submit"}
                         variant={"contained"}
                         color={"warning"}
                         endIcon={<Search />}
-                        onClick={toggleSection}
                         sx={{ flex: .2, maxWidth: "100px", minWidth: "100px" }}>Search</Button>
                 </Box>
             </Grid2>
 
             {/* Report */}
-            <Collapse in={sectionFlag || true}>
-                <ResultCard variant={"success"} />
-                <Paper sx={{ p: 2, py: 4, minWidth: "60%", display: "none" }}>
-                    <Grid2 container
-                        flexDirection={"column"}
-                        alignItems={"center"}
-                        spacing={2}>
-                        <Typography sx={{ fontSize: { xs: "1.5rem", sm: "2rem" }, fontWeight: "bold" }}>Your Report has been Approved!</Typography>
-                        <CheckCircle sx={{ fontSize: 120, color: 'success.main' }} />
-                        <Grid2 container flexDirection={"column"} alignItems={"center"}>
-                            <Typography sx={{ fontSize: { xs: "1.25rem", sm: "1.5rem" }, fontWeight: "bold" }}>Incident INC-SXG4879AD</Typography>
-                            <Box component={"img"} src={Images.bgStock01} sx={{
-                                width: {
-                                    xs: "240px",
-                                    sm: "640px"
-                                },
-                                height: {
-                                    xs: "120px",
-                                    sm: "300px"
-                                }
-                            }} />
-                        </Grid2>
-                    </Grid2>
-                </Paper>
+            <Collapse in={sectionFlag} sx={{ mt: 2}}>
+                <ResultCard incident={incident} />
             </Collapse>
+
+            <Rules />
 
         </Container>
     )

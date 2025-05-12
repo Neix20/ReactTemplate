@@ -6,6 +6,8 @@ import { fetchIncidentQuery } from "@api";
 import { BpLoading, BpInput } from "@components";
 import { useToggle, useForm } from "@hooks";
 
+import { SampleData } from "@config";
+
 import { DateTime } from 'luxon';
 
 function genDateRange(term, dateRange = {}) {
@@ -56,8 +58,8 @@ function App(props) {
 
     // todo: Get From General API
     const filterOptions = [
-        { id: "platform", label: "Platform", options: ["Facebook", "Instagram", "Twitter", "LinkedIn", "WhatsApp"] },
-        { id: "category", label: "Category", options: ["Phishing", "Identity Theft", "Investment Fraud", "Romance Scam", "Tech Support Scam"] },
+        { id: "platform", label: "Platform", options: Object.values(SampleData) },
+        { id: "category", label: "Category", options: ["Seller Scam", "Buyer Scam", "Alert" ] },
         { id: "time", label: "Time", options: ["Last 24 Hours", "Last 7 Days", "Last 30 Days", "Last 6 Months", "Last Year", "Custom Range"] }
     ];
 
