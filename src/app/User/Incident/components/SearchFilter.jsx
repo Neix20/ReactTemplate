@@ -58,7 +58,7 @@ function App(props) {
 
     // todo: Get From General API
     const filterOptions = [
-        { id: "platform", label: "Platform", options: Object.values(SampleData) },
+        { id: "platform", label: "Platform", options: SampleData.Platform.map(x => x.value) },
         { id: "category", label: "Category", options: ["Seller Scam", "Buyer Scam", "Alert" ] },
         { id: "time", label: "Time", options: ["Last 24 Hours", "Last 7 Days", "Last 30 Days", "Last 6 Months", "Last Year", "Custom Range"] }
     ];
