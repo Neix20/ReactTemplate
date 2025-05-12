@@ -4,7 +4,7 @@ import { AppBar, Toolbar, Box, Button, IconButton, Divider, Drawer, Menu, MenuIt
 import { Menu as MenuIcon, CloseRounded as CloseRoundedIcon, ArrowDropDown } from "@mui/icons-material";
 import { styled } from '@mui/material/styles';
 
-import { NavLink } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 
 import { ColorModeIconDropdown, BpLogo, BpLoading } from '@components';
 
@@ -35,6 +35,9 @@ import { Amplify } from "@libs/auth";
 function Index(props) {
 
     const { menuItems = [] } = useContext(Context.User);
+    const navigate = useNavigate();
+
+    const login = _ => navigate("/Login");
 
     const { flag: open, toggle: toggleDrawer } = useToggle(false);
 
@@ -100,13 +103,12 @@ function Index(props) {
                         </Box>
                     </Box>
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
-                    <ColorModeIconDropdown />
+                        <ColorModeIconDropdown />
                         {
                             (signInFlag) ? (
                                 <Profile />
                             ) : (
-                                <Button color="primary" variant="contained"
-                                    size="small" component={NavLink} to={"/Login"}>Login</Button>
+                                <Button color="primary" variant="contained" size="small" onClick={login}>Login</Button>
                             )
                         }
                     </Box>
@@ -120,7 +122,7 @@ function Index(props) {
                             open={open}
                             onClose={toggleDrawer}
                         >
-                            <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
+                            <Box sx={{ px: 2, pb: 1, backgroundColor: 'background.default' }}>
                                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                                     <IconButton onClick={toggleDrawer}>
                                         <CloseRoundedIcon />
@@ -128,6 +130,9 @@ function Index(props) {
                                 </Box>
                                 {menuItems?.map(renderMenuItem)}
                             </Box>
+                            <Grid2 container sx={{ px: 2, pb: 2, backgroundColor: 'background.default' }}>
+                                <Button color="primary" variant="contained" onClick={login} sx={{ width: "100%" }}>Login</Button>
+                            </Grid2>
                         </Drawer>
                     </Box>
                 </StyledToolbar>

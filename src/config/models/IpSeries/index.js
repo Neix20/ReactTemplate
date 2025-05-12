@@ -25,10 +25,6 @@ const obj = {
             "type": "textarea"
         },
         {
-            "name": "launch_date",
-            "type": "date"
-        },
-        {
             "name": "link",
             "type": "text"
         },
@@ -36,6 +32,10 @@ const obj = {
             "name": "parent",
             "type": "dropdown",
             "show": false
+        },
+        {
+            "name": "variety",
+            "type": "text",
         },
         {
             "name": "image",
@@ -50,9 +50,9 @@ const obj = {
     initial: {
         name: "",
         description: "",
-        launch_date: "",
         link: "",
         parent: "",
+        variety: "",
         image: "",
         status: ""
     },
