@@ -20,7 +20,7 @@ function App(props) {
 
     const dispatch = useDispatch();
 
-    const user = useSelector(Selectors.userSelect);
+    const { PK = "" } = useSelector(Selectors.userSelect);
 
     const signIn = (data) => {
         fetchSignIn(data)
@@ -35,7 +35,7 @@ function App(props) {
     }
 
     useEffect(() => {
-        const userId = user.PK.slice(5);
+        const userId = PK.slice(5);
         signIn({ id: userId })
     }, []);
 
