@@ -15,8 +15,9 @@
         "titleBar.activeForeground": "#15202b",
         "titleBar.inactiveBackground": "#ff77a899",
         "titleBar.inactiveForeground": "#15202b99",
-        "activityBarBadge.background": "#2e8000",
-        "activityBarBadge.foreground": "#e7e7e7"
+        "editorGroup.border": "#ffaac9",
+        "panel.border": "#ffaac9",
+        "sideBar.border": "#ffaac9"
     },
     "peacock.color": "#FF77A8",
     "files.associations": {
