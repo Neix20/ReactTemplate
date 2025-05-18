@@ -28,12 +28,6 @@ export {
     fetchProductActive
 }
 
-import fetchProductCategory from "./ProductCategory/getAll";
-
-export {
-    fetchProductCategory
-}
-
 import fetchScammerGetAll from "./Scammer/getAll";
 import fetchScammerGet from "./Scammer/get";
 import fetchScammerAdd from "./Scammer/add";
@@ -143,4 +137,32 @@ export {
     fetchUserUpdate,
     fetchUserDelete,
     fetchUserProfile
+}
+
+import fetchParameterOptions from "./Parameter/options";
+import fetchParameterEntityAttribute from "./Parameter/entity-attribute";
+import fetchParameterAdd from "./Parameter/add";
+import fetchParameterUpdate from "./Parameter/update";
+import fetchParameterDelete from "./Parameter/delete";
+
+export {
+    fetchParameterOptions,
+    fetchParameterEntityAttribute,
+    fetchParameterAdd,
+    fetchParameterUpdate,
+    fetchParameterDelete
+}
+
+import fetchBugReportGetAll from "./BugReport/getAll";
+import fetchBugReportGet from "./BugReport/get";
+import fetchBugReportAdd from "./BugReport/add";
+import fetchBugReportUpdate from "./BugReport/update";
+import fetchBugReportDelete from "./BugReport/delete";
+
+export {
+    fetchBugReportGetAll,
+    fetchBugReportGet,
+    fetchBugReportAdd,
+    fetchBugReportUpdate,
+    fetchBugReportDelete
 }
