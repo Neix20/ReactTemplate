@@ -3,7 +3,7 @@ import DashboardLayout from "@components/layout/Admin";
 
 import { Context } from "@config";
 
-import { Settings, PersonOff, Article, AssignmentTurnedIn, SmartToy, Group } from "@mui/icons-material";
+import { PersonOff, Article, AssignmentTurnedIn, SmartToy, Group, BugReport, Tune } from "@mui/icons-material";
 
 import Incident from "@app/Admin/Incident";
 import IncidentDetails from "@app/Admin/Incident/IncidentDetails";
@@ -21,13 +21,16 @@ import ScammerAttr from "@app/Admin/Scammer/ScammerAttr";
 import User from "@app/Admin/User";
 import UserDetails from "@app/Admin/User/UserDetails";
 
+// import Parameter from "@app/Admin/Parameter";
+// import BugReport from "@app/Admin/BugReport";
+
 // import ASample from "@app/Admin/Sample";
 
 import Error from "@app/Error";
 
 const menuItems = [
     {
-        id: 'general',
+        id: 'admin',
         title: 'Admin',
         type: 'group',
         children: [
@@ -123,6 +126,36 @@ const menuItems = [
                 url: '/Admin/User/:UserId',
                 element: <UserDetails />
             },
+        ]
+    },
+    {
+        id: 'parameter',
+        title: 'Parameter',
+        type: 'group',
+        children: [
+            {
+                id: 'admin-parameter',
+                title: 'Parameter',
+                type: 'item',
+                url: '/Admin/Parameter',
+                icon: Tune,
+                element: <Scammer />
+            }
+        ]
+    },
+    {
+        id: 'bug-report',
+        title: 'Bug Report',
+        type: 'group',
+        children: [
+            {
+                id: 'admin-bug-report',
+                title: 'BugReport',
+                type: 'item',
+                url: '/Admin/BugReport',
+                icon: BugReport,
+                element: <Scammer />
+            }
         ]
     },
     // {
